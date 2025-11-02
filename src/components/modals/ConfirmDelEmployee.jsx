@@ -1,23 +1,27 @@
 import { useState } from 'react';
 import { useAuth } from '../../hook/useAuth'
 import Alert from './Alert';
+import { useNavigate } from 'react-router-dom';
 
 export default function Confirmation({isOpen, setIsOpen, currentEmployee}) {
 
   const { deleteEmployee } = useAuth()
-
+  const route = useNavigate();
   const [erroMessage, setErroMessage] = useState()
   const [response, setResponse] = useState('Erro')
 
- async function handleDelete() {
+ async function handleDelete(e) {
+  e.preventDefault()
+
      const del = await deleteEmployee(currentEmployee?.matricula_funcionario)
-     if (del?.sucess) {
+     console.log(del)
+     if (del?.result) {
        setResponse('Não')
-       setErroMessage('Funcionario foi deletado')
-       setIsOpen(!isOpen)
+       setErroMessage(del.sucess)
+       route('/admin', { replace: true });
      } else {
        setResponse('Não')
-       setErroMessage('Erro ao Buscar Funcionario')
+       setErroMessage(del.error)
      }
    }
   if (isOpen) return (
@@ -25,11 +29,12 @@ export default function Confirmation({isOpen, setIsOpen, currentEmployee}) {
       {erroMessage && (
         <Alert
           response={response}
-          text="ao deletar Funcionário"
+          text="ao Deletar Funcionário"
           error={erroMessage}
           onClose={() => {
             setErroMessage("")
             setIsOpen(!isOpen)
+
           }}
         />
       )}

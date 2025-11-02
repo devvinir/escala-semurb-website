@@ -7,9 +7,10 @@ import { BeatLoader } from "react-spinners";
 
 function MyChart() {
   const [data, setData] = useState([]);
-  const {scalesEmployees} = useAuth()
+  const {scalesEmployees, sectorsEmployees, user, admin} = useAuth()
   
   useEffect(() => {
+    if(user){
     if(scalesEmployees?.result){
    const dataChart = [
       ["Escala", "Funcionarios", { role: "style" }],
@@ -21,7 +22,20 @@ function MyChart() {
       ])
     ];
     setData(dataChart)
-  }}, [scalesEmployees]); 
+  }}
+  else if (admin){
+    if(sectorsEmployees?.result){console.log(sectorsEmployees)
+      const dataChart = [
+        ['Setores', 'Funcionarios', {role: 'style'}],
+        ...sectorsEmployees.result.map(info =>[
+          info?.nome_setor, 
+          Number(info?.quantidade), 
+          '#F4D03F'
+        ])
+      ];
+      setData(dataChart)
+    }}
+}, [scalesEmployees, sectorsEmployees]); 
 
   const options = {
     backgroundColor: "transparent",
@@ -42,7 +56,7 @@ function MyChart() {
     legend: { textStyle: { color: "#F4D03F" } },
   };
 
-  if (data.length === 0) return <p className="loading-text">Carregando dados...</p>
+  if (data.length === 0) return <p className="loading-text">Carregando dados<BeatLoader/></p>
 
   return (
     <div className="container-graph">

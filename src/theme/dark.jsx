@@ -14,5 +14,6 @@ export default {
     "--id": "#F4D03F",
     "--fix-gray": "#8e99aeff",
     "--on-gray": "#171e29ff",
-    "--fix-alert": "#f4b23fff"
+    "--fix-alert": "#f4b23fff",
+     "--notification-bg":"#f4d03f43"
 };

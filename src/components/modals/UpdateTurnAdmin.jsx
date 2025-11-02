@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../../hook/useAuth'
 import Alert from './Alert'
 
-export default function UpdateTurn({ isOpen, setIsOpen, employee }) {
+export default function UpdateTurnAdmin({ isOpen, setIsOpen, employee }) {
 
-  const { user, updateTurn, turns } = useAuth()
+  const { updateTurnAdmin, allTurns } = useAuth()
 
-  const turn = turns?.result.find(t => (
+  const turn = allTurns?.result?.find(t => (
     t.id_turno === employee.id_turno
   ))
 
@@ -37,7 +37,7 @@ export default function UpdateTurn({ isOpen, setIsOpen, employee }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    const newTurn = await updateTurn(user, form)
+    const newTurn = await updateTurnAdmin(form)
     if (newTurn.result) {
       setRes('Sucesso')
       setError(newTurn.sucess)
@@ -69,7 +69,7 @@ export default function UpdateTurn({ isOpen, setIsOpen, employee }) {
 
             <label className="form-label">Matricula</label>
             <input name='matricula_funcionario' type="number" className="form-input" placeholder="Matricula"
-              value={form.matricula_funcionario} onChange={handleChange} />
+              value={form.matricula_funcionario}  />
 
             <label className="form-label">Inicio do Turno</label>
             <input name='inicio_turno' type="time" className="form-input"

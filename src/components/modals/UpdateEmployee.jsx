@@ -1,37 +1,31 @@
 import { useAuth } from '../../hook/useAuth'
-import { useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import Alert from './Alert'
 
 
-function UpdateAdmin({ isOpen, setIsOpen, employee }) {
-  const { updateAdmin, allSectors, allTeams, allRegions} = useAuth()
+export default function UpdateEmployee({ isOpen, setIsOpen, employee }) {
+  const { updateEmployee, teams, regions, user } = useAuth()
   const [erroMessage, setErroMessage] = useState()
   const [response, setResponse] = useState('Erro')
+  const [form, setForm] = useState({})
 
+  const team = teams?.result?.find(team =>
+    employee.id_equipe == team.id_equipe)?.nome_equipe
+  const region = regions?.result?.find(region =>
+    employee.id_regiao == region.id_regiao)?.nome_regiao
 
-  const [form, setForm] = useState({ })
- 
-  const sector = allSectors?.result?.find(sector => (
-  employee.id_setor == sector.id_setor))
-  const team = allTeams?.result?.find(team => 
-  employee.id_equipe == team.id_equipe)?.nome_equipe
-  const region = allRegions?.result?.find(region => 
-  employee.id_regiao == region.id_regiao)?.nome_regiao
-  
+  useEffect(() => {
+    if (isOpen && employee)
+      setForm({
+        matricula_funcionario: employee.matricula_funcionario,
+        email: employee.email,
+        telefone: employee.telefone,
+        cargo: employee.cargo,
+        equipe: team,
+        regiao: region,
+      })
 
-  useEffect(()=>{
-    if(isOpen && employee)
-    setForm({
-    email: employee.email,
-    telefone: employee.telefone,
-    cargo: employee.cargo,
-    setor: sector.nome_setor, 
-    status_permissao: employee.status_permissao,
-    equipe: team,
-    regiao: region,
-    })
-
-  },[isOpen, employee])
+  }, [isOpen, employee])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,13 +38,9 @@ function UpdateAdmin({ isOpen, setIsOpen, employee }) {
   async function handleAddEmployee(e) {
     e.preventDefault()
 
-    console.log("dadoas enviados", form)
+    const EditEmployee = await updateEmployee(user, form)
 
-    const EditEmployee = await updateAdmin(employee.matricula_funcionario, form)
-
-    console.log("Resposta do backend", EditEmployee)
-    
-  if (EditEmployee.sucess) {
+    if (EditEmployee.sucess) {
       setResponse('Sucesso')
       setErroMessage(EditEmployee.sucess)
     } else {
@@ -59,12 +49,12 @@ function UpdateAdmin({ isOpen, setIsOpen, employee }) {
     }
   }
 
- if(isOpen) return (
+  if (isOpen) return (
     <div className='form-container'>
       {erroMessage && (
         <Alert
           response={response}
-          text="ao Atualizar Funcionario"
+          text="ao AtualizarFuncionario"
           error={erroMessage}
           onClose={() => {
             setErroMessage("")
@@ -79,6 +69,9 @@ function UpdateAdmin({ isOpen, setIsOpen, employee }) {
           <p className="form-title">Atualizar Funcionario</p>
           <div className="form-card ">
 
+            <input name='matricula_funcionario' type="number" className="form-input" 
+            placeholder='Matricula' value={form.matricula_funcionario} />
+
             <input name='email' type="text" className="form-input" placeholder="Email"
               value={form.email} onChange={handleChange} />
 
@@ -88,41 +81,28 @@ function UpdateAdmin({ isOpen, setIsOpen, employee }) {
             <input name='cargo' type="text" className="form-input" placeholder="Cargo"
               value={form.cargo} onChange={handleChange} />
 
-            <select name="setor" id="setor-input" className="form-input"
-             value={form.setor} onChange={handleChange} >
-              {allSectors.result?.map((sector) => (
-                <option key={sector.id_sector} value={sector.nome_setor}>{sector.nome_setor}</option>
+            <select name='equipe' className="form-input" value={form.equipe} onChange={handleChange}>
+              <option value="">Selecione uma equipe</option>
+              {teams?.result?.map((eq) => (
+                <option key={eq.id_equipe} value={eq.nome_equipe}> {eq.nome_equipe}</option>
               ))}
             </select>
 
-             <select name="status_permissao" className="form-input" 
-              value={form.status_permissao} onChange={handleChange} id='permissao-input'>
-              <option value="Sim">Sim</option>
-              <option value="Não">Não</option>
-            </select>
-
-            <select name='equipe'className="form-input" 
-            value={form.equipe} onChange={handleChange}>
-                <option value={null}>Selecione uma equipe</option>
-                {allTeams?.result?.filter(e => e.id_setor === sector.id_setor)?.map((eq) => (
-                  <option key={eq.id_equipe} value={eq.nome_equipe}> {eq.nome_equipe}</option>
-                ))}
-            </select>
-
             <select name="regiao" id="regiao-input" className="form-input"
-             value={form.regiao} onChange={handleChange} >
+            value={form.regiao} onChange={handleChange}>
+              {region ? <option value={region}> {region}</option> : null}
                 <option value={null}> Selecione uma região</option>
                 <option value="Norte"> Norte</option>
                 <option value="Sul"> Sul</option>
                 <option value="Leste"> Leste</option>
                 <option value="Oeste"> Oeste</option>
             </select>
-           
+
 
           </div>
 
           <div className="buttons-form">
-            <button type="submit" 
+            <button type="submit"
               className={`confirm-button ${Object.values(form).some(values => values === '') ? 'disable' : ''}`}
               disabled={Object.values(form).some(values => values === '')}>
               Continuar
@@ -134,4 +114,3 @@ function UpdateAdmin({ isOpen, setIsOpen, employee }) {
     </div>
   )
 }
-export default UpdateAdmin

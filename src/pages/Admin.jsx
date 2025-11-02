@@ -1,7 +1,7 @@
 import SectorCard from '../components/SectorCard'
 import MyChart from '../components/Graph'
 import { useAuth } from '../hook/useAuth'
-import AddAdmin from '../components/modals/AddAdmin'
+import AddAdminCard from '../components/modals/AddAdmin'
 import { useState } from 'react'
 import '../styles/Admin.css'
 import AddSector from '../components/modals/AddSector'
@@ -31,7 +31,7 @@ function Admin() {
   
   return (
     <div className="body" >
-      <AddAdmin isOpenModal={isOpenModalAdmin} setIsOpenModal={setIsOpenModalAdmin} />
+      <AddAdminCard isOpenEmployee={isOpenModalAdmin} setIsOpenEmployee={setIsOpenModalAdmin} />
       <AddSector isOpenModal={isOpenModalSector} setIsOpenModal={setIsOpenModalSector} />
 
       <div className="adm-container-search">

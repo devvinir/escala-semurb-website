@@ -4,7 +4,7 @@ import Alert from './Alert';
 
 export default function AddTeam({isOpen, setIsOpen}) {
 
-  const { addTeam } = useAuth()
+  const { addTeam, user } = useAuth()
 
   const [erroMessage, setErroMessage] = useState()
   const [response, setResponse] = useState('Erro')
@@ -13,7 +13,7 @@ export default function AddTeam({isOpen, setIsOpen}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const team = await addTeam(nome_equipe)
+    const team = await addTeam(user, nome_equipe)
 
     if (team.result) {
       setResponse('Sucesso')

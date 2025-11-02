@@ -9,7 +9,7 @@ export default function SectorCard() {
 
   const { admin, user, teams, allSectors } = useAuth();
   const route = useNavigate();
-
+  console.log(teams)
   const [isOpen, setIsOpen] = useState(false)
   const [id, setId] = useState()
   if (user) return (
@@ -45,7 +45,7 @@ export default function SectorCard() {
         </div>
         {!allSectors?.result ? <p className="loading-text">Carregando setores...</p> : null}
         <div className='container-teams'>
-          {allSectors?.result?.setores?.map((sector) => (
+          {allSectors?.result?.map((sector) => (
 
             <div className='team' key={sector.id_setor}
               onClick={() => route(`/sectors/${sector.id_setor}`)} >

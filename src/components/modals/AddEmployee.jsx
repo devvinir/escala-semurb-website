@@ -7,6 +7,8 @@ function AddEmployeeCard({ isOpenEmployee, setIsOpenEmployee, setPage, employee 
   const [currentPage, setCurrentPage] = useState(setPage || 1)
   const [createdEmployee, setCreatedEmployee] = useState(employee || null) // guarda funcionário criado
 
+
+  
   const goNextPage = (employee) => {
     if (employee) setCreatedEmployee(employee)
     setCurrentPage((prev) => prev + 1) // avança de forma progressiva
@@ -40,7 +42,7 @@ function AddEmployeeCard({ isOpenEmployee, setIsOpenEmployee, setPage, employee 
 }
 
 function Page1({ isOpenEmployee, setIsOpenEmployee, goNextPage }) {
-  const { addEmployee, teams, regions, findTeams, findRegions, user } = useAuth()
+  const { addEmployee, teams, findTeams, user } = useAuth()
   const [erroMessage, setErroMessage] = useState()
   const [response, setResponse] = useState('Erro')
   const [save, setSave] = useState()
@@ -64,11 +66,10 @@ function Page1({ isOpenEmployee, setIsOpenEmployee, goNextPage }) {
 
 
   useEffect(() => {
-    if (isOpenEmployee) {
-      findTeams();
-      findRegions();
+    if (isOpenEmployee && teams?.result) {
+      findTeams(user);
     }
-  }, [isOpenEmployee])
+  }, [isOpenEmployee, findTeams])
 
   async function handleAddEmployee(e) {
     e.preventDefault()
@@ -122,19 +123,21 @@ function Page1({ isOpenEmployee, setIsOpenEmployee, goNextPage }) {
 
             <select name='nome_equipe' id="equipe-input" list="equipes-list" className="form-input"
               placeholder="Equipe" value={form.nome_equipe} onChange={handleChange}>
-                <option value="">Selecione uma equipe</option>
+                <option value={null}>Selecione uma equipe</option>
                 {teams?.result?.map((eq) => (
                   <option key={eq.id_equipe} value={eq.nome_equipe}> {eq.nome_equipe}</option>
                 ))}
             </select>
             
-            <input name='nome_regiao' id="regiao-input" list="regioes-list" className="form-input"
-              placeholder="Regiao" value={form.nome_regiao} onChange={handleChange} />
-            <datalist id="regioes-list">
-              {regions?.result?.map((eq) => (
-                <option key={eq.id_regiao} value={eq.nome_regiao} />
-              ))}
-            </datalist>
+            <select name='nome_regiao' id="regiao-input" list="regioes-list" className="form-input"
+              placeholder="Regiao" value={form.nome_regiao} onChange={handleChange}>
+              <option value={null}>Selecione uma região</option>
+              <option value='Sul'>Sul</option>
+              <option value='Norte'>Norte</option>
+              <option value='Leste'>Leste</option>
+              <option value='Oeste'>Oeste</option>
+            </select>
+            
           </div>
 
           <div className="buttons-form">
@@ -314,16 +317,16 @@ function Page3({ employee, setIsOpenEmployee }) {
             <input name='inicio_turno' type="time" className="form-input"
               value={form.inicio_turno} onChange={handleChange} />
 
-            <label name='termino_turno' className="form-label">Termino do Turno</label>
-            <input type="time" className="form-input"
+            <label  className="form-label">Termino do Turno</label>
+            <input type="time" className="form-input" name='termino_turno'
               value={form.termino_turno} onChange={handleChange} />
 
-            <label name='duracao_turno' className="form-label">Duração do Turno</label>
-            <input type="time" className="form-input"
+            <label  className="form-label">Duração do Turno</label>
+            <input type="time" className="form-input" name='duracao_turno'
               value={form.duracao_turno} onChange={handleChange} />
 
-            <label name='intervalo_turno' className="form-label">Intervalo do Turno</label>
-            <input type="time" className="form-input"
+            <label  className="form-label">Intervalo do Turno</label>
+            <input type="time" className="form-input" name='intervalo_turno'
               value={form.intervalo_turno} onChange={handleChange} />
           </div>
 

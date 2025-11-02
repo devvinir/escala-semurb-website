@@ -6,7 +6,7 @@
     right: 0;
     width: 30vw;
     height: 80vh;
-    background-color: var(--fix-dark);
+    background-color: var(--contents);
     border-radius: 20px;
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3); 
 }
@@ -17,6 +17,22 @@
     justify-content: center;
     gap: 1.2rem;
 }
-.list-content{
-    border-bottom: 1px solid var(--fix-gray)
+.list-notification{
+    background-color: var(--notification-bg);
+    border-bottom: 2px solid var(--fix-yellow);
+    border-radius: 10px;
+    padding: 1rem;
+}
+.type-notification{
+    color: var(--text);
+    font-size: medium;
+    font-weight: bold;
+}
+.message-notification{
+    color: var(--text);
+    font-size: medium;
+}
+.date-notification{
+    color: var(--fix-gray);
+    font-size: small;
 }

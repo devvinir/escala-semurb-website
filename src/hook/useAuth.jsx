@@ -8,7 +8,11 @@ export const useAuth =() => {
         findScales, scales, admin, inAdmin, adminSignIn, allEmployees,allSectors,
         addSector, updateScale, addTurn, addAdmin, deleteEmployee, getAllEmployees,
         findTurns, turns, updateAdmin, actives, findActives, deleteSector, updateSector,
-        forgotPassword, codeVerify, resetPassword, scalesEmployees, updateTurn
+        forgotPassword, codeVerify, resetPassword, scalesEmployees, updateTurn, sectorsEmployees,
+        addTeam, updateEmployee, findAllTeams, allTeams,
+        addScaleAdmin, updateScaleAdmin, findAllScales, allScales,
+        addTurnAdmin, updateTurnAdmin, findAllTurns, allTurns,
+        findAllRegions, allRegions, holidays
     } = useContext(AuthContext);
 
     return{
@@ -26,8 +30,10 @@ export const useAuth =() => {
         updateAdmin,
         deleteSector, updateSector,
         forgotPassword, codeVerify, resetPassword,
-        scalesEmployees,
+        scalesEmployees, sectorsEmployees,
         updateTurn,
+        addTeam,
+        updateEmployee,
         
         findTeams,
         teams,
@@ -45,8 +51,18 @@ export const useAuth =() => {
         admin,
         inAdmin,
         adminSignIn,
-        addSector,
+        addSector, addTurnAdmin, updateTurnAdmin, addScaleAdmin, updateScaleAdmin,
         allEmployees,            
-        allSectors,       
+        allSectors,      
+        findAllTeams,
+        allTeams,
+        findAllScales, 
+        allScales,
+        findAllTurns, 
+        allTurns,
+        findAllRegions,
+        allRegions,
+        holidays
+        
     }
 }

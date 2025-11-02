@@ -55,7 +55,7 @@ export const findActives = async (user, date) => {
     }
 };
 
-export const contEmployees = async(user) => {
+export const contEmployeesScale = async(user) => {
     try{
         const{data} = await api.get(`/funcionariosEscala/${user?.funcionario?.matricula_funcionario}`)
         const sucess = 'quantidades de funcionarios por escala listados com sucesso'
@@ -78,5 +78,17 @@ export const updateEmployee = async(user, payload) => {
         const erro = error?.response?.data?.mensagem || error?.message
         console.error('Erro ao atualizar funcionario', erro)
         return { result: null, error: erro, sucess: null }
+    }
+}   
+
+export const contEmployeesSector = async() => {
+    try{
+        const {data} = await api.get('/contabilizarFuncionariosSetor')
+        const sucess = 'Contabilização de funcionarios realizada com sucesso'
+        return {result: data, error: null, sucess: sucess}
+    }catch(error){
+        const erro = error?.response?.data?.mensagem || error?.message
+        console.error('Erro ao contabilizar funcionarios:', erro)
+        return {result: null, error: erro, sucess: null}
     }
 }

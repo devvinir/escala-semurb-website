@@ -5,14 +5,16 @@ import CalendarProfile from '../components/CalendarProfile'
 import { useState, useMemo } from 'react'
 import UpdateScale from "../components/modals/UpdateScale"
 import AddEmployeeCard from '../components/modals/AddEmployee'
-import { getRestDayDisplay } from '../utils/RestDays'
-import UpdateAdmin from '../components/modals/UpdateAdmin'
+import { getRestDaysDisplay, formatCurrentMonthHolidays } from '../utils/RestDays'
+import UpdateEmployee from '../components/modals/UpdateEmployee'
 import UpdateTurn from '../components/modals/UpdateTurn'
 
 function Employee() {
 
-  const { employees, user, teams, scales, regions, turns } = useAuth()
+  const { employees, user, teams, scales, regions, turns, holidays } = useAuth()
   const { id } = useParams()
+
+  
 
   const [isOpenScaleUpdate, setIsOpenScaleUpdate] = useState(false)
   const [isOpenEmployeeAdd, setIsOpenEmployeeAdd] = useState(false)
@@ -50,9 +52,6 @@ function Employee() {
     console.log('Data selecionada:', date.toLocaleDateString('pt-BR'));
   };
 
-  // const folgas = ['12x36', '18x36', '24x48, 24x72']
-
-
   if (!employees || !employees?.result)
     return <p className="loading-text">Carregando funcionário...</p>
 
@@ -72,7 +71,7 @@ function Employee() {
         setPage={page}
         employee={currentEmployee}
       />
-      <UpdateAdmin
+      <UpdateEmployee
         isOpen={isOpenEmployeeUpdate}
         setIsOpen={setIsOpenEmployeeUpdate}
         employee={currentEmployee}
@@ -110,8 +109,8 @@ function Employee() {
           />
           <div className="profile-escale-details">
 
-            <div className="details">{`Folgas: ${getRestDayDisplay(scale)}`}</div>
-            <div className="details">Feriados</div>
+            <div className="details">{`Folgas: ${getRestDaysDisplay(scale)}`}</div>
+            <div className="details">{`Feriados: ${formatCurrentMonthHolidays(scale, holidays?.result)}`}</div>
             <div className="details">{`Horario: ${turn?.inicio_turno} - ${turn?.termino_turno} / Intervalo: ${turn?.intervalo_turno}`}</div>
           </div>
           <div className="update-buttons">

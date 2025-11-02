@@ -20,13 +20,11 @@ function LoginAdmin() {
     setLoad(true)
 
     const adminData = await adminSignIn(registration, password);
-    if(adminData?.result){
+    if(adminData.result){
       route('/admin', {replace: true})
-      console.log('suesso login')
     } else {
      setResponse(response)
      setError(adminData.error) 
-     console.log('erro login')
     }
 
     setLoad(false)
@@ -66,7 +64,7 @@ function LoginAdmin() {
         value={registration}
         onChange={(e) => setMatricula(e.target.value)} />
 
-        <label className='label-login'> password </label>
+        <label className='label-login'> Senha </label>
         <input className='input-login' type="password" name="password" id="password" 
         value={password} onChange={(e) => setPassword(e.target.value)} />
 

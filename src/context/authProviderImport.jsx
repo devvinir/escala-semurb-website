@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import api from '../api/api';
 import AuthContext from "./authContextImport";
 
-import { addEmployee, findEmployees, findAllEmployees, findActives, contEmployees } from "../services/employeesServices";
-import { addScale, findScales, updateScale } from "../services/scalesServices";
+import { addEmployee, findEmployees, findAllEmployees, findActives, contEmployeesScale, contEmployeesSector, updateEmployee } from "../services/employeesServices";
+import { addScale, findScales, updateScale, updateScaleAdmin, addScaleAdmin, findAllScales, findHolidays } from "../services/scalesServices";
 import { findAllSectors, addSector, deleteSector, updateSector } from "../services/sectorsServices";
 import { addAdmin, deleteEmployee, updateAdmin } from "../services/adminsServices"
-import { findTeams, addTeam } from '../services/teamsServices'
-import { findRegions } from '../services/regionsServices'
-import { findTurns, addTurn, updateTurn } from '../services/turnsServices'
+import { findTeams, addTeam, findAllTeams } from '../services/teamsServices'
+import { findRegions, findAllRegions} from '../services/regionsServices'
+import { findTurns, addTurn, updateTurn, updateTurnAdmin, addTurnAdmin, findAllTurns } from '../services/turnsServices'
 import { forgotPassword, codeVerify, resetPassword } from '../services/sessionServices'
 export const AuthProvider = ({ children }) => {
 
@@ -21,9 +21,15 @@ export const AuthProvider = ({ children }) => {
   const [scales, setScales] = useState([])
   const [allEmployees, setAllEmployees] = useState([])
   const [allSectors, setAllSectors] = useState([])
+  const [allTeams, setAllTeams] = useState([])
+  const [allScales, setAllScales] = useState([])
+  const [allTurns, setAllTurns] = useState([])
+  const [allRegions, setAllRegions] = useState([])
   const [turns, setTurns] = useState([])
   const [actives, setActives] = useState([])
   const [scalesEmployees, setScalesEmployees] = useState([])
+  const [sectorsEmployees, setSectorsEmployees] = useState([])
+  const [holidays, setHolidays] = useState([])
 
   const signIn = async (matricula_funcionario, senha) => {
     try {
@@ -72,7 +78,7 @@ export const AuthProvider = ({ children }) => {
         setAdmin(data);
         localStorage.setItem('authToken', data.token);
         localStorage.setItem('admin_data', JSON.stringify(data));
-        return data;
+        return {result: data, error: null};
       }
       const sucess = 'Login realizado com sucesso'
       return { result: data, error: null, sucess: sucess };
@@ -161,7 +167,8 @@ export const AuthProvider = ({ children }) => {
         setTurns(await findTurns(user));
         setEmployees(await findEmployees(user));
         setScales(await findScales(user));
-        setScalesEmployees(await contEmployees(user));
+        setHolidays(await findHolidays());
+        setScalesEmployees(await contEmployeesScale(user));
       })();
     }
   }, [user])
@@ -171,6 +178,12 @@ export const AuthProvider = ({ children }) => {
       (async () => {
         setAllSectors(await findAllSectors());
         setAllEmployees(await findAllEmployees());
+        setAllTeams(await findAllTeams());
+        setAllScales(await findAllScales());
+        setAllTurns(await findAllTurns());
+        setAllRegions(await findAllRegions());
+        setHolidays(await findHolidays());
+        setSectorsEmployees(await contEmployeesSector());
       })();
     }
   }, [admin])
@@ -227,9 +240,9 @@ export const AuthProvider = ({ children }) => {
       inUser: !!user,
       signIn, logout,
       addEmployee,
-      addScale,
-      addTurn,
-      updateScale,
+      addScale, addScaleAdmin,
+      addTurn, addTurnAdmin,
+      updateScale, updateScaleAdmin,
       addAdmin,
       deleteEmployee: handleDelEmployee,
       getAllEmployees,
@@ -238,8 +251,10 @@ export const AuthProvider = ({ children }) => {
       deleteSector: handleDelSector,
       updateSector,
       forgotPassword, codeVerify, resetPassword,
-      scalesEmployees,
-      updateTurn,
+      scalesEmployees, sectorsEmployees,
+      updateTurn, updateTurnAdmin,
+      updateEmployee,
+
 
       findTeams,
       teams,
@@ -264,6 +279,15 @@ export const AuthProvider = ({ children }) => {
       allEmployees,
       findAllSectors,
       allSectors,
+      findAllTeams,
+      allTeams,
+      findAllScales,
+      allScales,
+      findAllTurns,
+      allTurns,
+      findAllRegions,
+      allRegions,
+      holidays
     }}>
       {children}
     </AuthContext.Provider>

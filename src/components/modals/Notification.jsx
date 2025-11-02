@@ -1,24 +1,28 @@
 import '../../styles/Notification.css';
+import { useAuth } from '../../hook/useAuth';
 
 function Notification({isNotification, setIsNotification}){
+
+const { user } = useAuth();
+
+const formater = new Intl.DateTimeFormat('pt-BR', {
+  hour: '2-digit',
+  minute: '2-digit',
+});
 
     if (isNotification) return(
     <div className="modal-list">
         <div className="list-container">
-            <div className="list-content">
-                <p className="">ASBDAIJSD</p>
+            {user?.notificacoes?.map(n =>(
+            <div className="list-notification">
+                <p className="type-notification">{n.tipo_notificacao}</p>
+                <p className="message-notification">{n.mensagem}</p>
+                <p className="date-notification">{formater.format(new Date(n.enviada_em))}</p>
             </div>
-            <div className="list-content">
-                <p className="">ASBDAIJSD</p>
-            </div>
-            <div className="list-content">
-                <p className="">ASBDAIJSD</p>
-            </div>
-            <div className="list-content">
-                <p className="">ASBDAIJSD</p>
-            </div>
+        ))}
                 <button className="cancel-button"
-                onClick={setIsNotification}>Fechar</button>
+                onClick={setIsNotification}>Fechar
+                </button>
         </div>
     </div>
     ); return null   
