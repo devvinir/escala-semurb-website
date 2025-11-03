@@ -175,7 +175,7 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
   const [save, setSave] = useState()
 
   const [form, setForm] = useState({
-    matricula_funcionario: employee.matricula_funcionario,
+    matricula_funcionario: employee.funcionario.matricula_funcionario,
     data_inicio: '',
     tipo_escala: '',
     usa_dias_especificos: 'NAO',
@@ -201,7 +201,7 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
     if (scale.result) {
       setResponse('Sucesso')
       setErroMessage(scale.sucess)
-      setSave(scale)
+      setSave(employee)
     } else {
       setResponse('Erro')
       setErroMessage(scale.error)
@@ -243,8 +243,9 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
               {allScales?.result?.map(s =>
                 <option key={s.id_escala} value={s.tipo_escala} />)}
             </datalist>
-
-            <label>Usar dias específicos de folga:</label>
+              
+              <div className="">
+            <label>Dias da Semana:</label>
             <select name="usa_dias_especificos" value={form.usa_dias_especificos} onChange={handleChange}>
               <option value="SIM">SIM</option>
               <option value="NAO">NAO</option>
@@ -263,7 +264,7 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
                 ))}
               </div>
             )}
-          </div>
+          </div></div>
 
           <div className="buttons-form">
             <button type="submit" className={`confirm-button ${isDisabled ? 'disable' : ''}`} disabled={isDisabled}>Concluir</button>
@@ -282,7 +283,7 @@ function Page3({ employee, setIsOpenEmployee }) {
   const [save, setSave] = useState()
 
   const [form, setForm] = useState({
-    matricula_funcionario: employee.matricula_funcionario,
+    matricula_funcionario: employee.funcionario.matricula_funcionario,
     inicio_turno: '',
     termino_turno: '',
     duracao_turno: '',

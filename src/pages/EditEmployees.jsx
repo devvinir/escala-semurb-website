@@ -49,7 +49,7 @@ function EditEmployee() {
   ))?.nome_regiao
   const scale = allScales?.result?.find(scale => (
     currentEmployee?.id_escala == scale.id_escala
-  ))?.tipo_escala
+  ))
   const turn = allTurns?.result?.find(turn => (
     currentEmployee?.id_turno == turn.id_turno
   ))
@@ -105,7 +105,7 @@ function EditEmployee() {
             <p className="profile-info">Equipe: <span className="info-auth">{team}</span></p>
             <p className="profile-info">Região: <span className="info-auth">{region}</span></p>
             <p className="profile-info">Setor: <span className="info-auth">{sector}</span></p>
-            <p className="profile-info">Escala: <span className="info-auth">{scale}</span></p>
+            <p className="profile-info">Escala: <span className="info-auth">{scale?.tipo_escala}</span></p>
           </div>
           <button className="confirm-button" onClick={() => setIsOpenAdminUpdate(!isOpenAdminUpdate)}>Atualizar Dados</button>
           <button className="cancel-button" onClick={() => setIsOpenDelete(!isOpenDelete)}>Deletar Funcionario</button>
@@ -115,7 +115,7 @@ function EditEmployee() {
           <CalendarProfile
             value={selectedDate}
             onDateChange={handleDateSelect}
-            escala={allScales?.result?.find(scale => (scale.id_escala == currentEmployee?.id_escala))}
+            escala={scale}
           />
           <div className="profile-escale-details">
             <div className="details">{`Folgas: ${getRestDaysDisplay(scale)}`}</div>

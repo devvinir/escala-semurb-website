@@ -108,7 +108,6 @@ function Employee() {
             escala={scale || null}
           />
           <div className="profile-escale-details">
-
             <div className="details">{`Folgas: ${getRestDaysDisplay(scale)}`}</div>
             <div className="details">{`Feriados: ${formatCurrentMonthHolidays(scale, holidays?.result)}`}</div>
             <div className="details">{`Horario: ${turn?.inicio_turno} - ${turn?.termino_turno} / Intervalo: ${turn?.intervalo_turno}`}</div>

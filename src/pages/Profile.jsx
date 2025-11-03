@@ -3,15 +3,25 @@ import CalendarProfile from '../components/CalendarProfile'
 import { useState } from 'react'
 import { useAuth } from '../hook/useAuth'
 import '../styles/Profile.css'
+import { getRestDaysDisplay, formatCurrentMonthHolidays } from '../utils/RestDays'
 
 function Profile() {
-  const { user } = useAuth()
+  const { user, holidays, teams, regions, turns } = useAuth()
   const [selectedDate, setSelectedDate] = useState(null);
   const handleDateSelect = (date) => {
     setSelectedDate(date);
     console.log('Data selecionada:', date.toLocaleDateString('pt-BR'));
   };
-
+  const team = teams?.result?.find(team => (
+    user?.funcionario?.id_equipe == team.id_equipe
+  ))?.nome_equipe
+  const region = regions?.result?.find(region => (
+    user?.funcionario?.id_regiao == region.id_regiao
+  ))?.nome_regiao
+  const turn = turns?.result?.find(turn => (
+    user?.funcionario?.id_turno == turn.id_turno
+  ))
+  console.log(user)
   return (
     <div className="body">
 
@@ -27,8 +37,8 @@ function Profile() {
             <p className="profile-info">Telefone: <span className="info-auth">{user?.funcionario?.telefone}</span></p>
             <p className="profile-info">Email: <span className="info-auth">{user ? user.funcionario?.email : 'Desconhecido'}</span></p>
             <p className="profile-info">Escala: <span className="info-auth">{user ? user.escala?.tipo_escala : 'Desconhecido'}</span></p>
-            <p className="profile-info">Equipe: <span className="info-auth">{user.equipe ? user.equipe?.nome_equipe : 'Desconhecido'}</span></p>
-            <p className="profile-info">Regiao: <span className="info-auth">{user.regiao ? user.regiao?.nome_regiao : 'Desconhecido'}</span></p>
+            <p className="profile-info">Equipe: <span className="info-auth">{team || 'Desconhecido'}</span></p>
+            <p className="profile-info">Regiao: <span className="info-auth">{region || 'Desconhecido'}</span></p>
             <p className="profile-info">Setor: <span className="info-auth">{user ? user.setor?.nome_setor : 'Desconhecido'}</span></p>
 
           </div>
@@ -37,16 +47,16 @@ function Profile() {
 
         <div className="profile-escale">
           <CalendarProfile
-
             value={selectedDate}
             onDateChange={handleDateSelect}
             escala={user?.escala}
           />
 
           <div className="profile-escale-details">
-            <div className="details">Folgas</div>
-            <div className="details">Feriados</div>
-            <div className="details">Trabalho</div>
+            
+            <div className="details">{`Folgas: ${getRestDaysDisplay(user?.escala)}`}</div>
+            <div className="details">{`Feriados: ${formatCurrentMonthHolidays(user?.escala, holidays?.result)}`}</div>
+            <div className="details">{`Horario: ${turn?.inicio_turno} - ${turn?.termino_turno} / Intervalo: ${turn?.intervalo_turno}`}</div>
           </div>
 
         </div>

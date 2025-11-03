@@ -6,7 +6,7 @@ export function getRestDaysDisplay(scale) {
   // Se tem dias específicos de folga definidos
   if (Array.isArray(scale.dias_n_trabalhados_escala_semanal) && 
       scale.dias_n_trabalhados_escala_semanal.length > 0) {
-    return scale.dias_n_trabalhados_escala_semanal.join(', ');
+    return scale.dias_n_trabalhados_escala_semanal.join(' - ');
   }
 
   // Se é ciclo automático (NxM), calcular os dias de folga
@@ -21,39 +21,48 @@ export function getRestDaysDisplay(scale) {
     );
     
     if (restDays.length > 0) {
-      return restDays.join(', ');
+      return restDays.join(' - ');
     }
   }
 
   return 'N/A';
 }
 
-// Calcula quais dias da semana são folgas baseado no ciclo
+// utils/scaleUtils.js (substitua a função antiga por esta)
 function calculateRestDaysFromCycle(startDateStr, diasTrabalhados, diasFolga) {
   const DaysOfWeek = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
-  const startDate = new Date(startDateStr);
+
+  // Forçar parse como meia-noite UTC para evitar deslocamentos por timezone
+  const startDate = new Date(startDateStr + 'T00:00:00');
+
   const cycleLength = diasTrabalhados + diasFolga;
-  
-  // Analisar próximos 30 dias para encontrar padrão de folgas
+  if (cycleLength <= 0) return [];
+
+  // Pattern do ciclo: T = trabalho, F = folga
+  const pattern = Array.from({ length: cycleLength }, (_, i) => (i < diasTrabalhados ? 'T' : 'F'));
+
   const restDaysSet = new Set();
-  
-  for (let i = 0; i < 30; i++) {
-    const currentDate = new Date(startDate);
-    currentDate.setDate(currentDate.getDate() + i);
-    
+
+  // Simular 90 dias a partir da data de início para capturar todas as folgas possíveis
+  for (let i = 0; i < 90; i++) {
+    // Criar data baseada em timestamp pra evitar problemas de timezone
+    const currentTs = startDate.getTime() + i * 24 * 60 * 60 * 1000;
+    const currentDate = new Date(currentTs);
+
     const positionInCycle = i % cycleLength;
-    
-    // Se está na posição de folga do ciclo
-    if (positionInCycle >= diasTrabalhados) {
-      const dayOfWeek = currentDate.getDay();
-      restDaysSet.add(DaysOfWeek[dayOfWeek]);
+
+    if (pattern[positionInCycle] === 'F') {
+      const dayName = DaysOfWeek[currentDate.getDay()];
+      restDaysSet.add(dayName);
+      if (restDaysSet.size === 7) break;
     }
   }
-  
-  // Retornar em ordem (segunda a domingo)
+
+  // Ordena: Seg -> Ter -> Qua -> Qui -> Sex -> Sab -> Dom
   const orderMap = { 'Seg': 1, 'Ter': 2, 'Qua': 3, 'Qui': 4, 'Sex': 5, 'Sab': 6, 'Dom': 0 };
   return Array.from(restDaysSet).sort((a, b) => orderMap[a] - orderMap[b]);
 }
+
 
 // Nova função: Filtra feriados baseado na escala
 export function getHolidaysForScale(scale, holidays, monthFilter = null) {
@@ -97,40 +106,34 @@ export function getHolidaysForScale(scale, holidays, monthFilter = null) {
 // Verifica se uma data específica é dia de trabalho baseado na escala
 function isWorkingDay(date, scale) {
   const DaysOfWeek = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
-  
-  // Se tem dias específicos de folga
-  if (Array.isArray(scale.dias_n_trabalhados_escala_semanal) && 
+
+  // Se dias específicos definidos
+  if (Array.isArray(scale.dias_n_trabalhados_escala_semanal) &&
       scale.dias_n_trabalhados_escala_semanal.length > 0) {
-    
     const dayOfWeek = date.getDay();
     const dayName = DaysOfWeek[dayOfWeek];
-    
-    // Se o dia da semana está na lista de folgas, NÃO é dia de trabalho
     return !scale.dias_n_trabalhados_escala_semanal.includes(dayName);
   }
 
   // Se é ciclo automático NxM
-  if (scale.data_inicio && scale.dias_trabalhados !== undefined && 
+  if (scale.data_inicio && scale.dias_trabalhados !== undefined &&
       scale.dias_n_trabalhados !== undefined) {
-    
-    const startDate = new Date(scale.data_inicio);
+    // parse seguro UTC
+    const startDate = new Date(scale.data_inicio + 'T00:00:00');
+    const diffTime = date.getTime() - startDate.getTime();
+    const diffDays = Math.floor(diffTime / (24 * 60 * 60 * 1000));
+
+    if (diffDays < 0) return true; // antes da escala considera dia de trabalho
+
     const cycleLength = scale.dias_trabalhados + scale.dias_n_trabalhados;
-    
-    // Calcular diferença em dias
-    const diffTime = date - startDate;
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays < 0) return true; // Antes da data de início, considera como trabalho
-    
     const positionInCycle = diffDays % cycleLength;
-    
-    // Se está dentro dos dias trabalhados do ciclo
+
     return positionInCycle < scale.dias_trabalhados;
   }
 
-  // Se não tem configuração, considera como dia de trabalho
   return true;
 }
+
 
 // Formata lista de feriados para exibição
 export function formatHolidaysDisplay(scale, holidays, monthFilter = null) {

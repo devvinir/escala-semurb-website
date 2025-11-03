@@ -6,7 +6,7 @@ export const addAdmin = async (payload) => {
         const sucess = "Administrador cadastrado com sucesso"
         return { result: data, error: null, sucess: sucess }
     }catch(error){
-         const erro = error.response?.data?.mensagem || error?.message
+         const erro = error?.response?.data?.mensagem || error?.message
         console.error('Erro ao cadastrar administrador', erro)
         return { result: null, error: erro, sucess: null }
     }}

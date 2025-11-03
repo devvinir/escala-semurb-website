@@ -331,7 +331,7 @@ function Page3({ employee, setIsOpenEmployee }) {
           </div>
 
           <div className="buttons-form">
-            <button type="submit" className={`confirm button ${isDisable ? 'disable' : ''} `}
+            <button type="submit" className={`confirm-button ${isDisable ? 'disable' : ''} `}
               disabled={isDisable}>
               Concluir
             </button>
