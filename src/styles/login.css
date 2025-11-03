@@ -87,6 +87,9 @@
 }.input-login:focus{
     color: var(--text);
 }
+input{
+    color: var(--text);
+}
 .button-login{
     border: none;
     outline: none;
