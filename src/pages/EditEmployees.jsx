@@ -30,6 +30,10 @@ function EditEmployee() {
     console.log('Data selecionada:', date.toLocaleDateString('pt-BR'));
   };
 
+  const formatTurn = (t) => {
+    if(!t) return '';
+    return t.substring(0, 5)
+  }
   if (!allEmployees || !allEmployees.result) {
     return <p className='loading-text'>Carregando funcionário...</p>;
   }
@@ -116,11 +120,12 @@ function EditEmployee() {
             value={selectedDate}
             onDateChange={handleDateSelect}
             escala={scale}
+            holidays={holidays}
           />
           <div className="profile-escale-details">
             <div className="details">{`Folgas: ${getRestDaysDisplay(scale)}`}</div>
             <div className="details">{`Feriados: ${formatCurrentMonthHolidays(scale, holidays?.result)}`}</div>
-            <div className="details">{`Horario: ${turn?.inicio_turno} - ${turn?.termino_turno} / Intervalo: ${turn?.intervalo_turno}`}</div>
+            <div className="details">{`Horario: ${formatTurn(turn?.inicio_turno)} - ${formatTurn(turn?.termino_turno)} / Intervalo: ${formatTurn(turn?.intervalo_turno)}`}</div>
           </div>
           <div className="update-buttons">
             <button className="confirm-button"

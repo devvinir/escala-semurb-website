@@ -130,6 +130,7 @@ height: 100vh;
   border: 2px solid;
   border-radius: 0;
 }
+
 /* Responsividade */
 @media (max-width: 768px) {
   .dias-semana-checkboxes {

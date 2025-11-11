@@ -172,10 +172,12 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
   const { addScaleAdmin, allScales} = useAuth()
   const [erroMessage, setErroMessage] = useState()
   const [response, setResponse] = useState('Erro')
-  const [save, setSave] = useState()
+  const [save, setSave] = useState()  
+
+  console.log(employee)
 
   const [form, setForm] = useState({
-    matricula_funcionario: employee.funcionario.matricula_funcionario,
+    matricula_funcionario: employee.matricula_funcionario,
     data_inicio: '',
     tipo_escala: '',
     usa_dias_especificos: 'NAO',
@@ -244,9 +246,12 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
                 <option key={s.id_escala} value={s.tipo_escala} />)}
             </datalist>
               
-              <div className="">
+            <div className="">
             <label>Dias da Semana:</label>
-            <select name="usa_dias_especificos" value={form.usa_dias_especificos} onChange={handleChange}>
+            <select name="usa_dias_especificos" 
+            value={form.usa_dias_especificos} 
+            onChange={handleChange}
+            className="daysofweek">
               <option value="SIM">SIM</option>
               <option value="NAO">NAO</option>
             </select>
@@ -264,7 +269,8 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
                 ))}
               </div>
             )}
-          </div></div>
+          </div>
+          </div>
 
           <div className="buttons-form">
             <button type="submit" className={`confirm-button ${isDisabled ? 'disable' : ''}`} disabled={isDisabled}>Concluir</button>
@@ -283,7 +289,7 @@ function Page3({ employee, setIsOpenEmployee }) {
   const [save, setSave] = useState()
 
   const [form, setForm] = useState({
-    matricula_funcionario: employee.funcionario.matricula_funcionario,
+    matricula_funcionario: employee.matricula_funcionario,
     inicio_turno: '',
     termino_turno: '',
     duracao_turno: '',

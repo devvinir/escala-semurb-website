@@ -91,7 +91,10 @@ export default function UpdateScale({ employee, setIsOpenEmployee, isOpenEmploye
 
             <div className="">
               <p className="">Dias da Semana:</p>
-              <select name="usa_dias_especificos" value={form?.usa_dias_especificos} onChange={handleChange} className="daysofweek">
+              <select name="usa_dias_especificos" 
+              value={form?.usa_dias_especificos} 
+              onChange={handleChange} 
+              className="daysofweek">
                 <option value="SIM">SIM</option>
                 <option value="NAO">NAO</option>
               </select>

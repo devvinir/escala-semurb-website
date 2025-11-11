@@ -99,6 +99,18 @@
   border-radius: 4px;
 }
 
+.holiday-day {
+  background-color: #3187ff !important; 
+  color: var(--text) !important;
+  font-weight: bold;
+  position: relative;
+}
+.holiday-day.work-day {
+    background-color: #3187ff !important; 
+}
+.holiday-day.rest-day {
+  background-color: #3187ff !important; 
+}
 
 @media (max-width: 1320px) {
   .nav-button-profile {

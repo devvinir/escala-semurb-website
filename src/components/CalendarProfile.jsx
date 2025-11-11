@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import '../styles/CalendarProfile.css';
 
-export default function CalendarProfile({ value, onDateChange, escala }) {
+export default function CalendarProfile({ value, onDateChange, escala, holidays }) {
   const [currentDate, setCurrentDate] = useState(value || new Date());
+
+  console.log(holidays)//LOG do parametro holidays
 
   const DaysOfWeek = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
   const MonthNames = currentDate.toLocaleString("pt-BR", { month: "long" });
@@ -65,6 +67,33 @@ export default function CalendarProfile({ value, onDateChange, escala }) {
     
     return [];
   };
+
+   const getHolidaysMap = () => {
+    const holidayMap = {};
+    
+    // Suporta tanto { result: [] } quanto array direto
+    const holidaysList = holidays?.result;
+    
+    if (!holidaysList || holidaysList.length === 0) return holidayMap;
+    const currentYear = currentDate.getFullYear();
+    holidaysList?.forEach(holiday => {
+       // Pegar apenas mês e dia do feriado, ignorando o ano
+      const holidayDate = new Date(holiday.dia_feriado);
+      const month = String(holidayDate.getMonth() + 1).padStart(2, '0');
+      const day = String(holidayDate.getDate()).padStart(2, '0');
+
+      // Criar a chave com o ano atual do calendário
+      const dateKey = `${currentYear}-${month}-${day}`;
+      
+      holidayMap[dateKey] = {
+        nome: holiday.nome_feriado,
+        id: holiday.id_feriado
+      };
+    });
+
+    return holidayMap;
+  };
+
 
   const getWorkDaysMap = () => {
     if (!escala) {
@@ -134,6 +163,7 @@ export default function CalendarProfile({ value, onDateChange, escala }) {
 
   const days = generateDays();
   const workDaysMap = getWorkDaysMap();
+  const holidaysMap = getHolidaysMap()
 
   return (
     <div className="calendar-container-profile">
@@ -154,12 +184,20 @@ export default function CalendarProfile({ value, onDateChange, escala }) {
           const date = day != null ? new Date(year, currentDate.getMonth(), day) : null;
           const dateKey = date ? date.toISOString().split('T')[0] : null;
           const status = dateKey ? workDaysMap[dateKey] : null;
+          const holiday = dateKey ? holidaysMap[dateKey] : null
 
           return (
             <div
               key={index}
-              className={`calendar-day-profile ${status === 'work' ? 'work-day' : ''} ${status === 'rest' ? 'rest-day' : ''}`}
-              onClick={() => day && onDateChange(new Date(year, currentDate.getMonth(), day))}
+              className={`calendar-day-profile 
+                ${status === 'work' ? 'work-day' : ''} 
+                ${status === 'rest' ? 'rest-day' : ''}
+                ${holiday ? 'holiday-day' : ''}
+                `}
+              onClick={() => day && onDateChange(new Date(
+                year, currentDate.getMonth(), day
+              ))}
+              title={holiday ? holiday.nome : ''}
             >
               {day}
             </div>
