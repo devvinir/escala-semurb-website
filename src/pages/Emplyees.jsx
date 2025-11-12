@@ -11,11 +11,11 @@ import UpdateTurn from '../components/modals/UpdateTurn'
 
 function Employee() {
 
-  const { employees, user, teams, scales, regions, turns, holidays } = useAuth()
+  const { employees, user, teams, scales, regions, turns, holidays, editdays } = useAuth()
   const { id } = useParams()
 
-    const formatTurn = (t) => {
-    if(!t) return '';
+  const formatTurn = (t) => {
+    if (!t) return '';
     return t.substring(0, 5)
   }
 
@@ -55,6 +55,10 @@ function Employee() {
     console.log('Data selecionada:', date.toLocaleDateString('pt-BR'));
   };
 
+  const currentMonth = new Date().getMonth() + 1
+  console.log(editdays)
+
+
   if (!employees || !employees?.result)
     return <p className="loading-text">Carregando funcionário...</p>
 
@@ -80,9 +84,9 @@ function Employee() {
         employee={currentEmployee}
       />
       <UpdateTurn
-      isOpen={isOpenTurnUpdate}
-      setIsOpen={setIsOpenTurnUpdate}
-      employee={currentEmployee}
+        isOpen={isOpenTurnUpdate}
+        setIsOpen={setIsOpenTurnUpdate}
+        employee={currentEmployee}
       />
 
       <div className="container-profile-page">
@@ -110,12 +114,44 @@ function Employee() {
             onDateChange={handleDateSelect}
             escala={scale || null}
             holidays={holidays}
+            editdays={editdays}
+            employee={currentEmployee}
           />
           <div className="profile-escale-details">
-            <div className="details">{`Folgas: ${getRestDaysDisplay(scale)}`}</div>
-            <div className="details">{`Feriados: ${formatCurrentMonthHolidays(scale, holidays?.result)}`}</div>
-            <div className="details">{`Horario: ${formatTurn(turn?.inicio_turno)} - ${formatTurn(turn?.termino_turno)} / Intervalo: ${formatTurn(turn?.intervalo_turno)}`}</div>
+            <div className="details d-folgas">{`Folgas: ${getRestDaysDisplay(scale)}`}</div>
+            <div className="details d-feriados">{`Feriados: ${formatCurrentMonthHolidays(scale, holidays?.result)}`}</div>
+            <div className="details d-horarios">{`Horario: ${formatTurn(turn?.inicio_turno)} - ${formatTurn(turn?.termino_turno)} / Intervalo: ${formatTurn(turn?.intervalo_turno)}`}</div>
           </div>
+
+          <div className="editdays-container">
+            <p className='editdays-title'>Mudanças nos dias:</p>
+            {editdays?.result
+              ?.filter(d => {
+                const mesDoRegistro = new Date(d.data_diae).getMonth() + 1
+                return (
+                  d.matricula_funcionario === currentEmployee.matricula_funcionario &&
+                  mesDoRegistro === currentMonth
+                )
+              })
+              .map((d, i) => (
+                <div key={i} className="editday-item">
+                  <strong>{new Date(d.data_diae).toLocaleDateString('pt-BR')}</strong> — <em>{d.nome_diae}</em>: 
+                  <p className="editdays-description">{d.descricao_diae}</p>
+                </div>
+              ))
+            }
+            {editdays?.result?.filter(d => {
+              const mesDoRegistro = new Date(d.data_diae).getMonth() + 1
+              return (
+                d.matricula_funcionario === currentEmployee.matricula_funcionario &&
+                mesDoRegistro === currentMonth
+              )
+            }).length === 0 && (
+                <p>Nenhuma mudança registrada neste mês.</p>
+              )}
+          </div>
+
+
           <div className="update-buttons">
             <button className="confirm-button" onClick={() => {
               if (currentEmployee.id_escala) {
@@ -136,7 +172,8 @@ function Employee() {
                 setIsOpenEmployeeAdd(!isOpenEmployeeAdd)
                 setPage(3)
               }
-            }}>{currentEmployee?.id_escala ? 'Atualizar Turno' : 'Novo Turno'}</button>
+            }}>{currentEmployee?.id_escala ? 'Atualizar Turno' : 'Novo Turno'}
+            </button>
           </div>
         </div>
 

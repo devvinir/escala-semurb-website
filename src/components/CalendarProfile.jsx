@@ -1,27 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import '../styles/CalendarProfile.css';
 
-export default function CalendarProfile({ value, onDateChange, escala, holidays }) {
+export default function CalendarProfile({ value, onDateChange, escala, holidays, editdays, employee }) {
   const [currentDate, setCurrentDate] = useState(value || new Date());
 
   const DaysOfWeek = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
   const MonthNames = currentDate.toLocaleString("pt-BR", { month: "long" });
   const year = currentDate.getFullYear();
-
-  // Debug detalhado
-  useEffect(() => {
-    console.log('=== CALENDAR PROFILE DEBUG ===');
-    console.log('Escala completa:', JSON.stringify(escala, null, 2));
-    console.log('usa_dias_especificos:', escala?.usa_dias_especificos);
-    console.log('dias_n_trabalhados_escala_semanal:', escala?.dias_n_trabalhados_escala_semanal);
-    console.log('tipo:', typeof escala?.dias_n_trabalhados_escala_semanal);
-    console.log('isArray:', Array.isArray(escala?.dias_n_trabalhados_escala_semanal));
-    
-    // Verificar se é string e converter se necessário
-    if (typeof escala?.dias_n_trabalhados_escala_semanal === 'string') {
-      console.log('dias_n_trabalhados_escala_semanal é uma STRING:', escala.dias_n_trabalhados_escala_semanal);
-    }
-  }, [escala]);
 
   const BackMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
   const NextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
@@ -92,25 +77,41 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays 
     return holidayMap;
   };
 
-  //   const getEditDaysMap = () => {
-  //   const editMap = {};
-    
-  //   // Suporta tanto { result: [] } quanto array direto
-  //   const editList = editdays?.result;
-    
-  //   if (!editList || editList.length === 0) return editMap;
+    const getEditDaysMap = () => {
+    const editMap = {};
+    const editdaysList = editdays?.result;
+    console.log("editdays: ",editdays)
+    if (!editdaysList || editdaysList.length === 0) return editMap;
 
-  //   editList?.forEach(editDay => {
-  //     const dateKey = editDay.dia_feriado; // formato: YYYY-MM-DD
+    console.log('📝 Processando lembretes para matrícula:', employee.matricula_funcionario);
+
+    // Filtrar apenas lembretes do funcionário atual
+    const employeeEditdays = editdaysList?.filter(editday => 
+      editday.matricula_funcionario === employee.matricula_funcionario
+    );
+
+    console.log(`✅ ${employeeEditdays.length} lembretes encontrados para este funcionário`);
+
+    employeeEditdays?.forEach(editday => {
+      const editdayDate = new Date(editday.data_diae);
+      const dateKey = editdayDate.toISOString().split('T')[0];
       
-  //     editMap[dateKey] = {
-  //       nome: editDay.nome_feriado,
-  //       id: editDay.id_feriado
-  //     };
-  //   });
+      // Se já existe um lembrete nessa data, adiciona ao array
+      if (!editMap[dateKey]) {
+        editMap[dateKey] = [];
+      }
+      
+      editMap[dateKey].push({
+        nome: editday.nome_diae,
+        id: editday.id_diae,
 
-  //   return editMap;
-  // };
+      });
+
+      console.log(`Lembrete mapeado: ${dateKey} -> ${editday.nome_diae}`);
+    });
+
+    return editMap;
+  };
 
 
   const getWorkDaysMap = () => {
@@ -128,14 +129,6 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays 
     const diasArray = parseDiasArray();
     const temDiasDefinidos = diasArray.length > 0;
 
-    console.log('Verificar dados enviados:', { 
-      temDiasDefinidos, 
-      diasArray,
-      data_inicio: escala.data_inicio,
-      dias_trabalhados: escala.dias_trabalhados,
-      dias_n_trabalhados: escala.dias_n_trabalhados
-    });
-
     if (temDiasDefinidos) {
       console.log('USANDO DIAS ESPECIFICOS:', diasArray);
       
@@ -147,7 +140,6 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays 
         })
         .filter(d => d !== undefined);
       
-      console.log('Índices de folga:', diasFolga);
 
       for (let day = 1; day <= daysInMonth; day++) {
         const date = new Date(year, month, day);
@@ -158,7 +150,7 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays 
         workMap[dateKey] = isRest ? 'rest' : 'work';
       }
     } else if (escala.data_inicio && escala.dias_trabalhados !== undefined && escala.dias_n_trabalhados !== undefined) {
-      console.log('USANDO FOLGAS AUTOMATICAS');
+
       
       const startDate = new Date(escala.data_inicio);
       const cycleLength = escala.dias_trabalhados + escala.dias_n_trabalhados;
@@ -172,8 +164,6 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays 
           workMap[dateKey] = (diff % cycleLength) < escala.dias_trabalhados ? 'work' : 'rest';
         }
       }
-    } else {
-      console.log('escala invalida');
     }
 
     return workMap;
@@ -182,7 +172,7 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays 
   const days = generateDays();
   const workDaysMap = getWorkDaysMap();
   const holidaysMap = getHolidaysMap();
-  //const editdaysMap = getEditDaysMap();
+  const editdaysMap = getEditDaysMap();
 
   return (
     <div className="calendar-container-profile">
@@ -204,7 +194,7 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays 
           const dateKey = date ? date.toISOString().split('T')[0] : null;
           const status = dateKey ? workDaysMap[dateKey] : null;
           const holiday = dateKey ? holidaysMap[dateKey] : null
-          //const editday = dateKey ? editdaysMap[dateKey] : null
+          const editday = dateKey ? editdaysMap[dateKey] : null
 
           return (
             <div
@@ -213,12 +203,15 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays 
                 ${status === 'work' ? 'work-day' : ''} 
                 ${status === 'rest' ? 'rest-day' : ''}
                 ${holiday ? 'holiday-day' : ''}
-                
+                ${editday ? 'editday-day' : ''}
                 `}
-              onClick={() => day && onDateChange(new Date(
+              onClick={() => {
+                day && onDateChange(new Date(
                 year, currentDate.getMonth(), day
-              ))}
-              title={holiday ? holiday.nome : ''}
+              ))
+              
+            }}
+              title={(holiday ? holiday.nome : '')&&(editday ? editday.nome : '')}
             >
               {day}
             </div>

@@ -78,6 +78,29 @@
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
 }
+.d-folgas{
+    background-color: var(--cancel);
+}
+.d-feriados{
+    background-color: #3187ff;
+}
+.d-horarios{
+    background-color: var(--confirm);
+}
+.editdays-container {
+  background-color: var(--hovers);
+  border-radius: 10px; 
+  padding: 1rem;
+}
+.editdays-title{
+    font-size: large;
+    font-weight: bold;
+    margin-bottom: 1rem;
+   
+}
+.editday-item {
+  color: var(--text);
+}
 
 @media (max-width: 1210px) {
   .container-profile-page {

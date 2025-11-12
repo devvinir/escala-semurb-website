@@ -38,18 +38,20 @@ export const updateAdmin = async (matricula_funcionario, payload) => {
 
 export const findEditdays = async () => {
     try {
-        const { data } = await api.get(``)
+        const { data } = await api.get(`/diasEspecificos`)
         const sucess = "Dias com especificações listados com sucesso"
-        return { result: data, error: null, sucess: sucess }
+        return { result: data.diasEspecificos, error: null, sucess: sucess }
     } catch (error) {
         const erro = error.response?.data?.mensagem || error?.message
         console.error('Erro ao listar especificações', erro)
         return { result: null, error: erro, sucess: null }
     }
 }
-export const addEditdays = async () => {
+export const addEditdays = async (user, payload) => {
     try {
-        const { data } = await api.post(``)
+        const { data } = await api.post(`/cadastrarDiaEspecifico/${user?.funcionario?.matricula_funcioanrio}`,{
+            ...payload
+        })
         const sucess = "Especificação cadastrada com sucesso"
         return { result: data, error: null, sucess: sucess }
     } catch (error) {

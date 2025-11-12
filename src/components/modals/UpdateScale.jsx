@@ -115,7 +115,7 @@ export default function UpdateScale({ employee, setIsOpenEmployee, isOpenEmploye
           </div>
 
           <div className="buttons-form">
-            <button type="submit" className={`confirm-button ${isDisabled ? 'disabel' : ''}`} disabled={isDisabled}>
+            <button type="submit" className={`confirm-button ${isDisabled ? 'disable' : ''}`} disabled={isDisabled}>
               Concluir
             </button>
             <button className="cancel-button" onClick={() => setIsOpenEmployee(!isOpenEmployee)}>Fechar</button>

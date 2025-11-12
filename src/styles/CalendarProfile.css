@@ -112,6 +112,20 @@
   background-color: #3187ff !important; 
 }
 
+.editday-day {
+  background-color: var(--hovers) !important; 
+  color: var(--text) !important;
+  font-weight: bold;
+  position: relative;
+}
+.editday-day.work-day {
+    background-color: var(--hovers) !important; 
+}
+.editday-day.rest-day {
+  background-color: var(--hovers) !important; 
+}
+
+
 @media (max-width: 1320px) {
   .nav-button-profile {
     font-size: medium;

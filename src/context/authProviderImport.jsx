@@ -5,7 +5,7 @@ import AuthContext from "./authContextImport";
 import { addEmployee, findEmployees, findAllEmployees, findActives, contEmployeesScale, contEmployeesSector, updateEmployee } from "../services/employeesServices";
 import { addScale, findScales, updateScale, updateScaleAdmin, addScaleAdmin, findAllScales, findHolidays } from "../services/scalesServices";
 import { findAllSectors, addSector, deleteSector, updateSector } from "../services/sectorsServices";
-import { addAdmin, deleteEmployee, updateAdmin } from "../services/adminsServices"
+import { addAdmin, deleteEmployee, updateAdmin, findEditdays, addEditdays } from "../services/adminsServices"
 import { findTeams, addTeam, findAllTeams } from '../services/teamsServices'
 import { findRegions, findAllRegions} from '../services/regionsServices'
 import { findTurns, addTurn, updateTurn, updateTurnAdmin, addTurnAdmin, findAllTurns } from '../services/turnsServices'
@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }) => {
   const [scalesEmployees, setScalesEmployees] = useState([])
   const [sectorsEmployees, setSectorsEmployees] = useState([])
   const [holidays, setHolidays] = useState([])
+  const [editdays, setEditdays] = useState([])
 
   const signIn = async (matricula_funcionario, senha) => {
     try {
@@ -169,6 +170,7 @@ export const AuthProvider = ({ children }) => {
         setScales(await findScales(user));
         setHolidays(await findHolidays());
         setScalesEmployees(await contEmployeesScale(user));
+        setEditdays(await findEditdays());
       })();
     }
   }, [user])
@@ -184,6 +186,7 @@ export const AuthProvider = ({ children }) => {
         setAllRegions(await findAllRegions());
         setHolidays(await findHolidays());
         setSectorsEmployees(await contEmployeesSector());
+        setEditdays(await findEditdays());
       })();
     }
   }, [admin])
@@ -254,7 +257,7 @@ export const AuthProvider = ({ children }) => {
       scalesEmployees, sectorsEmployees,
       updateTurn, updateTurnAdmin,
       updateEmployee,
-
+      addEditdays,
 
       findTeams,
       teams,
@@ -268,12 +271,13 @@ export const AuthProvider = ({ children }) => {
       turns,
       findActives,
       actives,
+      findEditdays,
+      editdays,
 
       admin,
       inAdmin: !!admin,
       adminSignIn,
       addSector,
-
 
       findAllEmployees,
       allEmployees,
