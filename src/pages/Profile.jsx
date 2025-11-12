@@ -20,8 +20,13 @@ function Profile() {
   ))?.nome_regiao
   const turn = turns?.result?.find(turn => (
     user?.funcionario?.id_turno == turn.id_turno
-  ))
-  console.log(user)
+  ))  
+  
+    const formatTurn = (t) => {
+    if(!t) return '';
+    return t.substring(0, 5)
+  }
+
   return (
     <div className="body">
 
@@ -36,7 +41,7 @@ function Profile() {
             <p className="profile-info">Matricula: <span className="info-auth">{user?.funcionario?.matricula_funcionario}</span> </p>
             <p className="profile-info">Telefone: <span className="info-auth">{user?.funcionario?.telefone}</span></p>
             <p className="profile-info">Email: <span className="info-auth">{user ? user.funcionario?.email : 'Desconhecido'}</span></p>
-            <p className="profile-info">Escala: <span className="info-auth">{user ? user.escala?.tipo_escala : 'Desconhecido'}</span></p>
+            <p className="profile-info">Escala: <span className="info-auth">{user ? user?.escala?.tipo_escala : 'Desconhecido'}</span></p>
             <p className="profile-info">Equipe: <span className="info-auth">{team || 'Desconhecido'}</span></p>
             <p className="profile-info">Regiao: <span className="info-auth">{region || 'Desconhecido'}</span></p>
             <p className="profile-info">Setor: <span className="info-auth">{user ? user.setor?.nome_setor : 'Desconhecido'}</span></p>
@@ -50,13 +55,14 @@ function Profile() {
             value={selectedDate}
             onDateChange={handleDateSelect}
             escala={user?.escala}
+            holidays={holidays}
           />
 
           <div className="profile-escale-details">
             
             <div className="details">{`Folgas: ${getRestDaysDisplay(user?.escala)}`}</div>
             <div className="details">{`Feriados: ${formatCurrentMonthHolidays(user?.escala, holidays?.result)}`}</div>
-            <div className="details">{`Horario: ${turn?.inicio_turno} - ${turn?.termino_turno} / Intervalo: ${turn?.intervalo_turno}`}</div>
+            <div className="details">{`Horario: ${formatTurn(turn?.inicio_turno)} - ${formatTurn(turn?.termino_turno)} / Intervalo: ${formatTurn(turn?.intervalo_turno)}`}</div>
           </div>
 
         </div>

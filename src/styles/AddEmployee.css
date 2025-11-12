@@ -46,7 +46,7 @@ height: 100vh;
 }
 .form-input{
     color: var(--text);
-    background: none;
+    background: transparent;
     border: 2px solid var(--fix-dark);
     padding: 0.7rem;
     font-size: medium;
@@ -131,6 +131,9 @@ height: 100vh;
   border-radius: 0;
 }
 
+.form-option{
+  background-color: var(--contents);
+}
 /* Responsividade */
 @media (max-width: 768px) {
   .dias-semana-checkboxes {

@@ -4,8 +4,6 @@ import '../styles/CalendarProfile.css';
 export default function CalendarProfile({ value, onDateChange, escala, holidays }) {
   const [currentDate, setCurrentDate] = useState(value || new Date());
 
-  console.log(holidays)//LOG do parametro holidays
-
   const DaysOfWeek = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
   const MonthNames = currentDate.toLocaleString("pt-BR", { month: "long" });
   const year = currentDate.getFullYear();
@@ -94,6 +92,26 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays 
     return holidayMap;
   };
 
+  //   const getEditDaysMap = () => {
+  //   const editMap = {};
+    
+  //   // Suporta tanto { result: [] } quanto array direto
+  //   const editList = editdays?.result;
+    
+  //   if (!editList || editList.length === 0) return editMap;
+
+  //   editList?.forEach(editDay => {
+  //     const dateKey = editDay.dia_feriado; // formato: YYYY-MM-DD
+      
+  //     editMap[dateKey] = {
+  //       nome: editDay.nome_feriado,
+  //       id: editDay.id_feriado
+  //     };
+  //   });
+
+  //   return editMap;
+  // };
+
 
   const getWorkDaysMap = () => {
     if (!escala) {
@@ -163,7 +181,8 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays 
 
   const days = generateDays();
   const workDaysMap = getWorkDaysMap();
-  const holidaysMap = getHolidaysMap()
+  const holidaysMap = getHolidaysMap();
+  //const editdaysMap = getEditDaysMap();
 
   return (
     <div className="calendar-container-profile">
@@ -185,6 +204,7 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays 
           const dateKey = date ? date.toISOString().split('T')[0] : null;
           const status = dateKey ? workDaysMap[dateKey] : null;
           const holiday = dateKey ? holidaysMap[dateKey] : null
+          //const editday = dateKey ? editdaysMap[dateKey] : null
 
           return (
             <div
@@ -193,6 +213,7 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays 
                 ${status === 'work' ? 'work-day' : ''} 
                 ${status === 'rest' ? 'rest-day' : ''}
                 ${holiday ? 'holiday-day' : ''}
+                
                 `}
               onClick={() => day && onDateChange(new Date(
                 year, currentDate.getMonth(), day

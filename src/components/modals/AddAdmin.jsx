@@ -121,7 +121,7 @@ function Page1({ setIsOpenEmployee, goNextPage }) {
             <input name='cargo' type="text" className="form-input" placeholder="Cargo"
               value={form.cargo} onChange={handleChange} />
 
-            <select name='setor' className="form-input"
+            <select name='setor' className="form-input form-option"
               value={form.setor} onChange={handleChange}>
               <option value={null}>Selecione um setor</option>
               {allSectors?.result?.map((sec) => (
@@ -129,14 +129,14 @@ function Page1({ setIsOpenEmployee, goNextPage }) {
               ))}
             </select>
 
-              <select name='status_permissao' className="form-input"
+              <select name='status_permissao' className="form-input form-option"
                value={form.status_permissao} onChange={handleChange}>
               <option value={null}>Administrador(SIM/NÃO)</option>
               <option value='Sim'>Sim</option>
               <option value='Não'>Não</option>
             </select>
 
-            <select name='equipe'  className="form-input"
+            <select name='equipe'  className="form-input form-option"
               value={form.equipe} onChange={handleChange}>
                 <option value={null}>Selecione uma equipe</option>
                 {allTeams?.result?.map((eq) => (
@@ -144,7 +144,7 @@ function Page1({ setIsOpenEmployee, goNextPage }) {
                 ))}
             </select>
             
-            <select name='regiao' id="regiao-input"  className="form-input"
+            <select name='regiao' id="regiao-input"  className="form-input form-option"
                value={form.regiao} onChange={handleChange}>
               <option value={null}>Selecione uma região</option>
               <option value='Sul'>Sul</option>
@@ -251,7 +251,7 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
             <select name="usa_dias_especificos" 
             value={form.usa_dias_especificos} 
             onChange={handleChange}
-            className="daysofweek">
+            className="daysofweek form-option">
               <option value="SIM">SIM</option>
               <option value="NAO">NAO</option>
             </select>

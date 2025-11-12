@@ -37,6 +37,7 @@ export default function UpdateSector({isOpen, setIsOpen, id_setor}) {
           onClose={() => {
             setErroMessage("")
             setIsOpen(!isOpen)
+            window.location.reload()
           }}
         />
       )}

@@ -4,6 +4,7 @@ import '../styles/login.css'
 import logo from '../assets/images/semurb-logo-login.png'
 import {useAuth} from '../hook/useAuth'
 import Alert from '../components/modals/Alert'
+import {BeatLoader} from 'react-spinners'
 
 function CodeVerify(){
 
@@ -15,9 +16,11 @@ function CodeVerify(){
   const {id} = useParams()
   const matricula_funcionario = id
   const [code, setCode] = useState()
+  const [load, setLoad] = useState(false)
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+    setLoad(true)
 
    const receiveCode = await codeVerify(codigo, matricula_funcionario)
    if(receiveCode?.result){
@@ -28,10 +31,13 @@ function CodeVerify(){
     setResponse(response)
     setErroMessage(receiveCode.error)   
    }
+   setLoad(false)
   }
+
   return (
     <div className='body'>
       { erroMessage && 
+      <div className="form-container">
       <Alert response={response}
       text='ao Verificar Código'
       error={erroMessage}
@@ -39,7 +45,7 @@ function CodeVerify(){
         if(response === 'Sucesso')
         route(`/reset-password/${code}-${matricula_funcionario}`)
     }}
-      />
+      /></div>
       }
     <div className="background-login">
       
@@ -63,7 +69,7 @@ function CodeVerify(){
         onChange={(e) => setCodigo(e.target.value)} />
 
         <button type="submit" className={`button-login ${!codigo ? 'disable' : ''}`} 
-        disabled={!codigo}>Entrar</button>
+        disabled={!codigo}>{load? <BeatLoader size={15} color='#F4D03F'/> : "Verificar"}</button>
       
         <a className='forgot-password' href="/">Voltar ao login</a>
         </div> 

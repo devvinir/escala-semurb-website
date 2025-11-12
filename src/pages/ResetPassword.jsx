@@ -4,6 +4,7 @@ import '../styles/login.css'
 import logo from '../assets/images/semurb-logo-login.png'
 import {useAuth} from '../hook/useAuth'
 import Alert from '../components/modals/Alert'
+import {BeatLoader} from 'react-spinners'
 
 function ResetPassword(){
 
@@ -15,10 +16,12 @@ function ResetPassword(){
   const {resetPassword} = useAuth()
   const {id} = useParams()
   const [codigo, matricula_funcionario] = id.split('-');
+  const [load, setLoad] = useState(false)
 
   console.log(codigo, matricula_funcionario)
   const handleSignIn = async (e) => {
     e.preventDefault();
+    setLoad(true)
 
    const newPassword = await resetPassword(matricula_funcionario, codigo, nova_senha, confirmar_senha)
    if(newPassword?.result){
@@ -28,10 +31,12 @@ function ResetPassword(){
     setResponse(response)
     setErroMessage(newPassword.error)   
    }
+   setLoad(false)
   }
   return (
     <div className='body'>
       { erroMessage && 
+      <div className="form-container">
       <Alert response={response}
       text='ao Mudar Senha'
       error={erroMessage}
@@ -39,7 +44,7 @@ function ResetPassword(){
       if(response === 'Sucesso')
       route('/')
     }}
-      />
+      /></div>
       }
     <div className="background-login">
       
@@ -67,7 +72,7 @@ function ResetPassword(){
         onChange={(e) => setConfirmSenha(e.target.value)} />
 
         <button type="submit" className={`button-login ${!nova_senha || !confirmar_senha ? 'disable' : ''}`} 
-        disabled={!nova_senha || !confirmar_senha}>Enviar</button>
+        disabled={!nova_senha || !confirmar_senha}>{load? <BeatLoader size={15} color='#F4D03F'/> : "Concluir"}</button>
       
         <a className='forgot-password' href="/">Voltar ao login</a>
         </div> 

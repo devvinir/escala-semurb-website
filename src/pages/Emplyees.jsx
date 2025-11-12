@@ -14,7 +14,10 @@ function Employee() {
   const { employees, user, teams, scales, regions, turns, holidays } = useAuth()
   const { id } = useParams()
 
-  
+    const formatTurn = (t) => {
+    if(!t) return '';
+    return t.substring(0, 5)
+  }
 
   const [isOpenScaleUpdate, setIsOpenScaleUpdate] = useState(false)
   const [isOpenEmployeeAdd, setIsOpenEmployeeAdd] = useState(false)
@@ -106,11 +109,12 @@ function Employee() {
             value={selectedDate}
             onDateChange={handleDateSelect}
             escala={scale || null}
+            holidays={holidays}
           />
           <div className="profile-escale-details">
             <div className="details">{`Folgas: ${getRestDaysDisplay(scale)}`}</div>
             <div className="details">{`Feriados: ${formatCurrentMonthHolidays(scale, holidays?.result)}`}</div>
-            <div className="details">{`Horario: ${turn?.inicio_turno} - ${turn?.termino_turno} / Intervalo: ${turn?.intervalo_turno}`}</div>
+            <div className="details">{`Horario: ${formatTurn(turn?.inicio_turno)} - ${formatTurn(turn?.termino_turno)} / Intervalo: ${formatTurn(turn?.intervalo_turno)}`}</div>
           </div>
           <div className="update-buttons">
             <button className="confirm-button" onClick={() => {

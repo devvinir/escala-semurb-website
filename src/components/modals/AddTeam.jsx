@@ -33,6 +33,7 @@ export default function AddTeam({isOpen, setIsOpen}) {
           onClose={() => {
             setErroMessage("")
             setIsOpen(!isOpen)
+            window.location.reload()
           }}
         />
       )}

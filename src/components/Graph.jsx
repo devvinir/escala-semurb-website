@@ -56,7 +56,7 @@ function MyChart() {
     legend: { textStyle: { color: "#F4D03F" } },
   };
 
-  if (data.length === 0) return <p className="loading-text">Carregando dados<BeatLoader/></p>
+  if (data.length === 0) return <p className="loading-text">Carregando dados<BeatLoader size={15} color='#F4D03F'/></p>
 
   return (
     <div className="container-graph">

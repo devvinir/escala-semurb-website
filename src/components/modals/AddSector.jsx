@@ -33,6 +33,7 @@ export default function AddSector({isOpenModal, setIsOpenModal}) {
           onClose={() => {
             setErroMessage("")
             setIsOpenModal(!isOpenModal)
+            window.location.reload()
           }}
         />
       )}

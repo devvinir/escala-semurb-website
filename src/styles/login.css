@@ -80,7 +80,7 @@
     color: var(--fix-dark);
 }
 .input-login{
-    color: var(--text);
+    color: black;
     border: none;
     background: none;
     border-bottom: 2px solid var(--fix-gray);

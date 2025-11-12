@@ -121,7 +121,7 @@ function Page1({ isOpenEmployee, setIsOpenEmployee, goNextPage }) {
             <input name='cargo' type="text" className="form-input" placeholder="Cargo"
               value={form.cargo} onChange={handleChange} />
 
-            <select name='nome_equipe' id="equipe-input" list="equipes-list" className="form-input"
+            <select name='nome_equipe' id="equipe-input" list="equipes-list" className="form-input form-option"
               placeholder="Equipe" value={form.nome_equipe} onChange={handleChange}>
                 <option value={null}>Selecione uma equipe</option>
                 {teams?.result?.map((eq) => (
@@ -129,7 +129,7 @@ function Page1({ isOpenEmployee, setIsOpenEmployee, goNextPage }) {
                 ))}
             </select>
             
-            <select name='nome_regiao' id="regiao-input" list="regioes-list" className="form-input"
+            <select name='nome_regiao' id="regiao-input" list="regioes-list" className="form-input form-option"
               placeholder="Regiao" value={form.nome_regiao} onChange={handleChange}>
               <option value={null}>Selecione uma região</option>
               <option value='Sul'>Sul</option>
@@ -186,7 +186,7 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
     if (scale.result) {
       setResponse('Sucesso')
       setErroMessage(scale.sucess)
-      setSave(scale)
+      setSave(employee)
     } else {
       setResponse('Erro')
       setErroMessage(scale.error)
@@ -206,7 +206,9 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
           error={erroMessage}
           onClose={() => {
             setErroMessage("")
-            if (response === 'Sucesso' && save) goNextPage(save)
+            if (response === 'Sucesso' && save) {
+              goNextPage(save)
+            }
           }}
         />
       )}
@@ -230,7 +232,7 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
             <select name="usa_dias_especificos" 
             value={form.usa_dias_especificos} 
             onChange={handleChange}
-            className="daysofweek">
+            className="daysofweek form-option">
               <option value="SIM">SIM</option>
               <option value="NAO">NAO</option>
             </select>
@@ -304,7 +306,9 @@ function Page3({ employee, setIsOpenEmployee }) {
             setErroMessage("")
             if (response === 'Sucesso' && save) {
               setIsOpenEmployee(false)
+              window.location.reload()
             }
+            
           }}
         />
       )}

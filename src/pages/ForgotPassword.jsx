@@ -4,6 +4,7 @@ import '../styles/login.css'
 import logo from '../assets/images/semurb-logo-login.png'
 import {useAuth} from '../hook/useAuth'
 import Alert from '../components/modals/Alert'
+import {BeatLoader} from 'react-spinners'
 
 function ForgotPassword(){
 
@@ -12,9 +13,11 @@ function ForgotPassword(){
   const [erroMessage, setErroMessage] = useState('')
   const [response, setResponse] = useState('Erro')
   const {forgotPassword} = useAuth()
+  const [load, setLoad] = useState(false)
   const [matricula, setMatricula] = useState()
   const handleSignIn = async (e) => {
     e.preventDefault();
+    setLoad(true)
 
    const sendCode = await forgotPassword(email)
    if(sendCode?.result){
@@ -25,11 +28,13 @@ function ForgotPassword(){
     setResponse(response)
     setErroMessage(sendCode.error)   
    }
+   setLoad(false)
   }
 
   return (
     <div className='body'>
       { erroMessage && 
+      <div className="form-container">
       <Alert response={response}
       text='ao Enviar Código'
       error={erroMessage}
@@ -37,7 +42,7 @@ function ForgotPassword(){
       if(response === 'Sucesso'){
       route(`/code-verify/${matricula}`)
     }}}
-      />
+      /></div>
       }
     <div className="background-login">
       
@@ -61,7 +66,7 @@ function ForgotPassword(){
         onChange={(e) => setEmail(e.target.value)} />
 
         <button type="submit" className={`button-login ${!email ? 'disable' : ''}`} 
-        disabled={!email}>Enviar Código</button>
+        disabled={!email}>{load ? <BeatLoader size={15} color='#F4D03F'/> : "Enviar Código"}</button>
       
         <a className='forgot-password' href="/">Voltar ao login</a>
         </div> 

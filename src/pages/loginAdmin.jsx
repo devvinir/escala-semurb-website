@@ -68,7 +68,7 @@ function LoginAdmin() {
         <input className='input-login' type="password" name="password" id="password" 
         value={password} onChange={(e) => setPassword(e.target.value)} />
 
-        <button className='button-login' type="submit">
+        <button className={`button-login ${!registration || !password ? 'disable' : ''}`} type="submit" disabled={!registration || !password}>
            {loading ? ( <BeatLoader size={15} color='#F4D03F' /> ) : ('Entrar') }
         </button>
        

@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
       const sucess = 'Login realizado com sucesso'
       return { result: data, error: null, sucess: sucess };
     } catch (error) {
-      const erro = error.response?.data?.mensagem ||error.message
+      const erro = error.response?.data?.mensagem 
       console.error('Erro ao fazer login: ', erro)
       return { result: null, error: erro, sucess: null }
     }
@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }) => {
       const sucess = 'Login realizado com sucesso'
       return { result: data, error: null, sucess: sucess };
     } catch (error) {
-      const erro = error?.response?.data?.mensagem || error.message
+      const erro = error?.response?.data?.mensagem 
       console.error("Erro ao fazer login como admin", erro)
       return { result: null, error: erro, sucess: null}
     }
