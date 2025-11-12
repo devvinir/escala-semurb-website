@@ -56,7 +56,6 @@ function Employee() {
   };
 
   const currentMonth = new Date().getMonth() + 1
-  console.log(editdays)
 
 
   if (!employees || !employees?.result)

@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import '../styles/CalendarProfile.css';
+import AddDayAlert from './modals/AddDayAlert'
 
 export default function CalendarProfile({ value, onDateChange, escala, holidays, editdays, employee }) {
   const [currentDate, setCurrentDate] = useState(value || new Date());
+  const [currentDay, setCurrentDay] = useState()
+  const [isOpenDay, setIsOpenDay] = useState(false);
 
   const DaysOfWeek = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
   const MonthNames = currentDate.toLocaleString("pt-BR", { month: "long" });
@@ -80,17 +83,17 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
     const getEditDaysMap = () => {
     const editMap = {};
     const editdaysList = editdays?.result;
-    console.log("editdays: ",editdays)
+
     if (!editdaysList || editdaysList.length === 0) return editMap;
 
-    console.log('📝 Processando lembretes para matrícula:', employee.matricula_funcionario);
+   
 
     // Filtrar apenas lembretes do funcionário atual
     const employeeEditdays = editdaysList?.filter(editday => 
       editday.matricula_funcionario === employee.matricula_funcionario
     );
 
-    console.log(`✅ ${employeeEditdays.length} lembretes encontrados para este funcionário`);
+   
 
     employeeEditdays?.forEach(editday => {
       const editdayDate = new Date(editday.data_diae);
@@ -107,7 +110,7 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
 
       });
 
-      console.log(`Lembrete mapeado: ${dateKey} -> ${editday.nome_diae}`);
+     
     });
 
     return editMap;
@@ -116,7 +119,6 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
 
   const getWorkDaysMap = () => {
     if (!escala) {
-      console.log('escala nao encontrada');
       return {};
     }
     
@@ -130,12 +132,11 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
     const temDiasDefinidos = diasArray.length > 0;
 
     if (temDiasDefinidos) {
-      console.log('USANDO DIAS ESPECIFICOS:', diasArray);
       
       const diasFolga = diasArray
         .map(d => {
           const index = diasMapeados[d.trim()];
-          console.log(`  Mapeando "${d}" -> índice ${index}`);
+    
           return index;
         })
         .filter(d => d !== undefined);
@@ -176,6 +177,13 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
 
   return (
     <div className="calendar-container-profile">
+        <AddDayAlert 
+  isOpenDay={isOpenDay}
+  setIsOpenDay={setIsOpenDay}
+  employee={employee}
+  day={currentDay}
+  />
+
       <div className="calendar-header-profile">
         <button className="nav-button-profile" onClick={BackMonth}>Voltar</button>
         <span className="header-content-profile">
@@ -209,7 +217,9 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
                 day && onDateChange(new Date(
                 year, currentDate.getMonth(), day
               ))
-              
+               setCurrentDay(new Date(year, currentDate.getMonth(), day).toISOString().split('T')[0]);
+               setIsOpenDay(!isOpenDay)
+               
             }}
               title={(holiday ? holiday.nome : '')&&(editday ? editday.nome : '')}
             >

@@ -2,7 +2,7 @@ import { useAuth } from '../../hook/useAuth'
 import { useEffect, useState } from 'react'
 import Alert from '../modals/Alert'
 
-export default function AddDayAlert({ employee, setIsOpenDay, isOpenDay }) {
+export default function AddDayAlert({ employee, setIsOpenDay, isOpenDay, day }) {
   const { addEditdays, user } = useAuth()
   const [erroMessage, setErroMessage] = useState()
   const [response, setResponse] = useState('Erro')
@@ -15,7 +15,7 @@ export default function AddDayAlert({ employee, setIsOpenDay, isOpenDay }) {
         matricula_funcionario: employee?.matricula_funcionario,
         nome_diae: '',
         descricao_diae: '',
-        data_diae: '',
+        data_diae: day,
       })
   }, [isOpenDay, employee])
 
@@ -66,7 +66,7 @@ export default function AddDayAlert({ employee, setIsOpenDay, isOpenDay }) {
             placeholder="Descrição" value={form?.descricao_diae} onChange={handleChange} />
             
             <input name='data_diae' type='date' className="form-input"
-            value={form?.data_diae} onChange={handleChange} />   
+            value={form?.data_diae}  />   
           </div>
 
           <div className="buttons-form">
