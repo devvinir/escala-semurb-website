@@ -66,7 +66,7 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
        // Pegar apenas mês e dia do feriado, ignorando o ano
       const holidayDate = new Date(holiday.dia_feriado);
       const month = String(holidayDate.getMonth() + 1).padStart(2, '0');
-      const day = String(holidayDate.getDate()).padStart(2, '0');
+      const day = String(holidayDate.getDate() + 1).padStart(2, '0');
 
       // Criar a chave com o ano atual do calendário
       const dateKey = `${currentYear}-${month}-${day}`;
