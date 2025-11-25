@@ -38,7 +38,7 @@ export default function AddDayAlert({ employee, setIsOpenDay, isOpenDay, day }) 
     }
   }
 
-  if (!isOpenDay) return null
+  if (!isOpenDay || !employee) return null
 
   return (
     <div className='form-container'>

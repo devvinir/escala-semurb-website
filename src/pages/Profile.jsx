@@ -6,7 +6,7 @@ import '../styles/Profile.css'
 import { getRestDaysDisplay, formatCurrentMonthHolidays } from '../utils/RestDays'
 
 function Profile() {
-  const { user, holidays, teams, regions, turns } = useAuth()
+  const { user, holidays, teams, regions, turns, editdays } = useAuth()
   const [selectedDate, setSelectedDate] = useState(null);
   const handleDateSelect = (date) => {
     setSelectedDate(date);
@@ -26,6 +26,8 @@ function Profile() {
     if(!t) return '';
     return t.substring(0, 5)
   }
+
+  const currentMonth = new Date().getMonth() + 1
 
   return (
     <div className="body">
@@ -60,9 +62,37 @@ function Profile() {
 
           <div className="profile-escale-details">
             
-            <div className="details">{`Folgas: ${getRestDaysDisplay(user?.escala)}`}</div>
-            <div className="details">{`Feriados: ${formatCurrentMonthHolidays(user?.escala, holidays?.result)}`}</div>
-            <div className="details">{`Horario: ${formatTurn(turn?.inicio_turno)} - ${formatTurn(turn?.termino_turno)} / Intervalo: ${formatTurn(turn?.intervalo_turno)}`}</div>
+            <div className="details d-folgas">{`Folgas: ${getRestDaysDisplay(user?.escala)}`}</div>
+            <div className="details d-feriados">{`Feriados: ${formatCurrentMonthHolidays(user?.escala, holidays?.result)}`}</div>
+            <div className="details d-horarios">{`Horario: ${formatTurn(turn?.inicio_turno)} - ${formatTurn(turn?.termino_turno)} / Intervalo: ${formatTurn(turn?.intervalo_turno)}`}</div>
+          </div>
+
+          <div className="editdays-container">
+            <p className='editdays-title'>Mudanças nos dias:</p>
+            {editdays?.result
+              ?.filter(d => {
+                const mesDoRegistro = new Date(d.data_diae).getMonth() + 1
+                return (
+                  d.matricula_funcionario === user.funcionario.matricula_funcionario &&
+                  mesDoRegistro === currentMonth
+                )
+              })
+              .map((d, i) => (
+                <div key={i} className="editday-item">
+                  <strong>{new Date(d.data_diae).toLocaleDateString('pt-BR')}</strong> — <em>{d.nome_diae}</em>: 
+                  <p className="editdays-description">{d.descricao_diae}</p>
+                </div>
+              ))
+            }
+            {editdays?.result?.filter(d => {
+              const mesDoRegistro = new Date(d.data_diae).getMonth() + 1
+              return (
+                d.matricula_funcionario === user.funcionario.matricula_funcionario &&
+                mesDoRegistro === currentMonth
+              )
+            }).length === 0 && (
+                <p className="loading-text" >Nenhuma mudança registrada neste mês.</p>
+              )}
           </div>
 
         </div>

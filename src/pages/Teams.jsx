@@ -28,9 +28,7 @@ function Teams() {
 
         />
 
-      <div className="container-search grid-3">
-        <button className='alert-button'> 
-          <IoIosNotifications size={25} /> Notificar Pendência</button>
+      <div className="container-search grid-2">
         <input type="search" placeholder='Buscar funcionários...' value={search} onChange={(e)=> setSearch(e.target.value)} />
         <button className="confirm-button add-empl" onClick={() => setIsOpenEmployeeModal(!isOpenEmployeeModal)}>
           <IoMdPersonAdd  size={20}  />Adicionar Funcionário </button>

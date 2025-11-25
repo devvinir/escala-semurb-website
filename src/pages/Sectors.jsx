@@ -41,9 +41,7 @@ function Sectors() {
       <AddAdmin isOpenModal={isOpenModalAdmin} setIsOpenModal={setIsOpenModalAdmin} />
       <UpdateSector isOpen={isOpenUpdate} setIsOpen={setIsOpenUpdate} id_setor={id}/>
 
-      <div className="container-search grid-3">
-        <button className='alert-button'>
-          <IoIosNotifications size={25} /> Notificar Pendência</button>
+      <div className="container-search grid-2">
         <input type="search" placeholder='Buscar Funcionarios. . .' value={search}
           onChange={(e) => setSearch(e.target.value)} />
         <button className="confirm-button"
