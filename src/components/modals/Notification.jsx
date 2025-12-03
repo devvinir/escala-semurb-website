@@ -6,8 +6,12 @@ function Notification({isNotification, setIsNotification}){
 const { user } = useAuth();
 
 const formater = new Intl.DateTimeFormat('pt-BR', {
-  hour: '2-digit',
-  minute: '2-digit',
+  day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false 
 });
 
     if (isNotification) return(
