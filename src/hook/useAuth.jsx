@@ -13,7 +13,7 @@ export const useAuth =() => {
         addScaleAdmin, updateScaleAdmin, findAllScales, allScales,
         addTurnAdmin, updateTurnAdmin, findAllTurns, allTurns,
         findAllRegions, allRegions, holidays,
-        addEditdays, findEditdays, editdays
+        addEditdays, findEditdays, editdays, confirms, createReport, createReportTeam, createReportEmployee
     } = useContext(AuthContext);
 
     return{
@@ -36,6 +36,8 @@ export const useAuth =() => {
         addTeam,
         updateEmployee,
         addEditdays,
+        confirms,
+        createReport, createReportTeam, createReportEmployee,
         
         findTeams,
         teams,

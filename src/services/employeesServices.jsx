@@ -92,3 +92,33 @@ export const contEmployeesSector = async() => {
         return {result: null, error: erro, sucess: null}
     }
 }
+
+export const confirmEmployees = async(user) => {
+    try{
+        const {data} = await api.get(`/confirmacoesSetor/${user?.funcionario?.matricula_funcionario}`)
+        const sucess = 'Confirmações do setor listadas com sucesso'
+        return {result: data, error: null, sucess: sucess}
+    }catch(error){
+        const erro = error?.response?.data?.mensagem || error?.message
+        console.error('Erro ao listar confirções do setor:', erro)
+        return {result: null, error: erro, sucess: null}
+    }
+}
+
+export const createReportEmployee = async (user, matricula_funcionario) => {
+  try {
+    const month = new Date().getMonth() + 1;
+    const year = new Date().getFullYear();
+
+    const response = await api.get(
+      `/relatorioPorFuncionario/${user?.funcionario?.matricula_funcionario}/${matricula_funcionario}?mes=${month}&ano=${year}`,
+      { responseType: "blob" }
+    );
+
+    return { result: response.data, error: null };
+
+  } catch (error) {
+    const erro = error?.response?.data?.mensagem || error?.message;
+    return { result: null, error: erro };
+  }
+};

@@ -61,3 +61,20 @@ export const addEditdays = async (user, payload) => {
     }
 }
 
+export const createReport = async (user) =>{
+    try{
+        const month = new Date().getMonth() +1
+        const year = new Date().getFullYear()
+
+        const {data} = await api.get(`/relatorioGeralSetor/${user?.funcionario?.matricula_funcionario}?mes=${month}&ano=${year}`,
+            { responseType: 'blob' }
+        )
+        const sucess = "Relatório gerado com sucesso"
+        return {result: data, error: null, sucess: sucess}
+    } catch(error){
+        const erro = error?.response?.data?.mensagem || error?.message
+        console.error('Erro ao gerar relatório', erro)
+        return {result: null, error: erro, sucess: null}
+    }
+}
+

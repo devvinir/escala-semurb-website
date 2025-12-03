@@ -1,10 +1,11 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hook/useAuth'
 import { useEffect, useState } from 'react';
+import { IoIosCloseCircle, IoIosCheckmarkCircle } from "react-icons/io";
 import '../styles/Search.css'
 
 function CurrentDay() {
-  const { user, scales, findActives } = useAuth()
+  const { user, scales, findActives, confirms } = useAuth()
   const route = useNavigate();
   const { date } = useParams();
   const [list, setList] = useState()
@@ -51,6 +52,7 @@ function CurrentDay() {
           <div>Matrícula</div>
           <div>Nome</div>
           <div>Escala</div>
+          <div>Confirmação</div>
         </div>
 
         {!list ? <p className="loading-text">Carregando funcionários...</p> :
@@ -61,8 +63,18 @@ function CurrentDay() {
               <div className='matricula'>{employee.matricula_funcionario}</div>
               <div >{employee.nome}</div>
               <div >{scales?.result?.find(scale => (scale.escala.id_escala == employee.id_escala))?.escala.tipo_escala}</div>
+              <div > 
+                {(() => {
+                  const confirm = confirms?.result?.find(confirm => (confirm.matricula_funcionario == employee.matricula_funcionario))?.escala_confirmacao?.[0]?.status;
+                  if (confirm === 'Pendente') {
+                    return <IoIosCloseCircle color='orange' size={30}/>
+                  } else if (confirm === 'Confirmado') {
+                    return <IoIosCheckmarkCircle color='green' size={30}/>
+                  }
+                })()}
+              </div>
             </div>
-          )) }
+          ))}
       </div>
 
     </div>

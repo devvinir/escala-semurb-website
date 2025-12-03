@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import api from '../api/api';
 import AuthContext from "./authContextImport";
 
-import { addEmployee, findEmployees, findAllEmployees, findActives, contEmployeesScale, contEmployeesSector, updateEmployee } from "../services/employeesServices";
+import { addEmployee, findEmployees, findAllEmployees, findActives, contEmployeesScale, contEmployeesSector, updateEmployee, confirmEmployees, createReportEmployee } from "../services/employeesServices";
 import { addScale, findScales, updateScale, updateScaleAdmin, addScaleAdmin, findAllScales, findHolidays } from "../services/scalesServices";
 import { findAllSectors, addSector, deleteSector, updateSector } from "../services/sectorsServices";
-import { addAdmin, deleteEmployee, updateAdmin, findEditdays, addEditdays } from "../services/adminsServices"
-import { findTeams, addTeam, findAllTeams } from '../services/teamsServices'
+import { addAdmin, deleteEmployee, updateAdmin, findEditdays, addEditdays, createReport } from "../services/adminsServices"
+import { findTeams, addTeam, findAllTeams, createReportTeam } from '../services/teamsServices'
 import { findRegions, findAllRegions} from '../services/regionsServices'
 import { findTurns, addTurn, updateTurn, updateTurnAdmin, addTurnAdmin, findAllTurns } from '../services/turnsServices'
 import { forgotPassword, codeVerify, resetPassword } from '../services/sessionServices'
@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }) => {
   const [sectorsEmployees, setSectorsEmployees] = useState([])
   const [holidays, setHolidays] = useState([])
   const [editdays, setEditdays] = useState([])
+  const [confirms, setConfirms] = useState([])
 
   const signIn = async (matricula_funcionario, senha) => {
     try {
@@ -171,6 +172,7 @@ export const AuthProvider = ({ children }) => {
         setHolidays(await findHolidays());
         setScalesEmployees(await contEmployeesScale(user));
         setEditdays(await findEditdays());
+        setConfirms(await confirmEmployees(user));
       })();
     }
   }, [user])
@@ -258,6 +260,10 @@ export const AuthProvider = ({ children }) => {
       updateTurn, updateTurnAdmin,
       updateEmployee,
       addEditdays,
+      confirms,
+      createReport,
+      createReportTeam,
+      createReportEmployee,
 
       findTeams,
       teams,

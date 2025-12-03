@@ -36,3 +36,21 @@ export const findAllTeams = async() => {
     return { result: null, error: erro, sucess: null}
   }
 }
+
+export const createReportTeam = async (user, id_equipe) => {
+  try {
+    const month = new Date().getMonth() + 1;
+    const year = new Date().getFullYear();
+
+    const response = await api.get(
+      `/relatorioPorEquipe/${user?.funcionario?.matricula_funcionario}/${id_equipe}?mes=${month}&ano=${year}`,
+      { responseType: "blob" }
+    );
+
+    return { result: response.data, error: null };
+
+  } catch (error) {
+    const erro = error?.response?.data?.mensagem || error?.message;
+    return { result: null, error: erro };
+  }
+};

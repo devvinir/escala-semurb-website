@@ -11,7 +11,7 @@ import UpdateTurn from '../components/modals/UpdateTurn'
 
 function Employee() {
 
-  const { employees, user, teams, scales, regions, turns, holidays, editdays } = useAuth()
+  const { employees, user, teams, scales, regions, turns, holidays, editdays, createReportEmployee } = useAuth()
   const { id } = useParams()
 
   const formatTurn = (t) => {
@@ -64,6 +64,27 @@ function Employee() {
   if (!currentEmployee)
     return <p className="loading-text">Não foi possível carregar o funcionário..</p>
 
+    async function handleReport(matricula_funcionario) {
+  const report = await createReportEmployee(user, matricula_funcionario);
+
+  if (report?.result) {
+    const blobUrl = URL.createObjectURL(report.result);
+
+    const link = document.createElement("a");
+    link.href = blobUrl;
+    link.download = `relatorio_funcionario_${matricula_funcionario}.pdf`;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(blobUrl);
+  } else {
+    alert("Erro ao gerar relatório do funcionário.");
+  }
+}
+
+
   return (
     <div className="body">
       <UpdateScale
@@ -105,6 +126,7 @@ function Employee() {
             <p className="profile-info">Setor: <span className="info-auth">{sector}</span></p>
           </div>
           <button className="confirm-button" onClick={() => setIsOpenEmployeeUpdate(!isOpenEmployeeUpdate)}>Atualizar Dados </button>
+          <button className="alert-button report" onClick={() => handleReport(currentEmployee?.matricula_funcionario)}>Relatório do Funcionário</button>
         </div>
 
         <div className="profile-escale">
