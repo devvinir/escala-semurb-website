@@ -11,7 +11,7 @@ export const addScale = async (
     const sucess = "Cadastro da escala realizado com sucesso"
     return { result: data, error: null, sucess: sucess }
   } catch (error) {
-    const erro = error.response?.data?.mensagem
+    const erro = error?.response?.data?.mensagem || error?.message
     console.error('Erro ao cadastrar escala', erro)
     return { result: null, error: erro, sucess: null }
   }
@@ -28,9 +28,7 @@ export const updateScale = async (
     const sucess = "Escala atualizada com sucesso"
     return { result: data, error: null, sucess: sucess }
   } catch (error) {
-    const erro = error?.response?.data?.mensagem ||
-      error.response?.data?.erro ||
-      error.message
+    const erro = error?.response?.data?.mensagem || error?.message
     console.error('Erro ao atualizar escala', erro)
     return { result: null, error: erro, sucess: null }
   }
@@ -42,7 +40,7 @@ export const findScales = async (user) => {
     const sucess = "Escalas listadas com sucesso"
     return { result: data, error: null, sucess: sucess }
   } catch (error) {
-    const erro = error.response?.data?.mensagem
+    const erro = error?.response?.data?.mensagem || error?.message
     console.error('Erro ao listar escalas', erro)
     return { result: null, error: erro, sucess: null}
   }
@@ -54,7 +52,7 @@ export const findAllScales = async () => {
     const sucess = "Escalas listadas com sucesso"
     return { result: data.escalas, error: null, sucess: sucess }
   } catch (error) {
-    const erro = error.response?.data?.mensagem
+    const erro = error?.response?.data?.mensagem || error?.message
     console.error('Erro ao listar escalas', erro)
     return { result: null, error: erro, sucess: null}
   }

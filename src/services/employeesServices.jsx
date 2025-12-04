@@ -9,9 +9,7 @@ export const addEmployee = async (user, payload) => {
         const sucess = 'Cadastro do funcionario realizado com sucesso'
         return { result: data.funcionario, error: null, sucess: sucess }
     } catch (error) {
-        const erro = error.response?.data?.mensagem ||
-            error.message ||
-            "Erro Desconhecido"
+        const erro = error?.response?.data?.mensagem || error?.message
         console.error('erro ao cadastrar :', erro)
         return { result: null, error: erro, sucess: null };
     }
@@ -23,7 +21,7 @@ export const findAllEmployees = async () => {
         const sucess = "TODOS funcionarios listados com sucesso"
         return { result: data.funcionarios, error: null, sucess: sucess }
     } catch (error) {
-        const erro = error.response?.data?.mensagem
+        const erro = error?.response?.data?.mensagem || error?.message
         console.error('Erro ao buscar TODOS funcionarios', erro)
         return { result: null, error: erro, sucess: null }
     }

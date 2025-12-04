@@ -8,8 +8,8 @@ export const forgotPassword = async(email) =>{
     const sucess = "Codigo enviado com sucesso"
     return {result: data, error: null, sucess: sucess}
   } catch(error){
-    const erro = error?.response?.data?.mensagem
-    return {result: null, error: erro || error?.message, sucess: null}
+    const erro = error?.response?.data?.mensagem || error?.message
+    return {result: null, error: erro, sucess: null}
   }
 }
 
@@ -21,7 +21,7 @@ export const codeVerify = async(codigo, matricula_funcionario) =>{
     const sucess = "Codigo verificado com sucesso"
     return {result: data, error: null, sucess: sucess}
   } catch(error){
-    const erro = error?.response?.data?.mensagem
+    const erro = error?.response?.data?.mensagem || error?.message
     return {result: null, error: erro || error?.message, sucess: null}
   }
 }
@@ -34,7 +34,7 @@ export const resetPassword = async(matricula_funcionario, codigo, nova_senha, co
     const sucess = "Senha redefinida com sucesso"
     return {result: data, error: null, sucess: sucess}
   } catch(error){
-    const erro = error?.response?.data?.mensagem
-    return {result: null, error: erro || error?.message, sucess: null}
+    const erro = error?.response?.data?.mensagem || error?.message
+    return {result: null, error: erro, sucess: null}
   }
 }

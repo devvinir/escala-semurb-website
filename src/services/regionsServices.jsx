@@ -6,7 +6,7 @@ export const findRegions = async (user) => {
     const sucess = 'Regiões listadas com sucesso'
     return { result: data, error: null, sucess: sucess }
   } catch (error) {
-    const erro = error.response?.data?.mensagem
+    const erro = error?.response?.data?.mensagem || error?.message
     console.error("Erro ao buscar regiões:", erro);
     return { result: null, error: erro, sucess: null }
   }

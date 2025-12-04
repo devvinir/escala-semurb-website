@@ -8,7 +8,7 @@ function AddEmployeeCard({ isOpenEmployee, setIsOpenEmployee, setPage, employee 
   const [createdEmployee, setCreatedEmployee] = useState(employee || null) // guarda funcionário criado
 
 
-  
+
   const goNextPage = (employee) => {
     if (employee) setCreatedEmployee(employee)
     setCurrentPage((prev) => prev + 1) // avança de forma progressiva
@@ -123,12 +123,12 @@ function Page1({ isOpenEmployee, setIsOpenEmployee, goNextPage }) {
 
             <select name='nome_equipe' id="equipe-input" list="equipes-list" className="form-input form-option"
               placeholder="Equipe" value={form.nome_equipe} onChange={handleChange}>
-                <option value={null}>Selecione uma equipe</option>
-                {teams?.result?.map((eq) => (
-                  <option key={eq.id_equipe} value={eq.nome_equipe}> {eq.nome_equipe}</option>
-                ))}
+              <option value={null}>Selecione uma equipe</option>
+              {teams?.result?.map((eq) => (
+                <option key={eq.id_equipe} value={eq.nome_equipe}> {eq.nome_equipe}</option>
+              ))}
             </select>
-            
+
             <select name='nome_regiao' id="regiao-input" list="regioes-list" className="form-input form-option"
               placeholder="Regiao" value={form.nome_regiao} onChange={handleChange}>
               <option value={null}>Selecione uma região</option>
@@ -137,7 +137,7 @@ function Page1({ isOpenEmployee, setIsOpenEmployee, goNextPage }) {
               <option value='Leste'>Leste</option>
               <option value='Oeste'>Oeste</option>
             </select>
-            
+
           </div>
 
           <div className="buttons-form">
@@ -226,31 +226,31 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
               {scales?.result?.map(s =>
                 <option key={s.id_escala} value={s.tipo_escala} />)}
             </datalist>
-            
-            <div className="">
-            <label>Dias da Semana:</label>
-            <select name="usa_dias_especificos" 
-            value={form.usa_dias_especificos} 
-            onChange={handleChange}
-            className="daysofweek form-option">
-              <option value="SIM">SIM</option>
-              <option value="NAO">NAO</option>
-            </select>
 
-            {form.usa_dias_especificos === 'SIM' && (
-              <div className="dias-semana-checkboxes">
-                {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'].map(dia => (
-                  <label key={dia}>
-                    <input type="checkbox"
-                      checked={form.dias_n_trabalhados_escala_semanal.includes(dia)}
-                      onChange={() => handleDiasChange(dia)}
-                    />
-                    {dia}
-                  </label>
-                ))}
-              </div>
-            )}
-          </div>
+            <div className="">
+              <label className="form-label">Dias da Semana:</label>
+              <select name="usa_dias_especificos"
+                value={form.usa_dias_especificos}
+                onChange={handleChange}
+                className="daysofweek form-option">
+                <option value="SIM">SIM</option>
+                <option value="NAO">NAO</option>
+              </select>
+
+              {form.usa_dias_especificos === 'SIM' && (
+                <div className="dias-semana-checkboxes">
+                  {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'].map(dia => (
+                    <label key={dia} >
+                      <input type="checkbox"
+                        checked={form.dias_n_trabalhados_escala_semanal.includes(dia)}
+                        onChange={() => handleDiasChange(dia)}
+                      />
+                      {dia}
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="buttons-form">
@@ -277,8 +277,8 @@ function Page3({ employee, setIsOpenEmployee }) {
     intervalo_turno: ''
   })
   const handleChange = (e) => {
-    const {name, value} = e.target
-    setForm(prev => ({...prev, [name]: value}))
+    const { name, value } = e.target
+    setForm(prev => ({ ...prev, [name]: value }))
   }
 
   async function handleAddTurn(e) {
@@ -308,7 +308,7 @@ function Page3({ employee, setIsOpenEmployee }) {
               setIsOpenEmployee(false)
               window.location.reload()
             }
-            
+
           }}
         />
       )}
@@ -326,15 +326,15 @@ function Page3({ employee, setIsOpenEmployee }) {
             <input name='inicio_turno' type="time" className="form-input"
               value={form.inicio_turno} onChange={handleChange} />
 
-            <label  className="form-label">Termino do Turno</label>
+            <label className="form-label">Termino do Turno</label>
             <input type="time" className="form-input" name='termino_turno'
               value={form.termino_turno} onChange={handleChange} />
 
-            <label  className="form-label">Duração do Turno</label>
+            <label className="form-label">Duração do Turno</label>
             <input type="time" className="form-input" name='duracao_turno'
               value={form.duracao_turno} onChange={handleChange} />
 
-            <label  className="form-label">Intervalo do Turno</label>
+            <label className="form-label">Intervalo do Turno</label>
             <input type="time" className="form-input" name='intervalo_turno'
               value={form.intervalo_turno} onChange={handleChange} />
           </div>

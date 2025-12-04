@@ -19,7 +19,7 @@ export const addTeam = async (user, nome_equipe) => {
     const sucess = "Equipe cadastrado com sucesso"
     return { result: data, error: null, sucess: sucess }
   } catch (error) {
-    const erro = error.response?.data?.mensagem
+    const erro = error?.response?.data?.mensagem || error?.message
     console.error('Erro ao criar equipe', erro)
     return { result: null, error: erro, sucess: null }
   }

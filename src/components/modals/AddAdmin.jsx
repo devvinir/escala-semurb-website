@@ -177,7 +177,7 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
   console.log(employee)
 
   const [form, setForm] = useState({
-    matricula_funcionario: employee.matricula_funcionario,
+    matricula_funcionario: employee.funcionario.matricula_funcionario,
     data_inicio: '',
     tipo_escala: '',
     usa_dias_especificos: 'NAO',
@@ -247,7 +247,7 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
             </datalist>
               
             <div className="">
-            <label>Dias da Semana:</label>
+            <label className="form-label">Dias da Semana:</label>
             <select name="usa_dias_especificos" 
             value={form.usa_dias_especificos} 
             onChange={handleChange}
@@ -259,7 +259,7 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
             {form.usa_dias_especificos === 'SIM' && (
               <div className="dias-semana-checkboxes">
                 {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'].map(dia => (
-                  <label key={dia}>
+                  <label key={dia} >
                     <input type="checkbox"
                       checked={form.dias_n_trabalhados_escala_semanal.includes(dia)}
                       onChange={() => handleDiasChange(dia)}
@@ -289,7 +289,7 @@ function Page3({ employee, setIsOpenEmployee }) {
   const [save, setSave] = useState()
 
   const [form, setForm] = useState({
-    matricula_funcionario: employee.matricula_funcionario,
+    matricula_funcionario: employee.funcionario.matricula_funcionario,
     inicio_turno: '',
     termino_turno: '',
     duracao_turno: '',
