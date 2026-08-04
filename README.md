@@ -17,15 +17,15 @@ Sistema web de gestão de escalas de trabalho desenvolvido para a **Secretaria d
 
 ## Sumário
 
-- [Funcionalidades](##-Funcionalidades)
-- [Tecnologias](#-Tecnologias)
-- [Pré-requisitos](#-pré-requisitos)
-- [Instalação](#-instalação)
-- [Variáveis de ambiente](#-Variáveis-de-ambiente)
-- [Rodando o projeto](#-Rodando-o-projeto)
-- [Estrutura de pastas](#-estrutura-de-pastas)
-- [Repositório do backend](#-repositório-do-backend)
-- [Licença](#-licença)
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias](#tecnologias)
+- [Pré-requisitos](#pré-requisitos)
+- [Instalação](#instalação)
+- [Variáveis de ambiente](#variáveis-de-ambiente)
+- [Rodando o projeto](#rodando-o-projeto)
+- [Estrutura de pastas](#estrutura-de-pastas)
+- [Repositório do backend](#repositório-do-backend)
+- [Licença](#licença)
 
 ## Funcionalidades
 
@@ -70,7 +70,7 @@ Sistema web de gestão de escalas de trabalho desenvolvido para a **Secretaria d
 - [Node.js](https://nodejs.org/) 20.19+ ou 22.12+
 - npm (instalado junto com o Node)
 
-##  Instalação
+## Instalação
 
 ```bash
 # Clone o repositório
