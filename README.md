@@ -11,26 +11,23 @@ Currently, two official plugins are available:
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 
-
-
-
 #  Escala SEMURB
 
 Sistema web de gestão de escalas de trabalho desenvolvido para a **Secretaria de Mobilidade Urbana (SEMURB)** da Prefeitura de Barueri. Permite que administradores cadastrem funcionários, equipes, setores, escalas e turnos, enquanto cada funcionário acompanha sua própria escala, folgas e feriados em um calendário interativo.
 
-##  Sumário
+## Sumário
 
-- [Funcionalidades](#-funcionalidades)
-- [Tecnologias](#-tecnologias)
+- [Funcionalidades](##-Funcionalidades)
+- [Tecnologias](#-Tecnologias)
 - [Pré-requisitos](#-pré-requisitos)
 - [Instalação](#-instalação)
-- [Variáveis de ambiente](#-variáveis-de-ambiente)
-- [Rodando o projeto](#-rodando-o-projeto)
+- [Variáveis de ambiente](#-Variáveis-de-ambiente)
+- [Rodando o projeto](#-Rodando-o-projeto)
 - [Estrutura de pastas](#-estrutura-de-pastas)
 - [Repositório do backend](#-repositório-do-backend)
 - [Licença](#-licença)
 
-##  Funcionalidades
+## Funcionalidades
 
 ### Para funcionários
 - Login com matrícula e senha
@@ -55,7 +52,7 @@ Sistema web de gestão de escalas de trabalho desenvolvido para a **Secretaria d
 - Cadastro de feriados
 - Painel com gráfico de funcionários por setor
 
-## 🚀 Tecnologias
+## Tecnologias
 
 - [React 19](https://react.dev/)
 - [Vite](https://vitejs.dev/)
