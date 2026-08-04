@@ -1,9 +1,16 @@
 import axios from 'axios'
+import.meta.env.VITE_API_URL
+
+/*export const api = axios.create({
+    baseURL:VITE_API_URL,
+    timeout: 10000
+})*/
 
 export const api = axios.create({
-    baseURL:'https://backend-escala-barueri-semurb.vercel.app',
+    baseURL:'http://localhost:3000',
     timeout: 10000
 })
+
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('authToken'); // ou AsyncStorage no React Native
   if (token) {
