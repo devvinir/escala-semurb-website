@@ -16,13 +16,13 @@ export default function SectorCard() {
     <div className='container-setor'>
       <div className='setor'>
         <p className='title-setor'>
-          Setor: {user ? user.setor.nome_setor : 'Desconhecido'}</p>
+          Setor: {user ? user.setor.name : 'Desconhecido'}</p>
       </div>
       {!teams?.result ? <p className="loading-text">Carregando equipes...</p> : null}
       <div className='container-teams'>
         {teams?.result?.map((tm) => (
-          <div className='team' key={tm.id_equipe} onClick={() => route(`/teams/${tm.id_equipe}`)} >
-            <p>{tm.nome_equipe}</p>
+          <div className='team' key={tm.id} onClick={() => route(`/teams/${tm.id}`)} >
+            <p>{tm.name}</p>
           </div>
         ))}
 
@@ -37,7 +37,7 @@ export default function SectorCard() {
         <Confirmation
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
-                id_setor={id ? id : null}
+                id={id ? id : null}
               />
         <div className='setor'>
           <p className='title-setor'>
@@ -47,12 +47,12 @@ export default function SectorCard() {
         <div className='container-teams'>
           {allSectors?.result?.map((sector) => (
 
-            <div className='team' key={sector.id_setor}
-              onClick={() => route(`/sectors/${sector.id_setor}`)} >
+            <div className='team' key={sector.id}
+              onClick={() => route(`/sectors/${sector.id}`)} >
               
-              <p>{sector.nome_setor}</p>
+              <p>{sector.name}</p>
               <IoIosTrash size={25} className='delSector'
-                onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); setId(sector.id_setor)}} />
+                onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); setId(sector.id)}} />
             </div>
           ))}
         </div>

@@ -9,11 +9,11 @@ export default function AddSector({isOpenModal, setIsOpenModal}) {
   const [erroMessage, setErroMessage] = useState()
   const [response, setResponse] = useState('Erro')
 
-  const [nome_setor, setSetor] = useState()
+  const [name, setName] = useState()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const sector = await addSector(nome_setor)
+    const sector = await addSector(name)
 
     if (sector.result) {
       setResponse('Sucesso')
@@ -42,11 +42,11 @@ export default function AddSector({isOpenModal, setIsOpenModal}) {
         <p className="form-title">Adicionar Setor</p>
         <div className="form-card admin-setor">
           <input name="setor" type="text" className="form-input" placeholder="Nome do Setor"
-            value={nome_setor} onChange={(e) => setSetor(e.target.value)} />
+            value={name} onChange={(e) => setName(e.target.value)} />
         </div>
         <div className="buttons-form">
           <button type="submit" className="confirm-button"
-            disabled={!nome_setor}
+            disabled={!name}
           >
             Continuar
           </button>
