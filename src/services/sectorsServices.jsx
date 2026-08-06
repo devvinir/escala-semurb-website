@@ -26,7 +26,7 @@ export const addSector = async (name) => {
     };
 export const deleteSector = async (id) => {
     try{
-        const {data} = await api.delete(`deletarSetor/${id}`)
+        const {data} = await api.delete(`/deletarSetor/${id}`)
         const sucess = "Setor deletado com sucesso"
         return { result: data, error: null, sucess: sucess }
         } catch (error) {
@@ -37,7 +37,7 @@ export const deleteSector = async (id) => {
 }
 export const updateSector = async (id, name) => {
     try{
-        const {data} = await api.put(`editarSetor/${id}`,{name})
+        const {data} = await api.put(`/editarSetor/${id}`,{name})
         const sucess = "Setor editado com sucesso"
         return { result: data, error: null, sucess: sucess }
         } catch (error) {

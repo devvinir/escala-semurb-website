@@ -31,15 +31,17 @@ function Sectors() {
     return <p className="loading-text">Carregando funcionários do setor...</p>
 
   const employeesList = allEmployees?.result?.filter((employee) =>
-    employee.nome.toLowerCase().includes(searchLowerCase))
-  const currentSector = allSectors?.result?.setores?.find(sector => (sector.id_setor == id))?.nome_setor
+    employee.name.toLowerCase().includes(searchLowerCase))
+
+  const currentSector = allSectors?.result?.find(sector => (sector.id == id))?.name
+
   if (!employeesList)
     return <p className="loading-text">Não foi possivel encontrar os funcionários.</p>;
 
   return (
     <div className="body">
       <AddAdmin isOpenModal={isOpenModalAdmin} setIsOpenModal={setIsOpenModalAdmin} />
-      <UpdateSector isOpen={isOpenUpdate} setIsOpen={setIsOpenUpdate} id_setor={id}/>
+      <UpdateSector isOpen={isOpenUpdate} setIsOpen={setIsOpenUpdate} id={id}/>
 
       <div className="container-search grid-2">
         <input type="search" placeholder='Buscar Funcionarios. . .' value={search}
@@ -50,8 +52,8 @@ function Sectors() {
       </div>
 
       <div className="type-table">
-        <p className="type-title type-icon">Funcionarios do Setor 
-          <IoIosCreate size={50} cursor='pointer'
+        <p className="type-title type-icon">Funcionarios do Setor: 
+          <IoIosCreate size={40} cursor='pointer'
           onClick={() => setIsOpenUpdate(!isOpenUpdate)}/></p>
         <p className="type-subtitle">{currentSector}</p>
       </div>
@@ -66,15 +68,15 @@ function Sectors() {
         </div>
 
 
-        {employeesList?.filter(employee => employee.id_setor == id).map((employee) => (
-          <div className="table-row" key={employee.matricula_funcionario}
-            onClick={() => route(`/edit-employee/${employee.matricula_funcionario}`)}>
-            <div className='matricula'>{employee.matricula_funcionario}</div>
-            <div >{employee.nome}</div>
+        {employeesList?.filter(employee => employee.id_sector == id).map((employee) => (
+          <div className="table-row" key={employee.registration}
+            onClick={() => route(`/edit-employee/${employee.registration}`)}>
+            <div className='matricula'>{employee.registration}</div>
+            <div >{employee.name}</div>
             <div >{employee.email}</div>
-            <div >{employee.telefone}</div>
-            <div >{allSectors.result?.setores?.find(sector => (
-              sector.id_setor == employee.id_setor))?.nome_setor}</div>
+            <div >{employee.phone}</div>
+            <div >{allSectors.result?.find(sector => (
+              sector.id == employee.id_setor))?.name}</div>
           </div>
         ))}
       </div>

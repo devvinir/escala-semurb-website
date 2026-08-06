@@ -2,22 +2,22 @@ import { useState } from 'react';
 import { useAuth } from '../../hook/useAuth'
 import Alert from './Alert';
 
-export default function UpdateSector({isOpen, setIsOpen, id_setor}) {
+export default function UpdateSector({isOpen, setIsOpen, id}) {
 
   const { updateSector, allSectors } = useAuth()
 
   const [erroMessage, setErroMessage] = useState()
   const [response, setResponse] = useState('Erro')
   
-  const sector = allSectors?.result?.setores?.find(sector => 
-    sector.id_setor == id_setor
-  )
-  const [newSector, setNewSector] = useState(sector?.nome_setor)
+  const sector = allSectors?.result?.find(sector => 
+    (sector.id == id))
+
+  const [newSector, setNewSector] = useState(sector.name)
 
   const handleSubmit = async (e) => {
       e.preventDefault()
     
-    const res = await updateSector(id_setor, newSector)
+    const res = await updateSector(id, newSector)
     if (res?.result) {
       setResponse('Sucesso')
       setErroMessage(res?.sucess)

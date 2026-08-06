@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../../hook/useAuth'
 import Alert from './Alert';
 
-export default function Confirmation({isOpen, setIsOpen, id_setor}) {
+export default function Confirmation({isOpen, setIsOpen, id}) {
 
   const { deleteSector } = useAuth()
 
@@ -11,7 +11,7 @@ export default function Confirmation({isOpen, setIsOpen, id_setor}) {
 
  async function handleDelete(e) {
   e.preventDefault()
-     const del = await deleteSector(id_setor)
+     const del = await deleteSector(id)
      if (del?.sucess) {
        setResponse('Não')
        setErroMessage('Setor foi deletado')

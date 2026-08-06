@@ -52,7 +52,8 @@ export default function SectorCard() {
               
               <p>{sector.name}</p>
               <IoIosTrash size={25} className='delSector'
-                onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); setId(sector.id)}} />
+                onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); setId(sector.id); console.log(sector) }} />
+                
             </div>
           ))}
         </div>
