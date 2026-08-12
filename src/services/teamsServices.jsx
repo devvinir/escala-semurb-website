@@ -2,7 +2,7 @@ import api from '../api/api'
 
 export const findTeams = async (user) => {
   try {
-    const { data } = await api.get(`/equipesSetor/${user?.funcionario?.matricula_funcionario}`);
+    const { data } = await api.get(`/equipesSetor/${user?.employee?.registration}`);
     const sucess = 'Equipes listadas com sucesso'
     return { result: data, error: null, sucess: sucess }
   } catch (error) {
@@ -11,10 +11,10 @@ export const findTeams = async (user) => {
     return { result: null, error: erro, sucess: null }
   }
 };
-export const addTeam = async (user, nome_equipe) => {
+export const addTeam = async (user, name) => {
   try {
-    const { data } = await api.post(`/cadastrarEquipe/${user?.funcionario?.matricula_funcionario}`, {
-      nome_equipe
+    const { data } = await api.post(`/cadastrarEquipe/${user?.employee?.registration}`, {
+      name
     })
     const sucess = "Equipe cadastrado com sucesso"
     return { result: data, error: null, sucess: sucess }
@@ -29,7 +29,7 @@ export const findAllTeams = async() => {
   try{
     const {data} = await api.get('/listarEquipes_master')
     const sucess = 'Equipes listadas com sucesso'
-    return { result: data.equipes, error: null, sucess: sucess}
+    return { result: data.teams, error: null, sucess: sucess}
   }catch(error){
     const erro = error?.response?.data?.mensagem || error?.message
     console.error('Erro ao listar equipes: ', erro)
@@ -37,13 +37,13 @@ export const findAllTeams = async() => {
   }
 }
 
-export const createReportTeam = async (user, id_equipe) => {
+export const createReportTeam = async (user, team_id) => {
   try {
     const month = new Date().getMonth() + 1;
     const year = new Date().getFullYear();
 
     const response = await api.get(
-      `/relatorioPorEquipe/${user?.funcionario?.matricula_funcionario}/${id_equipe}?mes=${month}&ano=${year}`,
+      `/relatorioPorEquipe/${user?.employee?.registration}/${team_id}?mes=${month}&ano=${year}`,
       { responseType: "blob" }
     );
 

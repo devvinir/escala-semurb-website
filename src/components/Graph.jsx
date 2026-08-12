@@ -24,7 +24,7 @@ function MyChart() {
     setData(dataChart)
   }}
   else if (admin){
-    if(sectorsEmployees?.result){console.log(sectorsEmployees)
+    if(sectorsEmployees?.result){
       const dataChart = [
         ['Setores', 'Funcionarios', {role: 'style'}],
         ...sectorsEmployees.result.map(info =>[

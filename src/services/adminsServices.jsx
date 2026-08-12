@@ -11,9 +11,9 @@ export const addAdmin = async (payload) => {
         return { result: null, error: erro, sucess: null }
     }
 }
-export const deleteEmployee = async (matricula_funcionario) => {
+export const deleteEmployee = async (registration) => {
     try {
-        const { data } = await api.delete(`/deletarFuncionario_master/${matricula_funcionario}`)
+        const { data } = await api.delete(`/deletarFuncionario_master/${registration}`)
         const sucess = "Funcionário deletado com sucesso"
         return { result: data, error: null, sucess: sucess }
     } catch (error) {
@@ -22,9 +22,9 @@ export const deleteEmployee = async (matricula_funcionario) => {
         return { result: null, error: erro, sucess: null }
     }
 }
-export const updateAdmin = async (matricula_funcionario, payload) => {
+export const updateAdmin = async (registration, payload) => {
     try {
-        const { data } = await api.put(`/editarFuncionario_master/${matricula_funcionario}`, {
+        const { data } = await api.put(`/editarFuncionario_master/${registration}`, {
             ...payload
         })
         const sucess = "Funcionário editado com sucesso"
@@ -49,7 +49,7 @@ export const findEditdays = async () => {
 }
 export const addEditdays = async (user, payload) => {
     try {
-        const { data } = await api.post(`/cadastrarDiaEspecifico/${user?.funcionario?.matricula_funcioanrio}`,{
+        const { data } = await api.post(`/cadastrarDiaEspecifico/${user?.employee?.registration}`,{
             ...payload
         })
         const sucess = "Especificação cadastrada com sucesso"
@@ -66,7 +66,7 @@ export const createReport = async (user) =>{
         const month = new Date().getMonth() +1
         const year = new Date().getFullYear()
 
-        const {data} = await api.get(`/relatorioGeralSetor/${user?.funcionario?.matricula_funcionario}?mes=${month}&ano=${year}`,
+        const {data} = await api.get(`/relatorioGeralSetor/${user?.employee?.registration}?mes=${month}&ano=${year}`,
             { responseType: 'blob' }
         )
         const sucess = "Relatório gerado com sucesso"

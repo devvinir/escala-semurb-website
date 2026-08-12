@@ -9,7 +9,6 @@ export default function SectorCard() {
 
   const { admin, user, teams, allSectors } = useAuth();
   const route = useNavigate();
-  console.log(teams)
   const [isOpen, setIsOpen] = useState(false)
   const [id, setId] = useState()
   if (user) return (

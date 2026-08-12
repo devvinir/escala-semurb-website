@@ -48,7 +48,7 @@ function Page1({ isOpenEmployee, setIsOpenEmployee, goNextPage }) {
   const [save, setSave] = useState()
 
   const [form, setForm] = useState({
-    matricula_funcionario: '',
+    registration: '',
     nome: '',
     telefone: '',
     email: '',
@@ -106,8 +106,8 @@ function Page1({ isOpenEmployee, setIsOpenEmployee, goNextPage }) {
           <p className="form-title">Adicionar Funcionario</p>
           <div className="form-card ">
 
-            <input name='matricula_funcionario' type="number" className="form-input" placeholder="Matricula"
-              value={form.matricula_funcionario} onChange={handleChange} />
+            <input name='registration' type="number" className="form-input" placeholder="Matricula"
+              value={form.registration} onChange={handleChange} />
 
             <input name='nome' type="text" className="form-input" placeholder="Nome Completo"
               value={form.nome} onChange={handleChange} />
@@ -160,23 +160,27 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
   const [save, setSave] = useState()
 
   const [form, setForm] = useState({
-    matricula_funcionario: employee.matricula_funcionario,
-    data_inicio: '',
-    tipo_escala: '',
-    usa_dias_especificos: 'NAO',
-    dias_n_trabalhados_escala_semanal: [],
+    registration: employee.registration,
+    start_date: '',
+    scale_type: '',
+    use_occasion: 'FALSE',
+    unwork_scale: [],
   })
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setForm(prev => ({ ...prev, [name]: value }))
-  }
+ const { name, value } = e.target;
+
+ setForm(prev => ({
+   ...prev,
+   [name]: value
+ }));
+};
 
   const handleDiasChange = (dia) => {
     setForm(prev => {
-      const dias = prev.dias_n_trabalhados_escala_semanal
+      const dias = prev.unwork_scale
       const updatedDias = dias.includes(dia) ? dias.filter(d => d !== dia) : [...dias, dia]
-      return { ...prev, dias_n_trabalhados_escala_semanal: updatedDias }
+      return { ...prev, unwork_scale: updatedDias }
     })
   }
 
@@ -193,9 +197,9 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
     }
   }
 
-  const camposObrigatorios = ['matricula_funcionario', 'data_inicio', 'tipo_escala']
+  const camposObrigatorios = ['registration', 'start_date', 'scale_type']
   const camposPreenchidos = camposObrigatorios.every(key => form[key] !== '')
-  const isDisabled = !camposPreenchidos || (form.usa_dias_especificos === 'SIM' && form.dias_n_trabalhados_escala_semanal.length === 0)
+  const isDisabled = !camposPreenchidos || (form.use_occasion === 'SIM' && form.unwork_scale.length === 0)
 
   return (
     <div>
@@ -217,32 +221,32 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
         <form onSubmit={handleAddScale} className="forms">
           <p className="form-title">Cadastrar Escala</p>
           <div className="form-card">
-            <input name='matricula_funcionario' type="number" className="form-input" placeholder="Matricula"
-              value={form.matricula_funcionario} onChange={handleChange} />
-            <input name='data_inicio' type="date" className="form-input" value={form.data_inicio} onChange={handleChange} />
-            <input name='tipo_escala' id="escala-input" list="escalas-list" className="form-input"
-              placeholder="Escala" value={form.tipo_escala} onChange={handleChange} />
+            <input name='registration' type="number" className="form-input" placeholder="Matricula"
+              value={form.registration} onChange={handleChange} />
+            <input name='start_date' type="date" className="form-input" value={form.start_date} onChange={handleChange} />
+            <input name='scale_type' id="escala-input" list="escalas-list" className="form-input"
+              placeholder="Escala" value={form.scale_type} onChange={handleChange} />
             <datalist id="escalas-list">
               {scales?.result?.map(s =>
-                <option key={s.id_escala} value={s.tipo_escala} />)}
+                <option key={s.id_escala} value={s.scale_type} />)}
             </datalist>
 
             <div className="">
               <label className="form-label">Dias da Semana:</label>
-              <select name="usa_dias_especificos"
-                value={form.usa_dias_especificos}
+              <select name="use_occasion"
+                value={form.use_occasion}
                 onChange={handleChange}
                 className="daysofweek form-option">
                 <option value="SIM">SIM</option>
                 <option value="NAO">NAO</option>
               </select>
 
-              {form.usa_dias_especificos === 'SIM' && (
+              {form.use_occasion === 'SIM' && (
                 <div className="dias-semana-checkboxes">
                   {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'].map(dia => (
                     <label key={dia} >
                       <input type="checkbox"
-                        checked={form.dias_n_trabalhados_escala_semanal.includes(dia)}
+                        checked={form.unwork_scale.includes(dia)}
                         onChange={() => handleDiasChange(dia)}
                       />
                       {dia}
@@ -270,7 +274,7 @@ function Page3({ employee, setIsOpenEmployee }) {
   const [save, setSave] = useState()
 
   const [form, setForm] = useState({
-    matricula_funcionario: employee.matricula_funcionario,
+    registration: employee.registration,
     inicio_turno: '',
     termino_turno: '',
     duracao_turno: '',
@@ -319,8 +323,8 @@ function Page3({ employee, setIsOpenEmployee }) {
           <div className="form-card">
 
             <label className="form-label">Matricula</label>
-            <input name='matricula_funcionario' type="number" className="form-input" placeholder="Matricula"
-              value={form.matricula_funcionario} onChange={handleChange} />
+            <input name='registration' type="number" className="form-input" placeholder="Matricula"
+              value={form.registration} onChange={handleChange} />
 
             <label className="form-label">Inicio do Turno</label>
             <input name='inicio_turno' type="time" className="form-input"

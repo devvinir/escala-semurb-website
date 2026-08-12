@@ -31,7 +31,7 @@ export const deleteSector = async (id) => {
         return { result: data, error: null, sucess: sucess }
         } catch (error) {
             const erro = error.response?.data?.mensagem || error.message
-            console.error('Erro ao deletar setor', erro)
+            console.error(erro,": ", error.message)
             return {result: null, error: erro, sucess: null}
     }
 }

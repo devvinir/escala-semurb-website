@@ -12,32 +12,39 @@ function UpdateAdmin({ isOpen, setIsOpen, employee }) {
   const [form, setForm] = useState({ })
  
   const sector = allSectors?.result?.find(sector => (
-  employee.id_setor == sector.id_setor))
+  employee.sector_id == sector.id))
   const team = allTeams?.result?.find(team => 
-  employee.id_equipe == team.id_equipe)?.nome_equipe
+  employee.team_id == team.id)?.name
   const region = allRegions?.result?.find(region => 
-  employee.id_regiao == region.id_regiao)?.nome_regiao
+  employee.region_id == region.id)?.name
+  const selectedSector = allSectors?.result?.find(
+  sector => sector.name === form.sector
+)
+const filteredTeams = allTeams?.result?.filter(
+  team => team.sector_id === selectedSector?.id
+)
   
 
   useEffect(()=>{
     if(isOpen && employee)
     setForm({
     email: employee.email,
-    telefone: employee.telefone,
-    cargo: employee.cargo,
-    setor: sector.nome_setor, 
-    status_permissao: employee.status_permissao,
-    equipe: team,
-    regiao: region,
+    phone: employee.phone,
+    position: employee.position,
+    sector: sector.name, 
+    is_admin: employee.is_admin,
+    team: team,
+    region: region,
     })
 
-  },[isOpen, employee])
+  },[isOpen, employee, sector, team, region])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({
       ...prev,
       [name]: value,
+      ...(name === "sector" && {team: ""})
     }));
   };
 
@@ -46,7 +53,7 @@ function UpdateAdmin({ isOpen, setIsOpen, employee }) {
 
     console.log("dadoas enviados", form)
 
-    const EditEmployee = await updateAdmin(employee.matricula_funcionario, form)
+    const EditEmployee = await updateAdmin(employee.registration, form)
 
     console.log("Resposta do backend", EditEmployee)
     
@@ -82,35 +89,38 @@ function UpdateAdmin({ isOpen, setIsOpen, employee }) {
             <input name='email' type="text" className="form-input" placeholder="Email"
               value={form.email} onChange={handleChange} />
 
-            <input name='telefone' type="tel" className="form-input" placeholder="Telefone"
-              value={form.telefone} onChange={handleChange} />
+            <input name='phone' type="tel" className="form-input" placeholder="Telefone"
+              value={form.phone} onChange={handleChange} />
 
-            <input name='cargo' type="text" className="form-input" placeholder="Cargo"
-              value={form.cargo} onChange={handleChange} />
+            <input name='position' type="text" className="form-input" placeholder="Cargo"
+              value={form.position} onChange={handleChange} />
 
-            <select name="setor" id="setor-input" className="form-input"
-             value={form.setor} onChange={handleChange} >
+            <select name="sector" id="setor-input" className="form-input"
+             value={form.sector} onChange={handleChange} >
+                <option value={null}>Selecione um setor</option>
               {allSectors.result?.map((sector) => (
-                <option key={sector.id_sector} value={sector.nome_setor}>{sector.nome_setor}</option>
+                <option key={sector.id} value={sector.name}>{sector.name}</option>
               ))}
             </select>
 
-             <select name="status_permissao" className="form-input" 
-              value={form.status_permissao} onChange={handleChange} id='permissao-input'>
-              <option value="Sim">Sim</option>
-              <option value="Não">Não</option>
+             <select name="is_admin" className="form-input" 
+              value={form.is_admin} onChange={handleChange} id='permissao-input'>
+              <option value="TRUE">Sim</option>
+              <option value="FALSE">Não</option>
             </select>
 
-            <select name='equipe'className="form-input" 
-            value={form.equipe} onChange={handleChange}>
+            <select name='team'className="form-input" 
+            value={form.team} onChange={handleChange}>
                 <option value={null}>Selecione uma equipe</option>
-                {allTeams?.result?.filter(e => e.id_setor === sector.id_setor)?.map((eq) => (
-                  <option key={eq.id_equipe} value={eq.nome_equipe}> {eq.nome_equipe}</option>
+                {filteredTeams?.map((eq) => (
+                    <option key={eq.id} value={eq.name}>
+                        {eq.name}
+                    </option>
                 ))}
             </select>
 
-            <select name="regiao" id="regiao-input" className="form-input"
-             value={form.regiao} onChange={handleChange} >
+            <select name="region" id="regiao-input" className="form-input"
+             value={form.region} onChange={handleChange} >
                 <option value={null}> Selecione uma região</option>
                 <option value="Norte"> Norte</option>
                 <option value="Sul"> Sul</option>

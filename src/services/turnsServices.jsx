@@ -2,7 +2,7 @@ import api from '../api/api'
 
 export const findTurns = async (user) => {
   try {
-    const { data } = await api.get(`/turnosSetor/${user?.funcionario?.matricula_funcionario}`)
+    const { data } = await api.get(`/turnosSetor/${user?.employee?.registration}`)
     const sucess = 'Turnos listados realizado com sucesso'
     return { result: data, error: null, sucess: sucess }
   } catch (error) {
@@ -15,7 +15,7 @@ export const findTurns = async (user) => {
 export const addTurn = async (user, payload) => {
   try {
     const { data } = await api.post('/cadastrarTurno', {
-      matricula_adm: user?.funcionario.matricula_funcionario,
+      matricula_adm: user?.employee.registration,
       ...payload
     })
     const sucess = "Cadastro do Turno realizado com sucesso"
@@ -30,7 +30,7 @@ export const addTurn = async (user, payload) => {
 export const updateTurn = async (user, payload) => {
   try {
     const { data } = await api.put('/alterarTurno', {
-      matricula_adm: user?.funcionario?.matricula_funcionario,
+      matricula_adm: user?.employee?.registration,
       ...payload
     })
     const sucess = 'Turno alterado com sucesso'

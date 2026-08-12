@@ -24,13 +24,13 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
 
   const parseDiasArray = () => {
     // Se for array, retorna como está
-    if (Array.isArray(escala?.dias_n_trabalhados_escala_semanal)) {
-      return escala.dias_n_trabalhados_escala_semanal;
+    if (Array.isArray(escala?.unwork_scale)) {
+      return escala.unwork_scale;
     }
     
     // Se for string, tenta converter
-    if (typeof escala?.dias_n_trabalhados_escala_semanal === 'string') {
-      const str = escala.dias_n_trabalhados_escala_semanal;
+    if (typeof escala?.unwork_scale === 'string') {
+      const str = escala.unwork_scale;
       
       // Tenta JSON.parse se for um array em string
       try {
@@ -72,7 +72,7 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
       const dateKey = `${currentYear}-${month}-${day}`;
       
       holidayMap[dateKey] = {
-        nome: holiday.nome_feriado,
+        name: holiday.name_feriado,
         id: holiday.id_feriado
       };
     });
@@ -90,7 +90,7 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
 
     // Filtrar apenas lembretes do funcionário atual
     const employeeEditdays = editdaysList?.filter(editday => 
-      editday.matricula_funcionario === employee.matricula_funcionario
+      editday.registration === employee.registration
     );
 
    
@@ -105,7 +105,7 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
       }
       
       editMap[dateKey].push({
-        nome: editday.nome_diae,
+        name: editday.name_diae,
         id: editday.id_diae,
 
       });
@@ -127,7 +127,7 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const diasMapeados = { 'Dom': 0, 'Seg': 1, 'Ter': 2, 'Qua': 3, 'Qui': 4, 'Sex': 5, 'Sab': 6 };
     
-    // A lógica: se dias_n_trabalhados_escala_semanal tem valores, usa dias específicos
+    // A lógica: se unwork_scale tem valores, usa dias específicos
     const diasArray = parseDiasArray();
     const temDiasDefinidos = diasArray.length > 0;
 
@@ -150,11 +150,11 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
         
         workMap[dateKey] = isRest ? 'rest' : 'work';
       }
-    } else if (escala.data_inicio && escala.dias_trabalhados !== undefined && escala.dias_n_trabalhados !== undefined) {
+    } else if (escala.start_date && escala.work_day !== undefined && escala.unwork_day !== undefined) {
 
       
-      const startDate = new Date(escala.data_inicio);
-      const cycleLength = escala.dias_trabalhados + escala.dias_n_trabalhados;
+      const startDate = new Date(escala.start_date);
+      const cycleLength = escala.work_day + escala.unwork_day;
       
       for (let day = 1; day <= daysInMonth; day++) {
         const date = new Date(year, month, day);
@@ -162,7 +162,7 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
         const diff = Math.floor((date - startDate) / (1000 * 60 * 60 * 24));
         
         if (diff >= 0) {
-          workMap[dateKey] = (diff % cycleLength) < escala.dias_trabalhados ? 'work' : 'rest';
+          workMap[dateKey] = (diff % cycleLength) < escala.work_day ? 'work' : 'rest';
         }
       }
     }
@@ -221,7 +221,7 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
                setIsOpenDay(!isOpenDay)
                
             }}
-              title={(holiday ? holiday.nome : '')&&(editday ? editday.nome : '')}
+              title={(holiday ? holiday.name : '')&&(editday ? editday.name : '')}
             >
               {day}
             </div>

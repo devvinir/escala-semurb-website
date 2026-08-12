@@ -13,14 +13,14 @@ function Profile() {
     console.log('Data selecionada:', date.toLocaleDateString('pt-BR'));
   };
   const team = teams?.result?.find(team => (
-    user?.funcionario?.id_equipe == team.id_equipe
-  ))?.nome_equipe
+    user?.employee?.team_id == team.id
+  ))?.name
   const region = regions?.result?.find(region => (
-    user?.funcionario?.id_regiao == region.id_regiao
-  ))?.nome_regiao
+    user?.employee?.region_id == region.id
+  ))?.name
   const turn = turns?.result?.find(turn => (
-    user?.funcionario?.id_turno == turn.id_turno
-  ))  
+    user?.employee?.shift_id == turn.id
+))
   
     const formatTurn = (t) => {
     if(!t) return '';
@@ -37,16 +37,16 @@ function Profile() {
         <div className="profile-container">
           <div className="profile-card-up">
             <IoIosContact size={200} color={'#6B7280'} />
-            <h2 className="profile-name">{user?.funcionario.nome}</h2>
+            <h2 className="profile-name">{user?.employee.name}</h2>
           </div>
           <div className="profile-card-down">
-            <p className="profile-info">Matricula: <span className="info-auth">{user?.funcionario?.matricula_funcionario}</span> </p>
-            <p className="profile-info">Telefone: <span className="info-auth">{user?.funcionario?.telefone}</span></p>
-            <p className="profile-info">Email: <span className="info-auth">{user ? user.funcionario?.email : 'Desconhecido'}</span></p>
-            <p className="profile-info">Escala: <span className="info-auth">{user ? user?.escala?.tipo_escala : 'Desconhecido'}</span></p>
+            <p className="profile-info">Matricula: <span className="info-auth">{user?.employee?.registration}</span> </p>
+            <p className="profile-info">Telefone: <span className="info-auth">{user?.employee?.phone}</span></p>
+            <p className="profile-info">Email: <span className="info-auth">{user ? user.employee?.email : 'Desconhecido'}</span></p>
+            <p className="profile-info">Escala: <span className="info-auth">{user ? user?.scale?.scale_type : 'Desconhecido'}</span></p>
             <p className="profile-info">Equipe: <span className="info-auth">{team || 'Desconhecido'}</span></p>
             <p className="profile-info">Regiao: <span className="info-auth">{region || 'Desconhecido'}</span></p>
-            <p className="profile-info">Setor: <span className="info-auth">{user ? user.setor?.nome_setor : 'Desconhecido'}</span></p>
+            <p className="profile-info">Setor: <span className="info-auth">{user ? user.sector?.name : 'Desconhecido'}</span></p>
 
           </div>
 
@@ -56,15 +56,15 @@ function Profile() {
           <CalendarProfile
             value={selectedDate}
             onDateChange={handleDateSelect}
-            escala={user?.escala}
+            escala={user?.scale}
             holidays={holidays}
           />
 
           <div className="profile-escale-details">
             
-            <div className="details d-folgas">{`Folgas: ${getRestDaysDisplay(user?.escala)}`}</div>
-            <div className="details d-feriados">{`Feriados: ${formatCurrentMonthHolidays(user?.escala, holidays?.result)}`}</div>
-            <div className="details d-horarios">{`Horario: ${formatTurn(turn?.inicio_turno)} - ${formatTurn(turn?.termino_turno)} / Intervalo: ${formatTurn(turn?.intervalo_turno)}`}</div>
+            <div className="details d-folgas">{`Folgas: ${getRestDaysDisplay(user?.scale)}`}</div>
+            <div className="details d-feriados">{`Feriados: ${formatCurrentMonthHolidays(user?.scale, holidays?.result)}`}</div>
+            <div className="details d-horarios">{`Horario: ${formatTurn(turn?.shift_start)} - ${formatTurn(turn?.shift_end)} / Intervalo: ${formatTurn(turn?.shift_pause)}`}</div>
           </div>
 
           <div className="editdays-container">
@@ -73,13 +73,13 @@ function Profile() {
               ?.filter(d => {
                 const mesDoRegistro = new Date(d.data_diae).getMonth() + 1
                 return (
-                  d.matricula_funcionario === user.funcionario.matricula_funcionario &&
+                  d.registration === user.employee.registration &&
                   mesDoRegistro === currentMonth
                 )
               })
               .map((d, i) => (
                 <div key={i} className="editday-item">
-                  <strong>{new Date(d.data_diae).toLocaleDateString('pt-BR')}</strong> — <em>{d.nome_diae}</em>: 
+                  <strong>{new Date(d.data_diae).toLocaleDateString('pt-BR')}</strong> — <em>{d.name_diae}</em>: 
                   <p className="editdays-description">{d.descricao_diae}</p>
                 </div>
               ))
@@ -87,7 +87,7 @@ function Profile() {
             {editdays?.result?.filter(d => {
               const mesDoRegistro = new Date(d.data_diae).getMonth() + 1
               return (
-                d.matricula_funcionario === user.funcionario.matricula_funcionario &&
+                d.registration === user.employee.registration &&
                 mesDoRegistro === currentMonth
               )
             }).length === 0 && (

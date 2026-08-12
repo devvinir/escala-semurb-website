@@ -39,23 +39,23 @@ function EditEmployee() {
   }
 
   const currentEmployee = allEmployees?.result?.find(
-    employee => String(employee.matricula_funcionario) === id
+    employee => String(employee.registration) === id
   );
 
 
   const sector = allSectors.result?.find(sector => (
-    currentEmployee?.id_setor == sector.id_setor))?.nome_setor
+    currentEmployee?.sector_id == sector.id))?.name
   const team = allTeams?.result?.find(team => (
-    currentEmployee?.id_equipe == team.id_equipe
-  ))?.nome_equipe
+    currentEmployee?.team_id == team.id
+  ))?.name
   const region = allRegions?.result?.find(region => (
-    currentEmployee?.id_regiao == region.id_regiao
-  ))?.nome_regiao
+    currentEmployee?.region_id == region.id
+  ))?.name
   const scale = allScales?.result?.find(scale => (
-    currentEmployee?.id_escala == scale.id_escala
+    currentEmployee?.scale_id == scale.id
   ))
   const turn = allTurns?.result?.find(turn => (
-    currentEmployee?.id_turno == turn.id_turno
+    currentEmployee?.shift_id == turn.id
   ))
 
 
@@ -97,21 +97,21 @@ function EditEmployee() {
         currentEmployee={currentEmployee}
       />
       <div className="container-profile-page">
-        <div key={currentEmployee?.matricula_funcionario} className="profile-container">
+        <div key={currentEmployee?.registration} className="profile-container">
           <div className="profile-card-up">
             <IoIosContact size={200} color={'#6B7280'} />
 
-            <h2 className="profile-name">{currentEmployee?.nome}</h2>
+            <h2 className="profile-name">{currentEmployee?.name}</h2>
           </div>
           <div className="profile-card-down">
-            <p className="profile-info">Matrícula: <span className="info-auth">{currentEmployee?.matricula_funcionario}</span> </p>
-            <p className="profile-info">Telefone: <span className="info-auth">{currentEmployee?.telefone}</span></p>
+            <p className="profile-info">Matrícula: <span className="info-auth">{currentEmployee?.registration}</span> </p>
+            <p className="profile-info">Telefone: <span className="info-auth">{currentEmployee?.phone}</span></p>
             <p className="profile-info">Email: <span className="info-auth">{currentEmployee?.email}</span></p>
-            <p className="profile-info">Cargo: <span className="info-auth">{currentEmployee?.cargo}</span></p>
+            <p className="profile-info">Cargo: <span className="info-auth">{currentEmployee?.position}</span></p>
             <p className="profile-info">Equipe: <span className="info-auth">{team}</span></p>
             <p className="profile-info">Região: <span className="info-auth">{region}</span></p>
             <p className="profile-info">Setor: <span className="info-auth">{sector}</span></p>
-            <p className="profile-info">Escala: <span className="info-auth">{scale?.tipo_escala}</span></p>
+            <p className="profile-info">Escala: <span className="info-auth">{scale?.scale_type}</span></p>
           </div>
           <button className="confirm-button" onClick={() => setIsOpenAdminUpdate(!isOpenAdminUpdate)}>Atualizar Dados</button>
           <button className="cancel-button" onClick={() => setIsOpenDelete(!isOpenDelete)}>Deletar Funcionario</button>
@@ -128,7 +128,7 @@ function EditEmployee() {
           <div className="profile-escale-details">
             <div className="details d-folgas">{`Folgas: ${getRestDaysDisplay(scale)}`}</div>
             <div className="details d-feriados">{`Feriados: ${formatCurrentMonthHolidays(scale, holidays?.result)}`}</div>
-            <div className="details d-horarios">{`Horario: ${formatTurn(turn?.inicio_turno)} - ${formatTurn(turn?.termino_turno)} / Intervalo: ${formatTurn(turn?.intervalo_turno)}`}</div>
+            <div className="details d-horarios">{`Horario: ${formatTurn(turn?.shift_start)} - ${formatTurn(turn?.shift_end)} / Intervalo: ${formatTurn(turn?.shift_pause)}`}</div>
           </div>
 
           <div className="editdays-container">
@@ -137,7 +137,7 @@ function EditEmployee() {
               ?.filter(d => {
                 const mesDoRegistro = new Date(d.data_diae).getMonth() + 1
                 return (
-                  d.matricula_funcionario === currentEmployee.matricula_funcionario &&
+                  d.registration === currentEmployee.registration &&
                   mesDoRegistro === currentMonth
                 )
               })
@@ -151,7 +151,7 @@ function EditEmployee() {
             {editdays?.result?.filter(d => {
               const mesDoRegistro = new Date(d.data_diae).getMonth() + 1
               return (
-                d.matricula_funcionario === currentEmployee.matricula_funcionario &&
+                d.registration === currentEmployee.registration &&
                 mesDoRegistro === currentMonth
               )
             }).length === 0 && (
@@ -162,25 +162,25 @@ function EditEmployee() {
           <div className="update-buttons">
             <button className="confirm-button"
               onClick={() => {
-                if (currentEmployee?.id_escala) {
+                if (currentEmployee?.scale_id) {
                   setIsOpenEmployeeUpdate(!isOpenEmployeeUpdate)
                 } else {
                   setPage(2)
                   setIsOpenEmployeeAdd(!isOpenEmployeeAdd)
                 }
               }}>
-              {currentEmployee?.id_escala ? 'Atualizar Escala' : 'Nova Escala'}
+              {currentEmployee?.scale_id ? 'Atualizar Escala' : 'Nova Escala'}
             </button>
             <button className="confirm-button"
               onClick={() => {
-                if (currentEmployee?.id_turno) {
+                if (currentEmployee?.shift_id) {
                   setIsOpenTurnUpdate(!isOpenTurnUpdate)
                 } else {
                   setPage(3)
                   setIsOpenEmployeeAdd(!isOpenEmployeeAdd)
                 }
               }}>
-              {currentEmployee?.id_turno ? 'Atualizar Turno' : 'Novo Turno'}</button>
+              {currentEmployee?.shift_id ? 'Atualizar Turno' : 'Novo Turno'}</button>
           </div>
 
         </div>

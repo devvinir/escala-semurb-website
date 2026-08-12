@@ -8,18 +8,18 @@ export default function UpdateScale({ employee, setIsOpenEmployee, isOpenEmploye
   const [response, setResponse] = useState('Erro')
   const [save, setSave] = useState()
 
-  const scale = scales?.result?.find(s => s.escala.id_escala == employee.id_escala)?.escala
+  const scale = scales?.result?.find(s => s.scale.id == employee.scale_id)?.scale
   const [form, setForm] = useState({})
 
   useEffect(() => {
     if (isOpenEmployee && employee)
       setForm({
-        matricula_funcionario: employee?.matricula_funcionario,
-        data_inicio: scale?.data_inicio,
-        tipo_escala: scale?.tipo_escala,
-        usa_dias_especificos: scale?.usa_dias_especificos ? 'SIM' : 'NAO',
-        dias_n_trabalhados_escala_semanal: Array.isArray(scale?.dias_n_trabalhados_escala_semanal)
-          ? scale.dias_n_trabalhados_escala_semanal
+        registration: employee?.registration,
+        start_date: scale?.start_date,
+        scale_type: scale?.scale_type,
+        use_occasion: scale?.use_occasion ? 'TRUE' : 'FALSE',
+        unwork_scale: Array.isArray(scale?.unwork_scale)
+          ? scale.unwork_scale
           : [],
       })
   }, [isOpenEmployee, employee])
@@ -31,17 +31,17 @@ export default function UpdateScale({ employee, setIsOpenEmployee, isOpenEmploye
 
   const handleDiasChange = (dia) => {
     setForm(prev => {
-      const dias = Array.isArray(prev.dias_n_trabalhados_escala_semanal)
-        ? prev.dias_n_trabalhados_escala_semanal
+      const dias = Array.isArray(prev.unwork_scale)
+        ? prev.unwork_scale
         : []
       const updatedDias = dias.includes(dia) ? dias.filter(d => d !== dia) : [...dias, dia]
-      return { ...prev, dias_n_trabalhados_escala_semanal: updatedDias }
+      return { ...prev, unwork_scale: updatedDias }
     })
   }
 
-  const camposObrigatorios = ['matricula_funcionario', 'data_inicio', 'tipo_escala']
+  const camposObrigatorios = ['registration', 'start_date', 'scale_type']
   const camposPreenchidos = camposObrigatorios.every(key => form[key] !== '')
-  const isDisabled = !camposPreenchidos || (form?.usa_dias_especificos === 'SIM' && form?.dias_n_trabalhados_escala_semanal?.length === 0)
+  const isDisabled = !camposPreenchidos || (form?.use_occasion === 'TRUE' && form?.unwork_scale?.length === 0)
 
   async function handleAddScale(e) {
     e.preventDefault()
@@ -68,44 +68,44 @@ export default function UpdateScale({ employee, setIsOpenEmployee, isOpenEmploye
           setErroMessage("")
           if (response === 'Sucesso' && save)
             setIsOpenEmployee(false)
-          window.location.reload()
+            window.location.reload()
         }} />
       )}
       <div className="form-card-position">
         <form onSubmit={handleAddScale} className="forms">
           <p className="form-title">Atualizar Escala</p>
           <div className="form-card">
-            <input name='matricula_funcionario' type="number" className="form-input" placeholder="Matricula"
-              value={form?.matricula_funcionario} />
+            <input name='registration' type="number" className="form-input" placeholder="Matricula"
+              value={form?.registration} />
 
-            <input name='data_inicio' type="date" className="form-input"
-              value={form?.data_inicio} onChange={handleChange} />
+            <input name='start_date' type="date" className="form-input"
+              value={form?.start_date} onChange={handleChange} />
 
-            <input name='tipo_escala' id="escala-input" list="escalas-list" className="form-input"
-              placeholder="Escala" value={form?.tipo_escala} onChange={handleChange} />
+            <input name='scale_type' id="escala-input" list="escalas-list" className="form-input"
+              placeholder="Escala" value={form?.scale_type} onChange={handleChange} />
             <datalist id="escalas-list">
               {scales?.result?.map((scale, key) => (
-                <option key={key} value={scale.escala.tipo_escala} />
+                <option key={key} value={scale.scale.scale_type} />
               ))}
             </datalist>
 
             <div className="">
               <p className="">Dias da Semana:</p>
-              <select name="usa_dias_especificos" 
-              value={form?.usa_dias_especificos} 
+              <select name="use_occasion" 
+              value={form?.use_occasion} 
               onChange={handleChange} 
               className="daysofweek">
-                <option value="SIM">SIM</option>
-                <option value="NAO">NAO</option>
+                <option value="TRUE">SIM</option>
+                <option value="FALSE">NAO</option>
               </select>
             </div>
 
-            {form?.usa_dias_especificos === 'SIM' && (
+            {form?.use_occasion === 'TRUE' && (
               <div className="dias-semana-checkboxes">
                 {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'].map(dia => (
                   <label key={dia}>
                     <input type="checkbox"
-                      checked={form?.dias_n_trabalhados_escala_semanal?.includes(dia)}
+                      checked={form?.unwork_scale?.includes(dia)}
                       onChange={() => handleDiasChange(dia)} />
                     {dia}
                   </label>

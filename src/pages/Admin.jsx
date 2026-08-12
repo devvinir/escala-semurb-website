@@ -25,7 +25,7 @@ function Admin() {
   
 
   const allEmployeesList = allEmployees?.result?.filter((employee) =>
-  employee.nome.toLowerCase().includes(searchLowerCase))
+  employee.name.toLowerCase().includes(searchLowerCase))
 
   if(!allEmployeesList) return <p className="loading-text">Não foi possivel encontrar os funcionários</p>;
   
@@ -42,11 +42,11 @@ function Admin() {
             <div className="adm-list">
               {allEmployeesList?.map((employee, key) => (
                 <div className="adm-list-content" key={key}
-                  onClick={() => route(`/edit-employee/${employee.matricula_funcionario}`)}>
-                  <p className="adm-list-info">{employee.nome}</p>
+                  onClick={() => route(`/edit-employee/${employee.registration}`)}>
+                  <p className="adm-list-info">{employee.name}</p>
                   <p className="adm-list-info-bottom">
-                    Equipe: {allSectors.result?.setores?.find(sector => (
-                      sector.id_setor == employee.id_setor))?.nome_setor}</p>
+                    Seto: {allSectors.result?.find(sector => (
+                      sector.id == employee.sector_id))?.name}</p>
                 </div>
               ))}
             </div>
@@ -87,11 +87,11 @@ function Admin() {
           <div className="adm-table-body">
             {allEmployees?.result?.map((employee, key) => (
               <div className="adm-table-row" key={key} 
-              onClick={() => route(`/edit-employee/${employee.matricula_funcionario}`)}>
-                <div className='adm-matricula'>{employee.matricula_funcionario}</div>
-                <div>{employee.nome}</div>
+              onClick={() => route(`/edit-employee/${employee.registration}`)}>
+                <div className='adm-matricula'>{employee.registration}</div>
+                <div>{employee.name}</div>
                 <div>{employee.email}</div>
-                <div>{employee.telefone}</div>
+                <div>{employee.phone}</div>
               </div>
             ))}
           </div>

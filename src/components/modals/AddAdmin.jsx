@@ -51,22 +51,30 @@ function Page1({ setIsOpenEmployee, goNextPage }) {
   const [response, setResponse] = useState('Erro')
   const [save, setSave] = useState() 
 
+  const selectedSector = allSectors?.result?.find(
+  sector => sector.name === form.sector
+)
+
+const filteredTeams = allTeams?.result?.filter(
+  team => team.sector_id === selectedSector?.id
+)
   const [form, setForm] = useState({
-    matricula_funcionario: '',
-    nome: '',
+    registration: '',
+    name: '',
     email: '',
-    telefone: '',
-    cargo: '',
-    setor: '',
-    status_permissao: '',
-    equipe: '',
-    regiao: '',
+    phone: '',
+    position: '',
+    sector: '',
+    is_admin: '',
+    team: '',
+    region: '',
   })
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({
       ...prev,
       [name]: value,
+      ...(name === "sector" && {team : ""})
     }));
   };
 
@@ -106,46 +114,48 @@ function Page1({ setIsOpenEmployee, goNextPage }) {
           <p className="form-title">Adicionar Funcionario</p>
           <div className="form-card ">
 
-            <input name='matricula_funcionario' type="number" className="form-input" 
-            placeholder="Matricula" value={form.matricula_funcionario} onChange={handleChange} />
+            <input name='registration' type="number" className="form-input" 
+            placeholder="Matricula" value={form.registration} onChange={handleChange} />
 
-            <input name='nome' type="text" className="form-input" placeholder="Nome Completo"
-              value={form.nome} onChange={handleChange} />
+            <input name='name' type="text" className="form-input" placeholder="name Completo"
+              value={form.name} onChange={handleChange} />
 
-            <input name='email' type="email" className="form-input" placeholder="Email"
+            <input name='email' type="email" className="form-input" placeholder="email"
             value={form.email} onChange={handleChange} />
 
-            <input name='telefone' type="tel" className="form-input" placeholder="Telefone"
-              value={form.telefone} onChange={handleChange} />
+            <input name='phone' type="tel" className="form-input" placeholder="phone"
+              value={form.phone} onChange={handleChange} />
 
-            <input name='cargo' type="text" className="form-input" placeholder="Cargo"
-              value={form.cargo} onChange={handleChange} />
+            <input name='position' type="text" className="form-input" placeholder="position"
+              value={form.position} onChange={handleChange} />
 
-            <select name='setor' className="form-input form-option"
-              value={form.setor} onChange={handleChange}>
-              <option value={null}>Selecione um setor</option>
+            <select name='sector' className="form-input form-option"
+              value={form.sector} onChange={handleChange}>
+              <option value={null}>Selecione um sector</option>
               {allSectors?.result?.map((sec) => (
-                <option key={sec.id_setor} value={sec.nome_setor}> {sec.nome_setor}</option>
+                <option key={sec.id} value={sec.name}> {sec.name}</option>
               ))}
             </select>
 
-              <select name='status_permissao' className="form-input form-option"
-               value={form.status_permissao} onChange={handleChange}>
-              <option value={null}>Administrador(SIM/NÃO)</option>
-              <option value='Sim'>Sim</option>
-              <option value='Não'>Não</option>
+              <select name='is_admin' className="form-input form-option"
+               value={form.is_admin} onChange={handleChange}>
+              <option value={null}>Administrador(TRUE/NÃO)</option>
+              <option value='TRUE'>TRUE</option>
+              <option value='FALSE'>Não</option>
             </select>
 
-            <select name='equipe'  className="form-input form-option"
-              value={form.equipe} onChange={handleChange}>
-                <option value={null}>Selecione uma equipe</option>
-                {allTeams?.result?.map((eq) => (
-                  <option key={eq.id_equipe} value={eq.nome_equipe}> {eq.nome_equipe}</option>
+            <select name='team'  className="form-input form-option"
+              value={form.team} onChange={handleChange}>
+                <option value={null}>Selecione uma team</option>
+                {filteredTeams?.map((eq) => (
+                    <option key={eq.id} value={eq.name}>
+                        {eq.name}
+                    </option>
                 ))}
             </select>
             
-            <select name='regiao' id="regiao-input"  className="form-input form-option"
-               value={form.regiao} onChange={handleChange}>
+            <select name='region' id="region-input"  className="form-input form-option"
+               value={form.region} onChange={handleChange}>
               <option value={null}>Selecione uma região</option>
               <option value='Sul'>Sul</option>
               <option value='Norte'>Norte</option>
@@ -174,14 +184,13 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
   const [response, setResponse] = useState('Erro')
   const [save, setSave] = useState()  
 
-  console.log(employee)
 
   const [form, setForm] = useState({
-    matricula_funcionario: employee.funcionario.matricula_funcionario,
-    data_inicio: '',
-    tipo_escala: '',
-    usa_dias_especificos: 'NAO',
-    dias_n_trabalhados_escala_semanal: [],
+    registration: employee.registration,
+    start_date: '',
+    scale_type: '',
+    use_occasion: 'FALSE',
+    unwork_scale: [],
   })
 
   const handleChange = (e) => {
@@ -191,9 +200,9 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
 
   const handleDiasChange = (dia) => {
     setForm(prev => {
-      const dias = prev.dias_n_trabalhados_escala_semanal
+      const dias = prev.unwork_scale
       const updatedDias = dias.includes(dia) ? dias.filter(d => d !== dia) : [...dias, dia]
-      return { ...prev, dias_n_trabalhados_escala_semanal: updatedDias }
+      return { ...prev, unwork_scale: updatedDias }
     })
   }
 
@@ -210,9 +219,9 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
     }
   }
 
-  const camposObrigatorios = ['matricula_funcionario', 'data_inicio', 'tipo_escala']
+  const camposObrigatorios = ['registration', 'start_date', 'scale_type']
   const camposPreenchidos = camposObrigatorios.every(key => form[key] !== '')
-  const isDisabled = !camposPreenchidos || (form.usa_dias_especificos === 'SIM' && form.dias_n_trabalhados_escala_semanal.length === 0)
+  const isDisabled = !camposPreenchidos || (form.use_occasion === 'TRUE' && form.unwork_scale.length === 0)
 
   return (
     <div>
@@ -233,35 +242,35 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
         <form onSubmit={handleAddScale} className="forms">
           <p className="form-title">Cadastrar Escala</p>
           <div className="form-card">
-            <input name='matricula_funcionario' type="number" className="form-input" placeholder="Matricula"
-              value={form.matricula_funcionario} onChange={handleChange} />
+            <input name='registration' type="number" className="form-input" placeholder="Matricula"
+              value={form.registration} onChange={handleChange} />
 
-            <input name='data_inicio' type="date" className="form-input" 
-            value={form.data_inicio} onChange={handleChange} />
+            <input name='start_date' type="date" className="form-input" 
+            value={form.start_date} onChange={handleChange} />
 
-            <input name='tipo_escala' id="escala-input" list="escalas-list" className="form-input"
-              placeholder="Escala" value={form.tipo_escala} onChange={handleChange} />
+            <input name='scale_type' id="escala-input" list="escalas-list" className="form-input"
+              placeholder="Escala" value={form.scale_type} onChange={handleChange} />
             <datalist id="escalas-list">
               {allScales?.result?.map(s =>
-                <option key={s.id_escala} value={s.tipo_escala} />)}
+                <option key={s.id} value={s.scale_type} />)}
             </datalist>
               
             <div className="">
             <label className="form-label">Dias da Semana:</label>
-            <select name="usa_dias_especificos" 
-            value={form.usa_dias_especificos} 
+            <select name="use_occasion" 
+            value={form.use_occasion} 
             onChange={handleChange}
             className="daysofweek form-option">
-              <option value="SIM">SIM</option>
-              <option value="NAO">NAO</option>
+              <option value="TRUE">SIM</option>
+              <option value="FALSE">NÃO</option>
             </select>
 
-            {form.usa_dias_especificos === 'SIM' && (
+            {form.use_occasion === 'TRUE' && (
               <div className="dias-semana-checkboxes">
                 {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'].map(dia => (
                   <label key={dia} >
                     <input type="checkbox"
-                      checked={form.dias_n_trabalhados_escala_semanal.includes(dia)}
+                      checked={form.unwork_scale.includes(dia)}
                       onChange={() => handleDiasChange(dia)}
                     />
                     {dia}
@@ -289,16 +298,20 @@ function Page3({ employee, setIsOpenEmployee }) {
   const [save, setSave] = useState()
 
   const [form, setForm] = useState({
-    matricula_funcionario: employee.funcionario.matricula_funcionario,
-    inicio_turno: '',
-    termino_turno: '',
-    duracao_turno: '',
-    intervalo_turno: ''
+    registration: employee.registration,
+    shift_start: '',
+    shift_end: '',
+    total_shift: '',
+    shift_pause: ''
   })
   const handleChange = (e) => {
-    const {name, value} = e.target
-    setForm(prev => ({...prev, [name]: value}))
-  }
+ const { name, value } = e.target;
+
+ setForm(prev => ({
+   ...prev,
+   [name]: value,
+ }));
+};
 
   async function handleAddTurn(e) {
     e.preventDefault()
@@ -337,24 +350,24 @@ function Page3({ employee, setIsOpenEmployee }) {
           <div className="form-card">
 
             <label className="form-label">Matricula</label>
-            <input name='matricula_funcionario' type="number" className="form-input" placeholder="Matricula"
-              value={form.matricula_funcionario} onChange={handleChange} />
+            <input name='registration' type="number" className="form-input" placeholder="Matricula"
+              value={form.registration} onChange={handleChange} />
 
             <label className="form-label">Inicio do Turno</label>
-            <input name='inicio_turno' type="time" className="form-input"
-              value={form.inicio_turno} onChange={handleChange} />
+            <input name='shift_start' type="time" className="form-input"
+              value={form.shift_start} onChange={handleChange} />
 
             <label  className="form-label">Termino do Turno</label>
-            <input type="time" className="form-input" name='termino_turno'
-              value={form.termino_turno} onChange={handleChange} />
+            <input type="time" className="form-input" name='shift_end'
+              value={form.shift_end} onChange={handleChange} />
 
             <label  className="form-label">Duração do Turno</label>
-            <input type="time" className="form-input" name='duracao_turno'
-              value={form.duracao_turno} onChange={handleChange} />
+            <input type="time" className="form-input" name='total_shift'
+              value={form.total_shift} onChange={handleChange} />
 
             <label  className="form-label">Intervalo do Turno</label>
-            <input type="time" className="form-input" name='intervalo_turno'
-              value={form.intervalo_turno} onChange={handleChange} />
+            <input type="time" className="form-input" name='shift_pause'
+              value={form.shift_pause} onChange={handleChange} />
           </div>
 
           <div className="buttons-form">

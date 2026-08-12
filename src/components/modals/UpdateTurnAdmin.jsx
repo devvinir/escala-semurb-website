@@ -7,7 +7,7 @@ export default function UpdateTurnAdmin({ isOpen, setIsOpen, employee }) {
   const { updateTurnAdmin, allTurns } = useAuth()
 
   const turn = allTurns?.result?.find(t => (
-    t.id_turno === employee.id_turno
+    t.id === employee.shift_id
   ))
 
   const [response, setRes] = useState('Erro')
@@ -17,11 +17,11 @@ export default function UpdateTurnAdmin({ isOpen, setIsOpen, employee }) {
   useEffect(() => {
     if (employee && isOpen) {
       setForm({
-        matricula_funcionario: employee.matricula_funcionario,
-        inicio_turno: employee.id_turno === turn.id_turno ? turn.inicio_turno : null,
-        termino_turno: employee.id_turno === turn.id_turno ? turn.termino_turno : null,
-        duracao_turno: employee.id_turno === turn.id_turno ? turn.duracao_turno : null,
-        intervalo_turno: employee.id_turno === turn.id_turno ? turn.intervalo_turno : null
+        registration: employee.registration,
+        shift_start: employee.shift_id === turn.id ? turn.shift_start : null,
+        shift_end: employee.shift_id === turn.id ? turn.shift_end : null,
+        total_shift: employee.shift_id === turn.id ? turn.total_shift : null,
+        shift_pause: employee.shift_id === turn.id ? turn.shift_pause : null
       })
     }
   }, [employee, isOpen, turn])
@@ -68,24 +68,24 @@ export default function UpdateTurnAdmin({ isOpen, setIsOpen, employee }) {
           <div className="form-card">
 
             <label className="form-label">Matricula</label>
-            <input name='matricula_funcionario' type="number" className="form-input" placeholder="Matricula"
-              value={form.matricula_funcionario}  />
+            <input name='registration' type="number" className="form-input" placeholder="Matricula"
+              value={form.registration}  />
 
             <label className="form-label">Inicio do Turno</label>
-            <input name='inicio_turno' type="time" className="form-input"
-              value={form.inicio_turno} onChange={handleChange} />
+            <input name='shift_start' type="time" className="form-input"
+              value={form.shift_start} onChange={handleChange} />
 
             <label className="form-label">Termino do Turno</label>
-            <input name='termino_turno' type="time" className="form-input"
-              value={form.termino_turno} onChange={handleChange} />
+            <input name='shift_end' type="time" className="form-input"
+              value={form.shift_end} onChange={handleChange} />
 
             <label  className="form-label">Duração do Turno</label>
-            <input name='duracao_turno' type="time" className="form-input"
-              value={form.duracao_turno} onChange={handleChange} />
+            <input name='total_shift' type="time" className="form-input"
+              value={form.total_shift} onChange={handleChange} />
 
             <label className="form-label">Intervalo do Turno</label>
-            <input name='intervalo_turno' type="time" className="form-input"
-              value={form.intervalo_turno} onChange={handleChange} />
+            <input name='shift_pause' type="time" className="form-input"
+              value={form.shift_pause} onChange={handleChange} />
           </div>
 
           <div className="buttons-form">
