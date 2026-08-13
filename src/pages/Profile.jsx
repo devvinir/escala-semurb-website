@@ -41,7 +41,7 @@ function Profile() {
           </div>
           <div className="profile-card-down">
             <p className="profile-info">Matricula: <span className="info-auth">{user?.employee?.registration}</span> </p>
-            <p className="profile-info">Telefone: <span className="info-auth">{user?.employee?.phone}</span></p>
+            <p className="profile-info">phone: <span className="info-auth">{user?.employee?.phone}</span></p>
             <p className="profile-info">Email: <span className="info-auth">{user ? user.employee?.email : 'Desconhecido'}</span></p>
             <p className="profile-info">Escala: <span className="info-auth">{user ? user?.scale?.scale_type : 'Desconhecido'}</span></p>
             <p className="profile-info">Equipe: <span className="info-auth">{team || 'Desconhecido'}</span></p>
@@ -71,7 +71,7 @@ function Profile() {
             <p className='editdays-title'>Mudanças nos dias:</p>
             {editdays?.result
               ?.filter(d => {
-                const mesDoRegistro = new Date(d.data_diae).getMonth() + 1
+                const mesDoRegistro = new Date(d.day).getMonth() + 1
                 return (
                   d.registration === user.employee.registration &&
                   mesDoRegistro === currentMonth
@@ -79,13 +79,13 @@ function Profile() {
               })
               .map((d, i) => (
                 <div key={i} className="editday-item">
-                  <strong>{new Date(d.data_diae).toLocaleDateString('pt-BR')}</strong> — <em>{d.name_diae}</em>: 
-                  <p className="editdays-description">{d.descricao_diae}</p>
+                  <strong>{new Date(d.day).toLocaleDateString('pt-BR')}</strong> — <em>{d.name_diae}</em>: 
+                  <p className="editdays-description">{d.description}</p>
                 </div>
               ))
             }
             {editdays?.result?.filter(d => {
-              const mesDoRegistro = new Date(d.data_diae).getMonth() + 1
+              const mesDoRegistro = new Date(d.day).getMonth() + 1
               return (
                 d.registration === user.employee.registration &&
                 mesDoRegistro === currentMonth

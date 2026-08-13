@@ -9,11 +9,11 @@ export default function AddTeam({isOpen, setIsOpen}) {
   const [erroMessage, setErroMessage] = useState()
   const [response, setResponse] = useState('Erro')
 
-  const [nome_equipe, setEquipe] = useState()
+  const [name, setEquipe] = useState()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const team = await addTeam(user, nome_equipe)
+    const team = await addTeam(user, name)
 
     if (team.result) {
       setResponse('Sucesso')
@@ -42,11 +42,11 @@ export default function AddTeam({isOpen, setIsOpen}) {
         <p className="form-title">Adicionar Equipe</p>
         <div className="form-card admin-setor">
           <input name="equipe" type="text" className="form-input" placeholder="Nome do Equipe"
-            value={nome_equipe} onChange={(e) => setEquipe(e.target.value)} />
+            value={name} onChange={(e) => setEquipe(e.target.value)} />
         </div>
         <div className="buttons-form">
           <button type="submit" className="confirm-button"
-            disabled={!nome_equipe}
+            disabled={!name}
           >
             Concluir
           </button>

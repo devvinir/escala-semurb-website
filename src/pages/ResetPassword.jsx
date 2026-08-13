@@ -9,21 +9,21 @@ import {BeatLoader} from 'react-spinners'
 function ResetPassword(){
 
   const route = useNavigate();
-  const [nova_senha, setSenha] = useState()
-  const [confirmar_senha, setConfirmSenha] = useState()
+  const [new_password, setSenha] = useState()
+  const [confirm_password, setConfirmSenha] = useState()
   const [erroMessage, setErroMessage] = useState('')
   const [response, setResponse] = useState('Erro')
   const {resetPassword} = useAuth()
   const {id} = useParams()
-  const [codigo, matricula_funcionario] = id.split('-');
+  const [code, registration] = id.split('-');
   const [load, setLoad] = useState(false)
 
-  console.log(codigo, matricula_funcionario)
+  console.log(code, registration)
   const handleSignIn = async (e) => {
     e.preventDefault();
     setLoad(true)
 
-   const newPassword = await resetPassword(matricula_funcionario, codigo, nova_senha, confirmar_senha)
+   const newPassword = await resetPassword(registration, code, new_password, confirm_password)
    if(newPassword?.result){
       setResponse('Sucesso')
       setErroMessage(newPassword.sucess)
@@ -63,16 +63,16 @@ function ResetPassword(){
         <div className="content-login">
         <label className='label-login'> Nova Senha: </label>
         <input className='input-login' type="password"
-        value={nova_senha}
+        value={new_password}
         onChange={(e) => setSenha(e.target.value)} />
 
          <label className='label-login'> Confirmar Senha: </label>
         <input className='input-login' type="password" 
-        value={confirmar_senha}
+        value={confirm_password}
         onChange={(e) => setConfirmSenha(e.target.value)} />
 
-        <button type="submit" className={`button-login ${!nova_senha || !confirmar_senha ? 'disable' : ''}`} 
-        disabled={!nova_senha || !confirmar_senha}>{load? <BeatLoader size={15} color='#F4D03F'/> : "Concluir"}</button>
+        <button type="submit" className={`button-login ${!new_password || !confirm_password ? 'disable' : ''}`} 
+        disabled={!new_password || !confirm_password}>{load? <BeatLoader size={15} color='#F4D03F'/> : "Concluir"}</button>
       
         <a className='forgot-password' href="/">Voltar ao login</a>
         </div> 

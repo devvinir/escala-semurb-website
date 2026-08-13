@@ -9,24 +9,24 @@ import {BeatLoader} from 'react-spinners'
 function CodeVerify(){
 
   const route = useNavigate();
-  const [codigo, setCodigo] = useState()
+  const [code, setCode] = useState()
   const [erroMessage, setErroMessage] = useState('')
   const [response, setResponse] = useState('Erro')
   const {codeVerify} = useAuth()
   const {id} = useParams()
-  const matricula_funcionario = id
-  const [code, setCode] = useState()
+  const registration = id
+  const [codeset, setCodeset] = useState()
   const [load, setLoad] = useState(false)
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     setLoad(true)
 
-   const receiveCode = await codeVerify(codigo, matricula_funcionario)
+   const receiveCode = await codeVerify(code, registration)
    if(receiveCode?.result){
       setResponse('Sucesso')
       setErroMessage(receiveCode.sucess)
-      setCode(receiveCode.result.codigo)
+      setCodeset(receiveCode.result.code)
    } else {
     setResponse(response)
     setErroMessage(receiveCode.error)   
@@ -43,7 +43,7 @@ function CodeVerify(){
       error={erroMessage}
       onClose={() => {setErroMessage("");
         if(response === 'Sucesso')
-        route(`/reset-password/${code}-${matricula_funcionario}`)
+        route(`/reset-password/${codeset}-${registration}`)
     }}
       /></div>
       }
@@ -65,11 +65,11 @@ function CodeVerify(){
         <label className='label-login'> Código: </label>
         <input className='input-login' type="number" name="code" 
         id="code" 
-        value={codigo}
-        onChange={(e) => setCodigo(e.target.value)} />
+        value={code}
+        onChange={(e) => setCode(e.target.value)} />
 
-        <button type="submit" className={`button-login ${!codigo ? 'disable' : ''}`} 
-        disabled={!codigo}>{load? <BeatLoader size={15} color='#F4D03F'/> : "Verificar"}</button>
+        <button type="submit" className={`button-login ${!code ? 'disable' : ''}`} 
+        disabled={!code}>{load? <BeatLoader size={15} color='#F4D03F'/> : "Verificar"}</button>
       
         <a className='forgot-password' href="/">Voltar ao login</a>
         </div> 

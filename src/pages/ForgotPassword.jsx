@@ -23,7 +23,7 @@ function ForgotPassword(){
    if(sendCode?.result){
       setResponse('Sucesso')
       setErroMessage(sendCode.sucess)
-      setMatricula(sendCode.result.matricula_funcionario)
+      setMatricula(sendCode.result.registration)
    } else {
     setResponse(response)
     setErroMessage(sendCode.error)   

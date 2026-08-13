@@ -25,7 +25,7 @@ function CurrentDay() {
   const [search, setSearch] = useState('')
   const searchLowerCase = search.toLowerCase();
   const listSearch = !list ? [] : list?.filter((employee) => 
-    employee.nome.toLowerCase().includes(searchLowerCase))
+    employee.name.toLowerCase().includes(searchLowerCase))
 
   const [ano, mes, dia] = String(date).split('-')
   const currentdate = new Date(ano, mes -1, dia)
@@ -58,14 +58,14 @@ function CurrentDay() {
         {!list ? <p className="loading-text">Carregando funcionários...</p> :
           
           listSearch?.map((employee) => (
-            <div className="table-row" key={employee.matricula_funcionario}
-              onClick={() => route(`/employees/${employee.matricula_funcionario}`)}>
-              <div className='matricula'>{employee.matricula_funcionario}</div>
-              <div >{employee.nome}</div>
-              <div >{scales?.result?.find(scale => (scale.escala.id_escala == employee.id_escala))?.escala.tipo_escala}</div>
+            <div className="table-row" key={employee.registration}
+              onClick={() => route(`/employees/${employee.registration}`)}>
+              <div className='matricula'>{employee.registration}</div>
+              <div >{employee.name}</div>
+              <div >{scales?.result?.find(scale => (scale.escala.id_escala == employee.scale_id))?.escala.scale_type}</div>
               <div > 
                 {(() => {
-                  const confirm = confirms?.result?.find(confirm => (confirm.matricula_funcionario == employee.matricula_funcionario))?.escala_confirmacao?.[0]?.status;
+                  const confirm = confirms?.result?.find(confirm => (confirm.registration == employee.registration))?.confirmation?.[0]?.status;
                   if (confirm === 'Pendente') {
                     return <IoIosCloseCircle color='orange' size={30}/>
                   } else if (confirm === 'Confirmado') {

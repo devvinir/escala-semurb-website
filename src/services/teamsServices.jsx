@@ -6,7 +6,7 @@ export const findTeams = async (user) => {
     const sucess = 'Equipes listadas com sucesso'
     return { result: data, error: null, sucess: sucess }
   } catch (error) {
-    const erro = error.response?.data?.mensagem
+    const erro = error.response?.data?.message
     console.error("Erro ao buscar equipes:", erro);
     return { result: null, error: erro, sucess: null }
   }
@@ -19,7 +19,7 @@ export const addTeam = async (user, name) => {
     const sucess = "Equipe cadastrado com sucesso"
     return { result: data, error: null, sucess: sucess }
   } catch (error) {
-    const erro = error?.response?.data?.mensagem || error?.message
+    const erro = error?.response?.data?.message || error?.message
     console.error('Erro ao criar equipe', erro)
     return { result: null, error: erro, sucess: null }
   }
@@ -31,7 +31,7 @@ export const findAllTeams = async() => {
     const sucess = 'Equipes listadas com sucesso'
     return { result: data.teams, error: null, sucess: sucess}
   }catch(error){
-    const erro = error?.response?.data?.mensagem || error?.message
+    const erro = error?.response?.data?.message || error?.message
     console.error('Erro ao listar equipes: ', erro)
     return { result: null, error: erro, sucess: null}
   }
@@ -50,7 +50,7 @@ export const createReportTeam = async (user, team_id) => {
     return { result: response.data, error: null };
 
   } catch (error) {
-    const erro = error?.response?.data?.mensagem || error?.message;
+    const erro = error?.response?.data?.message || error?.message;
     return { result: null, error: erro };
   }
 };

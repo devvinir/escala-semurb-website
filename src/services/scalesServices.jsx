@@ -5,13 +5,13 @@ export const addScale = async (
 ) => {
   try {
     const { data } = await api.post('/cadastrarEscala', {
-      matricula_adm: user?.funcionario.matricula_funcionario,
+      matricula_adm: user?.employee.registration,
       ...payload
     })
     const sucess = "Cadastro da escala realizado com sucesso"
     return { result: data, error: null, sucess: sucess }
   } catch (error) {
-    const erro = error?.response?.data?.mensagem || error?.message
+    const erro = error?.response?.data?.message || error?.message
     console.error('Erro ao cadastrar escala', erro)
     return { result: null, error: erro, sucess: null }
   }
@@ -22,13 +22,13 @@ export const updateScale = async (
 ) => {
   try {
     const { data } = await api.put('alterarEscala', {
-      matricula_adm: user?.funcionario?.matricula_funcionario,
+      matricula_adm: user?.employee?.registration,
       ...payload
     })
     const sucess = "Escala atualizada com sucesso"
     return { result: data, error: null, sucess: sucess }
   } catch (error) {
-    const erro = error?.response?.data?.mensagem || error?.message
+    const erro = error?.response?.data?.message || error?.message
     console.error('Erro ao atualizar escala', erro)
     return { result: null, error: erro, sucess: null }
   }
@@ -36,11 +36,11 @@ export const updateScale = async (
 
 export const findScales = async (user) => {
   try {
-    const { data } = await api.get(`/escalasSetor/${user?.funcionario?.matricula_funcionario}`)
+    const { data } = await api.get(`/escalasSetor/${user?.employee?.registration}`)
     const sucess = "Escalas listadas com sucesso"
     return { result: data, error: null, sucess: sucess }
   } catch (error) {
-    const erro = error?.response?.data?.mensagem || error?.message
+    const erro = error?.response?.data?.message || error?.message
     console.error('Erro ao listar escalas', erro)
     return { result: null, error: erro, sucess: null}
   }
@@ -52,7 +52,7 @@ export const findAllScales = async () => {
     const sucess = "Escalas listadas com sucesso"
     return { result: data.escalas, error: null, sucess: sucess }
   } catch (error) {
-    const erro = error?.response?.data?.mensagem || error?.message
+    const erro = error?.response?.data?.message || error?.message
     console.error('Erro ao listar escalas', erro)
     return { result: null, error: erro, sucess: null}
   }
@@ -66,7 +66,7 @@ export const addScaleAdmin = async(payload) =>{
     const sucess = 'Escala cadastrada com sucesso'
     return{result:data, error: null, sucess: sucess}
   }catch(error){
-    const erro = error?.response?.data?.mensagem || error?.message
+    const erro = error?.response?.data?.message || error?.message
     console.error('Erro ao cadastrar escala: ', erro)
     return {result: null, error: erro, sucess: null}
   }
@@ -81,7 +81,7 @@ export const updateScaleAdmin = async ( payload) => {
     const sucess = 'Escala alterada com sucesso'
     return { result: data, error: null, sucess: sucess }
   } catch (error) {
-    const erro = error?.response?.data?.mensagem || error.message
+    const erro = error?.response?.data?.message || error.message
     console.error('Erro ao alterar escala ', erro)
     return { result: null, error: erro, sucess: null }
   }
@@ -93,8 +93,8 @@ export const findHolidays = async() => {
     const sucess = 'Feriados listados com sucesso'
     return {result: data.feriados, error: null, sucess: sucess}
   }catch(error){
-    const erro = error?.response?.data?.mensagem || error.message
-    console.error("Erro ao listar feriados: ", erro)
+    const erro = error?.response?.data?.message || error.message
+    console.error(erro, error.message)
     return {result: null, error:erro, sucess: null}
   }
 }

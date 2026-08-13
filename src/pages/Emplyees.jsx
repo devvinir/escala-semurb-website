@@ -29,18 +29,18 @@ function Employee() {
   // Otimização: Os dados do funcionário só são recalculados se 'employees' ou 'id' mudarem.
   const currentEmployee = useMemo(() => {
     if (!employees?.result) return null;
-    return employees.result.find(employee => String(employee.matricula_funcionario) === id);
+    return employees.result.find(employee => String(employee.registration) === id);
   }, [employees, id]);
 
   // Otimização: A escala, turno, etc., só são recalculados se o funcionário mudar.
   const { scale, turn, team, region, sector } = useMemo(() => {
     if (!currentEmployee) return {};
 
-    const foundScale = scales?.result?.find(s => s.escala.id_escala === currentEmployee.id_escala)?.escala;
-    const foundTurn = turns?.result?.find(t => t.id_turno === currentEmployee.id_turno);
-    const foundTeam = teams?.result?.find(t => t.id_equipe === currentEmployee.id_equipe)?.nome_equipe;
-    const foundRegion = regions?.result?.find(r => r.id_regiao === currentEmployee.id_regiao)?.nome_regiao;
-    const foundsector = user?.funcionario?.id_setor === currentEmployee?.id_setor ? user?.setor?.nome_setor : null
+    const foundScale = scales?.result?.find(s => s.escala.id_escala === currentEmployee.scale_id)?.escala;
+    const foundTurn = turns?.result?.find(t => t.id_turno === currentEmployee.shift_id);
+    const foundTeam = teams?.result?.find(t => t.id_equipe === currentEmployee.team_id)?.name;
+    const foundRegion = regions?.result?.find(r => r.id_regiao === currentEmployee.region_id)?.name;
+    const foundsector = user?.employee?.sector_id === currentEmployee?.sector_id ? user?.setor?.name : null
     return {
       scale: foundScale,
       turn: foundTurn,
@@ -64,15 +64,15 @@ function Employee() {
   if (!currentEmployee)
     return <p className="loading-text">Não foi possível carregar o funcionário..</p>
 
-    async function handleReport(matricula_funcionario) {
-  const report = await createReportEmployee(user, matricula_funcionario);
+    async function handleReport(registration) {
+  const report = await createReportEmployee(user, registration);
 
   if (report?.result) {
     const blobUrl = URL.createObjectURL(report.result);
 
     const link = document.createElement("a");
     link.href = blobUrl;
-    link.download = `relatorio_funcionario_${matricula_funcionario}.pdf`;
+    link.download = `relatorio_funcionario_${registration}.pdf`;
 
     document.body.appendChild(link);
     link.click();
@@ -111,22 +111,22 @@ function Employee() {
 
       <div className="container-profile-page">
 
-        <div key={currentEmployee?.matricula_funcionario} className="profile-container">
+        <div key={currentEmployee?.registration} className="profile-container">
           <div className="profile-card-up">
             <IoIosContact size={200} color={'#6B7280'} />
-            <h2 className="profile-name">{currentEmployee?.nome}</h2>
+            <h2 className="profile-name">{currentEmployee?.name}</h2>
           </div>
           <div className="profile-card-down">
-            <p className="profile-info">Matricula: <span className="info-auth">{currentEmployee?.matricula_funcionario}</span> </p>
-            <p className="profile-info">Telefone: <span className="info-auth">{currentEmployee?.telefone}</span></p>
+            <p className="profile-info">Matricula: <span className="info-auth">{currentEmployee?.registration}</span> </p>
+            <p className="profile-info">phone: <span className="info-auth">{currentEmployee?.phone}</span></p>
             <p className="profile-info">Email: <span className="info-auth">{currentEmployee?.email}</span></p>
-            <p className="profile-info">Escala: <span className="info-auth">{scale?.tipo_escala}</span></p>
+            <p className="profile-info">Escala: <span className="info-auth">{scale?.scale_type}</span></p>
             <p className="profile-info">Equipe: <span className="info-auth">{team}</span></p>
             <p className="profile-info">Regiao: <span className="info-auth">{region}</span></p>
             <p className="profile-info">Setor: <span className="info-auth">{sector}</span></p>
           </div>
           <button className="confirm-button" onClick={() => setIsOpenEmployeeUpdate(!isOpenEmployeeUpdate)}>Atualizar Dados </button>
-          <button className="alert-button report" onClick={() => handleReport(currentEmployee?.matricula_funcionario)}>Relatório do Funcionário</button>
+          <button className="alert-button report" onClick={() => handleReport(currentEmployee?.registration)}>Relatório do Funcionário</button>
         </div>
 
         <div className="profile-escale">
@@ -141,30 +141,30 @@ function Employee() {
           <div className="profile-escale-details">
             <div className="details d-folgas">{`Folgas: ${getRestDaysDisplay(scale)}`}</div>
             <div className="details d-feriados">{`Feriados: ${formatCurrentMonthHolidays(scale, holidays?.result)}`}</div>
-            <div className="details d-horarios">{`Horario: ${formatTurn(turn?.inicio_turno)} - ${formatTurn(turn?.termino_turno)} / Intervalo: ${formatTurn(turn?.intervalo_turno)}`}</div>
+            <div className="details d-horarios">{`Horario: ${formatTurn(turn?.shift_start)} - ${formatTurn(turn?.shift_end)} / Intervalo: ${formatTurn(turn?.shift_pause)}`}</div>
           </div>
 
           <div className="editdays-container">
             <p className='editdays-title'>Mudanças nos dias:</p>
             {editdays?.result
               ?.filter(d => {
-                const mesDoRegistro = new Date(d.data_diae).getMonth() + 1
+                const mesDoRegistro = new Date(d.day).getMonth() + 1
                 return (
-                  d.matricula_funcionario === currentEmployee.matricula_funcionario &&
+                  d.registration === currentEmployee.registration &&
                   mesDoRegistro === currentMonth
                 )
               })
               .map((d, i) => (
                 <div key={i} className="editday-item">
-                  <strong>{new Date(d.data_diae).toLocaleDateString('pt-BR')}</strong> — <em>{d.nome_diae}</em>: 
-                  <p className="editdays-description">{d.descricao_diae}</p>
+                  <strong>{new Date(d.day).toLocaleDateString('pt-BR')}</strong> — <em>{d.title}</em>: 
+                  <p className="editdays-description">{d.description}</p>
                 </div>
               ))
             }
             {editdays?.result?.filter(d => {
-              const mesDoRegistro = new Date(d.data_diae).getMonth() + 1
+              const mesDoRegistro = new Date(d.day).getMonth() + 1
               return (
-                d.matricula_funcionario === currentEmployee.matricula_funcionario &&
+                d.registration === currentEmployee.registration &&
                 mesDoRegistro === currentMonth
               )
             }).length === 0 && (
@@ -175,25 +175,25 @@ function Employee() {
 
           <div className="update-buttons">
             <button className="confirm-button" onClick={() => {
-              if (currentEmployee.id_escala) {
+              if (currentEmployee.scale_id) {
                 setIsOpenScaleUpdate(!isOpenScaleUpdate)
               }
-              if (!currentEmployee.id_escala) {
+              if (!currentEmployee.scale_id) {
                 setIsOpenEmployeeAdd(!isOpenEmployeeAdd)
                 setPage(2)
               }
             }}>
-              {currentEmployee?.id_escala ? 'Atualizar Escala' : 'Nova Escala'}
+              {currentEmployee?.scale_id ? 'Atualizar Escala' : 'Nova Escala'}
             </button>
             <button className="confirm-button" onClick={() => {
-              if (currentEmployee.id_turno) {
+              if (currentEmployee.shift_id) {
                 setIsOpenTurnUpdate(!isOpenTurnUpdate)
               }
-              if (!currentEmployee.id_turno) {
+              if (!currentEmployee.shift_id) {
                 setIsOpenEmployeeAdd(!isOpenEmployeeAdd)
                 setPage(3)
               }
-            }}>{currentEmployee?.id_escala ? 'Atualizar Turno' : 'Novo Turno'}
+            }}>{currentEmployee?.scale_id ? 'Atualizar Turno' : 'Novo Turno'}
             </button>
           </div>
         </div>

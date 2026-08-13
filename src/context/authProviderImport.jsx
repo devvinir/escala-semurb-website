@@ -33,18 +33,18 @@ export const AuthProvider = ({ children }) => {
   const [editdays, setEditdays] = useState([])
   const [confirms, setConfirms] = useState([])
 
-  const signIn = async (matricula_funcionario, senha) => {
+  const signIn = async (registration, senha) => {
     try {
-      if (!matricula_funcionario || !senha) {
+      if (!registration || !senha) {
         const erro = 'Preencha todos os campos'
         return { result: null, error: erro };
       }
-      if (!/^\d+$/.test(matricula_funcionario)) {
+      if (!/^\d+$/.test(registration)) {
         const erro = 'Creedenciais Invalidas'
         return { result: null, error: erro }
       }
       const { data } = await api.post('/loginAdm', {
-        matricula_funcionario,
+        registration,
         senha
       })
 
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
       const sucess = 'Login realizado com sucesso'
       return { result: data, error: null, sucess: sucess };
     } catch (error) {
-      const erro = error.response?.data?.mensagem 
+      const erro = error.response?.data?.message 
       console.error('Erro ao fazer login: ', erro)
       return { result: null, error: erro, sucess: null }
     }
@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }) => {
       const sucess = 'Login realizado com sucesso'
       return { result: data, error: null, sucess: sucess };
     } catch (error) {
-      const erro = error?.response?.data?.mensagem 
+      const erro = error?.response?.data?.message 
       console.error("Erro ao fazer login como admin", erro)
       return { result: null, error: erro, sucess: null}
     }
@@ -100,15 +100,15 @@ export const AuthProvider = ({ children }) => {
     setAllSectors(res)
   }
 
-  const handleDelEmployee = async (matricula_funcionario) => {
-    const res = await deleteEmployee(matricula_funcionario);
+  const handleDelEmployee = async (registration) => {
+    const res = await deleteEmployee(registration);
     if (res.result) {
       await getAllEmployees();
     }
     return res;
   };
-  const handleDelSector = async(id_setor) => {
-    const res = await deleteSector(id_setor);
+  const handleDelSector = async(id) => {
+    const res = await deleteSector(id)
     if(res.result) {
       await getAllSectors();
       await getAllEmployees();
@@ -160,7 +160,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (user?.funcionario?.matricula_funcionario) {
+    if (user?.employee?.registration) {
       (async () => {
         const today = new Date().toISOString().split('T')[0]
         setActives(await findActives(user, today));
@@ -223,7 +223,7 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       const timer = setTimeout(() => {
         window.location.href = '/';
-      }, 2000); // 2 segundos para mostrar a mensagem
+      }, 2000); // 2 segundos para mostrar a message
       return () => clearTimeout(timer);
     }
   }, [token]);

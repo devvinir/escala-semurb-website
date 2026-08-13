@@ -4,19 +4,19 @@ export function getRestDaysDisplay(scale) {
   if (!scale) return 'N/A';
 
   // Se tem dias específicos de folga definidos
-  if (Array.isArray(scale.dias_n_trabalhados_escala_semanal) && 
-      scale.dias_n_trabalhados_escala_semanal.length > 0) {
-    return scale.dias_n_trabalhados_escala_semanal.join(' - ');
+  if (Array.isArray(scale.unwork_scale) && 
+      scale.unwork_scale.length > 0) {
+    return scale.unwork_scale.join(' - ');
   }
 
   // Se é ciclo automático (NxM), calcular os dias de folga
-  if (scale.dias_trabalhados !== undefined && 
+  if (scale.work_day !== undefined && 
       scale.dias_n_trabalhados !== undefined && 
-      scale.data_inicio) {
+      scale.start_date) {
     
     const restDays = calculateRestDaysFromCycle(
-      scale.data_inicio,
-      scale.dias_trabalhados,
+      scale.start_date,
+      scale.work_day,
       scale.dias_n_trabalhados
     );
     
@@ -92,7 +92,7 @@ export function getHolidaysForScale(scale, holidays, monthFilter = null) {
       
       return {
         id: holiday.id_feriado,
-        nome: holiday.nome_feriado,
+        nome: holiday.name_feriado,
         data: holiday.dia_feriado,
         dataFormatada: holidayDate.toLocaleDateString('pt-BR'),
         status: isWorkDay ? 'Trabalha' : 'Folga',
@@ -108,27 +108,27 @@ function isWorkingDay(date, scale) {
   const DaysOfWeek = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
 
   // Se dias específicos definidos
-  if (Array.isArray(scale.dias_n_trabalhados_escala_semanal) &&
-      scale.dias_n_trabalhados_escala_semanal.length > 0) {
+  if (Array.isArray(scale.unwork_scale) &&
+      scale.unwork_scale.length > 0) {
     const dayOfWeek = date.getDay();
     const dayName = DaysOfWeek[dayOfWeek];
-    return !scale.dias_n_trabalhados_escala_semanal.includes(dayName);
+    return !scale.unwork_scale.includes(dayName);
   }
 
   // Se é ciclo automático NxM
-  if (scale.data_inicio && scale.dias_trabalhados !== undefined &&
+  if (scale.start_date && scale.work_day !== undefined &&
       scale.dias_n_trabalhados !== undefined) {
     // parse seguro UTC
-    const startDate = new Date(scale.data_inicio + 'T00:00:00');
+    const startDate = new Date(scale.start_date + 'T00:00:00');
     const diffTime = date.getTime() - startDate.getTime();
     const diffDays = Math.floor(diffTime / (24 * 60 * 60 * 1000));
 
     if (diffDays < 0) return true; // antes da escala considera dia de trabalho
 
-    const cycleLength = scale.dias_trabalhados + scale.dias_n_trabalhados;
+    const cycleLength = scale.work_day + scale.dias_n_trabalhados;
     const positionInCycle = diffDays % cycleLength;
 
-    return positionInCycle < scale.dias_trabalhados;
+    return positionInCycle < scale.work_day;
   }
 
   return true;
@@ -155,7 +155,7 @@ export function formatHolidaysDisplay(scale, holidays, monthFilter = null) {
   // Limitar a 3 feriados para não ficar muito longo
   const display = workHolidays
     .slice(0, 3)
-    .map(h => `${h.nome} (${h.dataFormatada})`)
+    .map(h => `${h.name} (${h.dataFormatada})`)
     .join(', ');
   
   const remaining = workHolidays.length - 3;
@@ -178,6 +178,6 @@ export function formatCurrentMonthHolidays(scale, holidays) {
 }
 
 export function calculateCycleLength(scale) {
-  if (!scale.dias_trabalhados || !scale.dias_n_trabalhados) return 0;
-  return scale.dias_trabalhados + scale.dias_n_trabalhados;
+  if (!scale.work_day || !scale.dias_n_trabalhados) return 0;
+  return scale.work_day + scale.dias_n_trabalhados;
 }

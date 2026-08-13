@@ -50,11 +50,11 @@ function Page1({ isOpenEmployee, setIsOpenEmployee, goNextPage }) {
   const [form, setForm] = useState({
     registration: '',
     nome: '',
-    telefone: '',
+    phone: '',
     email: '',
-    cargo: '',
-    nome_equipe: '',
-    nome_regiao: '',
+    position: '',
+    name: '',
+    name: '',
   })
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -110,27 +110,27 @@ function Page1({ isOpenEmployee, setIsOpenEmployee, goNextPage }) {
               value={form.registration} onChange={handleChange} />
 
             <input name='nome' type="text" className="form-input" placeholder="Nome Completo"
-              value={form.nome} onChange={handleChange} />
+              value={form.name} onChange={handleChange} />
 
-            <input name='telefone' type="tel" className="form-input" placeholder="Telefone"
-              value={form.telefone} onChange={handleChange} />
+            <input name='phone' type="tel" className="form-input" placeholder="phone"
+              value={form.phone} onChange={handleChange} />
 
             <input name='email' type="email" className="form-input" placeholder="Email"
               value={form.email} onChange={handleChange} />
 
-            <input name='cargo' type="text" className="form-input" placeholder="Cargo"
-              value={form.cargo} onChange={handleChange} />
+            <input name='position' type="text" className="form-input" placeholder="position"
+              value={form.position} onChange={handleChange} />
 
-            <select name='nome_equipe' id="equipe-input" list="equipes-list" className="form-input form-option"
-              placeholder="Equipe" value={form.nome_equipe} onChange={handleChange}>
+            <select name='name' id="equipe-input" list="equipes-list" className="form-input form-option"
+              placeholder="Equipe" value={form.name} onChange={handleChange}>
               <option value={null}>Selecione uma equipe</option>
               {teams?.result?.map((eq) => (
-                <option key={eq.id_equipe} value={eq.nome_equipe}> {eq.nome_equipe}</option>
+                <option key={eq.id_equipe} value={eq.name}> {eq.name}</option>
               ))}
             </select>
 
-            <select name='nome_regiao' id="regiao-input" list="regioes-list" className="form-input form-option"
-              placeholder="Regiao" value={form.nome_regiao} onChange={handleChange}>
+            <select name='name' id="regiao-input" list="regioes-list" className="form-input form-option"
+              placeholder="Regiao" value={form.name} onChange={handleChange}>
               <option value={null}>Selecione uma região</option>
               <option value='Sul'>Sul</option>
               <option value='Norte'>Norte</option>
@@ -275,10 +275,10 @@ function Page3({ employee, setIsOpenEmployee }) {
 
   const [form, setForm] = useState({
     registration: employee.registration,
-    inicio_turno: '',
-    termino_turno: '',
-    duracao_turno: '',
-    intervalo_turno: ''
+    shift_start: '',
+    shift_end: '',
+    total_shift: '',
+    shift_pause: ''
   })
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -327,20 +327,20 @@ function Page3({ employee, setIsOpenEmployee }) {
               value={form.registration} onChange={handleChange} />
 
             <label className="form-label">Inicio do Turno</label>
-            <input name='inicio_turno' type="time" className="form-input"
-              value={form.inicio_turno} onChange={handleChange} />
+            <input name='shift_start' type="time" className="form-input"
+              value={form.shift_start} onChange={handleChange} />
 
             <label className="form-label">Termino do Turno</label>
-            <input type="time" className="form-input" name='termino_turno'
-              value={form.termino_turno} onChange={handleChange} />
+            <input type="time" className="form-input" name='shift_end'
+              value={form.shift_end} onChange={handleChange} />
 
             <label className="form-label">Duração do Turno</label>
-            <input type="time" className="form-input" name='duracao_turno'
-              value={form.duracao_turno} onChange={handleChange} />
+            <input type="time" className="form-input" name='total_shift'
+              value={form.total_shift} onChange={handleChange} />
 
             <label className="form-label">Intervalo do Turno</label>
-            <input type="time" className="form-input" name='intervalo_turno'
-              value={form.intervalo_turno} onChange={handleChange} />
+            <input type="time" className="form-input" name='shift_pause'
+              value={form.shift_pause} onChange={handleChange} />
           </div>
 
           <div className="buttons-form">

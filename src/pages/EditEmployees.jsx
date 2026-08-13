@@ -105,9 +105,9 @@ function EditEmployee() {
           </div>
           <div className="profile-card-down">
             <p className="profile-info">Matrícula: <span className="info-auth">{currentEmployee?.registration}</span> </p>
-            <p className="profile-info">Telefone: <span className="info-auth">{currentEmployee?.phone}</span></p>
+            <p className="profile-info">phone: <span className="info-auth">{currentEmployee?.phone}</span></p>
             <p className="profile-info">Email: <span className="info-auth">{currentEmployee?.email}</span></p>
-            <p className="profile-info">Cargo: <span className="info-auth">{currentEmployee?.position}</span></p>
+            <p className="profile-info">position: <span className="info-auth">{currentEmployee?.position}</span></p>
             <p className="profile-info">Equipe: <span className="info-auth">{team}</span></p>
             <p className="profile-info">Região: <span className="info-auth">{region}</span></p>
             <p className="profile-info">Setor: <span className="info-auth">{sector}</span></p>
@@ -135,7 +135,7 @@ function EditEmployee() {
             <p className='editdays-title'>Mudanças nos dias:</p>
             {editdays?.result
               ?.filter(d => {
-                const mesDoRegistro = new Date(d.data_diae).getMonth() + 1
+                const mesDoRegistro = new Date(d.day).getMonth() + 1
                 return (
                   d.registration === currentEmployee.registration &&
                   mesDoRegistro === currentMonth
@@ -143,13 +143,13 @@ function EditEmployee() {
               })
               .map((d, i) => (
                 <div key={i} className="editday-item">
-                  <strong>{new Date(d.data_diae).toLocaleDateString('pt-BR')}</strong> — <em>{d.nome_diae}</em>: 
-                  <p className="editdays-description">{d.descricao_diae}</p>
+                  <strong>{new Date(d.day).toLocaleDateString('pt-BR')}</strong> — <em>{d.title}</em>: 
+                  <p className="editdays-description">{d.description}</p>
                 </div>
               ))
             }
             {editdays?.result?.filter(d => {
-              const mesDoRegistro = new Date(d.data_diae).getMonth() + 1
+              const mesDoRegistro = new Date(d.day).getMonth() + 1
               return (
                 d.registration === currentEmployee.registration &&
                 mesDoRegistro === currentMonth

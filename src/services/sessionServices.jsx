@@ -5,36 +5,36 @@ export const forgotPassword = async(email) =>{
       const {data} = await api.post('/envioVerificacaoAdm_email',{
         email
       })
-    const sucess = "Codigo enviado com sucesso"
+    const sucess = "code enviado com sucesso"
     return {result: data, error: null, sucess: sucess}
   } catch(error){
-    const erro = error?.response?.data?.mensagem || error?.message
+    const erro = error?.response?.data?.message || error?.message
     return {result: null, error: erro, sucess: null}
   }
 }
 
-export const codeVerify = async(codigo, matricula_funcionario) =>{
+export const codeVerify = async(code, registration) =>{
   try{
-    const {data} = await api.post('/verificacaoCodigoAdm',{
-      codigo, matricula_funcionario
+    const {data} = await api.post('/verificacaocodeAdm',{
+      code, registration
     })
-    const sucess = "Codigo verificado com sucesso"
+    const sucess = "code verificado com sucesso"
     return {result: data, error: null, sucess: sucess}
   } catch(error){
-    const erro = error?.response?.data?.mensagem || error?.message
+    const erro = error?.response?.data?.message || error?.message
     return {result: null, error: erro || error?.message, sucess: null}
   }
 }
 
-export const resetPassword = async(matricula_funcionario, codigo, nova_senha, confirmar_senha) =>{
+export const resetPassword = async(registration, code, new_password, confirm_password) =>{
   try{
     const {data} = await api.put('/redefinirSenhaAdm',{
-       matricula_funcionario, codigo, nova_senha, confirmar_senha
+       registration, code, new_password, confirm_password
     })
     const sucess = "Senha redefinida com sucesso"
     return {result: data, error: null, sucess: sucess}
   } catch(error){
-    const erro = error?.response?.data?.mensagem || error?.message
+    const erro = error?.response?.data?.message || error?.message
     return {result: null, error: erro, sucess: null}
   }
 }

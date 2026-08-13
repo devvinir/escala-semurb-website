@@ -81,7 +81,7 @@ function Admin() {
             <div>Matrícula</div>
             <div>Nome</div>
             <div>Email</div>
-            <div>Telefone</div>
+            <div>phone</div>
           </div>
 
           <div className="adm-table-body">

@@ -96,7 +96,7 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
    
 
     employeeEditdays?.forEach(editday => {
-      const editdayDate = new Date(editday.data_diae);
+      const editdayDate = new Date(editday.day);
       const dateKey = editdayDate.toISOString().split('T')[0];
       
       // Se já existe um lembrete nessa data, adiciona ao array

@@ -12,12 +12,12 @@ export default function AddDayAlert({ employee, setIsOpenDay, isOpenDay, day }) 
   useEffect(() => {
     if (isOpenDay && employee)
       setForm({
-        matricula_funcionario: employee?.matricula_funcionario,
-        nome_diae: '',
-        descricao_diae: '',
-        data_diae: day,
+        registration: employee?.registration,
+        title: '',
+        description: '',
+        day: day,
       })
-  }, [isOpenDay, employee])
+  }, [isOpenDay, employee, day])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -56,17 +56,17 @@ export default function AddDayAlert({ employee, setIsOpenDay, isOpenDay, day }) 
         <form onSubmit={handleAddScale} className="forms">
           <p className="form-title">Alteração Esporádica</p>
           <div className="form-card">
-            <input name='matricula_funcionario' type="number" className="form-input" placeholder="Matricula"
-              value={form?.matricula_funcionario} />
+            <input name='registration' type="number" className="form-input" placeholder="Matricula"
+              value={form?.registration} />
 
-            <input name='nome_diae' type="text" className="form-input"
-            placeholder='Assunto'  value={form?.nome_diae} onChange={handleChange} />
+            <input name='title' type="text" className="form-input"
+            placeholder='Assunto'  value={form?.title} onChange={handleChange} />
 
-            <input name='descricao_diae' type='text' className="form-input" 
-            placeholder="Descrição" value={form?.descricao_diae} onChange={handleChange} />
+            <input name='description' type='text' className="form-input" 
+            placeholder="Descrição" value={form?.description} onChange={handleChange} />
             
-            <input name='data_diae' type='date' className="form-input"
-            value={form?.data_diae}  />   
+            <input name='day' type='date' className="form-input"
+            value={form?.day}  />   
           </div>
 
           <div className="buttons-form">

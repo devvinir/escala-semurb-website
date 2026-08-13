@@ -17,11 +17,11 @@ const formater = new Intl.DateTimeFormat('pt-BR', {
     if (isNotification) return(
     <div className="modal-list">
         <div className="list-container">
-            {user?.notificacoes?.map(n =>(
+            {user?.notification?.map(n =>(
             <div className="list-notification">
-                <p className="type-notification">{n.tipo_notificacao}</p>
-                <p className="message-notification">{n.mensagem}</p>
-                <p className="date-notification">{formater.format(new Date(n.enviada_em))}</p>
+                <p className="type-notification">{n.type}</p>
+                <p className="message-notification">{n.message}</p>
+                <p className="date-notification">{formater.format(new Date(n.send_at))}</p>
             </div>
         ))}
                 <button className="cancel-button"

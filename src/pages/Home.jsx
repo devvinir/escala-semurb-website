@@ -27,7 +27,7 @@ import '../styles/EmployeeList.css'
    const [search, setSearch] = useState('')
     const searchLowerCase = search.toLowerCase();
     const employeesList = employees?.result?.filter((employee) => 
-    employee.nome.toLowerCase().includes(searchLowerCase))
+    employee.name.toLowerCase().includes(searchLowerCase))
 
      
 
@@ -50,11 +50,11 @@ import '../styles/EmployeeList.css'
          {search? 
         <div className="list">
           {employeesList?.map(employee => (
-        <div className="list-content" key={employee.matricula_funcionario} 
-        onClick={() => route(`/employees/${employee.matricula_funcionario}`)}>
-          <p className="list-info">{employee.nome}</p>
+        <div className="list-content" key={employee.registration} 
+        onClick={() => route(`/employees/${employee.registration}`)}>
+          <p className="list-info">{employee.name}</p>
           <p className="list-info-bottom">
-              Equipe: {teams?.result?.find(team => (team.id_equipe == employee.id_equipe))?.nome_equipe}</p>
+              Equipe: {teams?.result?.find(team => (team.id_equipe == employee.team_id))?.name}</p>
         </div>
       ) )}
         </div>

@@ -6,7 +6,7 @@ export const findAllSectors = async () => {
              const sucess = "Setores listados com sucesso"
         return { result: data.sectors, error: null, sucess: sucess }
         } catch (error) {
-            const erro = error.response?.data?.mensagem || error.message
+            const erro = error.response?.data?.message || error.message
             console.error('Erro ao buscar TODOS setores', erro)
             return {result: null, error: erro, sucess: null}
         }
@@ -19,7 +19,7 @@ export const addSector = async (name) => {
              const sucess = "Setor cadastrado com sucesso"
         return { result: data, error: null, sucess: sucess }
         } catch (error) {
-            const erro = error.response?.data?.mensagem || error.message
+            const erro = error.response?.data?.message || error.message
             console.error('Erro ao criar setor', erro)
             return {result: null, error: erro, sucess: null}
         }
@@ -30,7 +30,7 @@ export const deleteSector = async (id) => {
         const sucess = "Setor deletado com sucesso"
         return { result: data, error: null, sucess: sucess }
         } catch (error) {
-            const erro = error.response?.data?.mensagem || error.message
+            const erro = error.response?.data?.message || error.message
             console.error(erro,": ", error.message)
             return {result: null, error: erro, sucess: null}
     }
@@ -41,7 +41,7 @@ export const updateSector = async (id, name) => {
         const sucess = "Setor editado com sucesso"
         return { result: data, error: null, sucess: sucess }
         } catch (error) {
-            const erro = error.response?.data?.mensagem || error.message 
+            const erro = error.response?.data?.message || error.message 
             console.error('Erro ao editar setor', erro)
             return {result: null, error: erro, sucess: null}
     }

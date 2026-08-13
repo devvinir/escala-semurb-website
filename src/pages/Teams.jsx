@@ -16,7 +16,7 @@ function Teams() {
     const [search, setSearch] = useState('')
     const searchLowerCase = search.toLowerCase();
     const employeesList = !employees ? [] : employees?.result?.filter((employee) => 
-    employee.nome.toLowerCase().includes(searchLowerCase))
+    employee.name.toLowerCase().includes(searchLowerCase))
 
     const [isOpenEmployeeModal, setIsOpenEmployeeModal] = useState(false)
     
@@ -58,7 +58,7 @@ function Teams() {
 
       <div className="type-table">
         <p className="type-title">Funcionarios da Equipe</p>
-        <p className="type-subtitle">{teams?.result?.find(team => (team.id_equipe == id))?.nome_equipe}</p>
+        <p className="type-subtitle">{teams?.result?.find(team => (team.id_equipe == id))?.name}</p>
       </div>
 
 <div className="table">
@@ -66,7 +66,7 @@ function Teams() {
     <div>Matrícula</div>
     <div>Nome</div>
     <div>Email</div>
-    <div>Telefone</div>
+    <div>phone</div>
     <div>Setor</div>
     <div>Equipe</div>
     <div>Região</div>
@@ -76,20 +76,20 @@ function Teams() {
 
      {!employees ? <p className="loading-text">Carregando funcionários...</p> : 
      
-     employeesList?.filter(employee => employee.id_equipe == id).map((employee) => (  
-      <div className="table-row" key={employee.matricula_funcionario} 
-      onClick={() => route(`/employees/${employee.matricula_funcionario}`)}>
+     employeesList?.filter(employee => employee.team_id == id).map((employee) => (  
+      <div className="table-row" key={employee.registration} 
+      onClick={() => route(`/employees/${employee.registration}`)}>
 
-            <div className='matricula'>{employee.matricula_funcionario}</div>
-            <div >{employee.nome}</div>
+            <div className='matricula'>{employee.registration}</div>
+            <div >{employee.name}</div>
             <div >{employee.email}</div>
-            <div >{employee.telefone}</div>
-            <div >{user?.setor?.id_setor == employee.id_setor ? user.setor?.nome_setor : ''}</div>
-            <div >{teams?.result?.find(team => (team.id_equipe == employee.id_equipe))?.nome_equipe}</div>
-            <div >{regions?.result?.find(region =>(region.id_regiao == employee.id_regiao))?.nome_regiao}</div>
-            <div >{scales?.result?.find(scale => (scale.escala.id_escala ==  employee.id_escala))?.escala.tipo_escala }</div>
+            <div >{employee.phone}</div>
+            <div >{user?.setor?.sector_id == employee.sector_id ? user.setor?.name : ''}</div>
+            <div >{teams?.result?.find(team => (team.id_equipe == employee.team_id))?.name}</div>
+            <div >{regions?.result?.find(region =>(region.id_regiao == employee.region_id))?.name}</div>
+            <div >{scales?.result?.find(scale => (scale.escala.id_escala ==  employee.scale_id))?.escala.scale_type }</div>
             <div >{(() => {
-              const confirm = confirms?.result?.find(confirm => (confirm.matricula_funcionario == employee.matricula_funcionario))?.escala_confirmacao?.[0]?.status;
+              const confirm = confirms?.result?.find(confirm => (confirm.registration == employee.registration))?.confirmation?.[0]?.status;
               if (confirm === 'Pendente') {
                 return <IoIosCloseCircle color='orange' size={30}/>
               } else if (confirm === 'Confirmado') {

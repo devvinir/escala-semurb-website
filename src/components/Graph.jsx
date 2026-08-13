@@ -16,7 +16,7 @@ function MyChart() {
       ["Escala", "Funcionarios", { role: "style" }],
       //...retira o array extra
       ...scalesEmployees.result.map(info =>[
-        info?.tipo_escala, 
+        info?.scale_type, 
         Number(info?.quantidade), 
         "#F4D03F"
       ])
@@ -28,7 +28,7 @@ function MyChart() {
       const dataChart = [
         ['Setores', 'Funcionarios', {role: 'style'}],
         ...sectorsEmployees.result.map(info =>[
-          info?.nome_setor, 
+          info?.name, 
           Number(info?.quantidade), 
           '#F4D03F'
         ])

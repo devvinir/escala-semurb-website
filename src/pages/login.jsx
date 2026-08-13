@@ -9,7 +9,7 @@ import { BeatLoader } from "react-spinners";
 function Login() {
   const route = useNavigate();
   const { signIn, logout } = useAuth();
-  const [matricula_funcionario, setMatricula] = useState()
+  const [registration, setMatricula] = useState()
   const [senha, setSenha] = useState()
   const [erroMessage, setErroMessage] = useState()
   const [response, setResponse] = useState('Erro')
@@ -18,7 +18,7 @@ function Login() {
     e.preventDefault();
     setLoad(true)
 
-    const userData = await signIn(matricula_funcionario, senha);
+    const userData = await signIn(registration, senha);
     if (userData.result) {
       route('/home', { replace: true });
     } else {
@@ -56,17 +56,17 @@ function Login() {
 
             <div className="content-login">
               <label className='label-login'> Numero de Matricula </label>
-              <input className='input-login' type="number" name="matricula_funcionario"
-                id="matricula_funcionario"
-                value={matricula_funcionario}
+              <input className='input-login' type="number" name="registration"
+                id="registration"
+                value={registration}
                 onChange={(e) => setMatricula(e.target.value)} />
 
               <label className='label-login'> Senha </label>
               <input className='input-login' type="password" name="senha" id="senha"
                 value={senha} onChange={(e) => setSenha(e.target.value)} />
 
-                <button type="submit" className={`button-login ${!matricula_funcionario || !senha ? 'disable' : ''}`}
-                  disabled={!matricula_funcionario || !senha}>
+                <button type="submit" className={`button-login ${!registration || !senha ? 'disable' : ''}`}
+                  disabled={!registration || !senha}>
                   {loading ? ( <BeatLoader size={15} color='#F4D03F' /> ) : ('Entrar') }
                 </button>
                

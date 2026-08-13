@@ -89,10 +89,10 @@ const filteredTeams = allTeams?.result?.filter(
             <input name='email' type="text" className="form-input" placeholder="Email"
               value={form.email} onChange={handleChange} />
 
-            <input name='phone' type="tel" className="form-input" placeholder="Telefone"
+            <input name='phone' type="tel" className="form-input" placeholder="phone"
               value={form.phone} onChange={handleChange} />
 
-            <input name='position' type="text" className="form-input" placeholder="Cargo"
+            <input name='position' type="text" className="form-input" placeholder="position"
               value={form.position} onChange={handleChange} />
 
             <select name="sector" id="setor-input" className="form-input"

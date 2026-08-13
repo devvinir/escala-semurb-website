@@ -6,7 +6,7 @@ export const addAdmin = async (payload) => {
         const sucess = "Administrador cadastrado com sucesso"
         return { result: data, error: null, sucess: sucess }
     } catch (error) {
-        const erro = error?.response?.data?.mensagem || error?.message
+        const erro = error?.response?.data?.message || error?.message
         console.error('Erro ao cadastrar administrador', erro)
         return { result: null, error: erro, sucess: null }
     }
@@ -17,7 +17,7 @@ export const deleteEmployee = async (registration) => {
         const sucess = "Funcionário deletado com sucesso"
         return { result: data, error: null, sucess: sucess }
     } catch (error) {
-        const erro = error.response?.data?.mensagem || error?.message
+        const erro = error.response?.data?.message || error?.message
         console.error('Erro ao deletar funcionário', erro)
         return { result: null, error: erro, sucess: null }
     }
@@ -30,7 +30,7 @@ export const updateAdmin = async (registration, payload) => {
         const sucess = "Funcionário editado com sucesso"
         return { result: data, error: null, sucess: sucess }
     } catch (error) {
-        const erro = error.response?.data?.mensagem || error?.message
+        const erro = error.response?.data?.message || error?.message
         console.error('Erro ao editar funcionário', erro)
         return { result: null, error: erro, sucess: null }
     }
@@ -42,7 +42,7 @@ export const findEditdays = async () => {
         const sucess = "Dias com especificações listados com sucesso"
         return { result: data.diasEspecificos, error: null, sucess: sucess }
     } catch (error) {
-        const erro = error.response?.data?.mensagem || error?.message
+        const erro = error.response?.data?.message || error?.message
         console.error('Erro ao listar especificações', erro)
         return { result: null, error: erro, sucess: null }
     }
@@ -55,7 +55,7 @@ export const addEditdays = async (user, payload) => {
         const sucess = "Especificação cadastrada com sucesso"
         return { result: data, error: null, sucess: sucess }
     } catch (error) {
-        const erro = error.response?.data?.mensagem || error?.message
+        const erro = error.response?.data?.message || error?.message
         console.error('Erro ao cadastrar especificação', erro)
         return { result: null, error: erro, sucess: null }
     }
@@ -72,7 +72,7 @@ export const createReport = async (user) =>{
         const sucess = "Relatório gerado com sucesso"
         return {result: data, error: null, sucess: sucess}
     } catch(error){
-        const erro = error?.response?.data?.mensagem || error?.message
+        const erro = error?.response?.data?.message || error?.message
         console.error('Erro ao gerar relatório', erro)
         return {result: null, error: erro, sucess: null}
     }

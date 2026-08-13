@@ -10,17 +10,17 @@ export default function UpdateEmployee({ isOpen, setIsOpen, employee }) {
   const [form, setForm] = useState({})
 
   const team = teams?.result?.find(team =>
-    employee.id_equipe == team.id_equipe)?.nome_equipe
+    employee.team_id == team.id_equipe)?.name
   const region = regions?.result?.find(region =>
-    employee.id_regiao == region.id_regiao)?.nome_regiao
+    employee.region_id == region.id_regiao)?.name
 
   useEffect(() => {
     if (isOpen && employee)
       setForm({
-        matricula_funcionario: employee.matricula_funcionario,
+        registration: employee.registration,
         email: employee.email,
-        telefone: employee.telefone,
-        cargo: employee.cargo,
+        phone: employee.phone,
+        position: employee.position,
         equipe: team,
         regiao: region,
       })
@@ -69,22 +69,22 @@ export default function UpdateEmployee({ isOpen, setIsOpen, employee }) {
           <p className="form-title">Atualizar Funcionario</p>
           <div className="form-card ">
 
-            <input name='matricula_funcionario' type="number" className="form-input" 
-            placeholder='Matricula' value={form.matricula_funcionario} />
+            <input name='registration' type="number" className="form-input" 
+            placeholder='Matricula' value={form.registration} />
 
             <input name='email' type="text" className="form-input" placeholder="Email"
               value={form.email} onChange={handleChange} />
 
-            <input name='telefone' type="tel" className="form-input" placeholder="Telefone"
-              value={form.telefone} onChange={handleChange} />
+            <input name='phone' type="tel" className="form-input" placeholder="phone"
+              value={form.phone} onChange={handleChange} />
 
-            <input name='cargo' type="text" className="form-input" placeholder="Cargo"
-              value={form.cargo} onChange={handleChange} />
+            <input name='position' type="text" className="form-input" placeholder="position"
+              value={form.position} onChange={handleChange} />
 
             <select name='equipe' className="form-input" value={form.equipe} onChange={handleChange}>
               <option value="">Selecione uma equipe</option>
               {teams?.result?.map((eq) => (
-                <option key={eq.id_equipe} value={eq.nome_equipe}> {eq.nome_equipe}</option>
+                <option key={eq.id_equipe} value={eq.name}> {eq.name}</option>
               ))}
             </select>
 

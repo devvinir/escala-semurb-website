@@ -63,12 +63,12 @@ function Sectors() {
           <div>Matrícula</div>
           <div>Nome</div>
           <div>Email</div>
-          <div>Telefone</div>
+          <div>phone</div>
           <div>Setor</div>
         </div>
 
 
-        {employeesList?.filter(employee => employee.id_sector == id).map((employee) => (
+        {employeesList?.filter(employee => employee.sector_id == id).map((employee) => (
           <div className="table-row" key={employee.registration}
             onClick={() => route(`/edit-employee/${employee.registration}`)}>
             <div className='matricula'>{employee.registration}</div>
@@ -76,7 +76,7 @@ function Sectors() {
             <div >{employee.email}</div>
             <div >{employee.phone}</div>
             <div >{allSectors.result?.find(sector => (
-              sector.id == employee.id_setor))?.name}</div>
+              sector.id == employee.sector_id))?.name}</div>
           </div>
         ))}
       </div>

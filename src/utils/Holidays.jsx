@@ -9,7 +9,7 @@ export function getHolidaysForScale(scale, holidays) {
     const isWorkDay = isWorkingDay(holidayDate, scale);
     
     return {
-      nome: holiday.nome_feriado,
+      nome: holiday.name_feriado,
       data: holiday.dia_feriado,
       dataFormatada: holidayDate.toLocaleDateString('pt-BR'),
       status: isWorkDay ? 'Trabalha' : 'Folga',
@@ -25,22 +25,22 @@ function isWorkingDay(date, scale) {
   const DaysOfWeek = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
   
   // Se tem dias específicos de folga
-  if (Array.isArray(scale.dias_n_trabalhados_escala_semanal) && 
-      scale.dias_n_trabalhados_escala_semanal.length > 0) {
+  if (Array.isArray(scale.unwork_scale) && 
+      scale.unwork_scale.length > 0) {
     
     const dayOfWeek = date.getDay();
     const dayName = DaysOfWeek[dayOfWeek];
     
     // Se o dia da semana está na lista de folgas, NÃO é dia de trabalho
-    return !scale.dias_n_trabalhados_escala_semanal.includes(dayName);
+    return !scale.unwork_scale.includes(dayName);
   }
 
   // Se é ciclo automático NxM
-  if (scale.data_inicio && scale.dias_trabalhados !== undefined && 
+  if (scale.start_date && scale.work_day !== undefined && 
       scale.dias_n_trabalhados !== undefined) {
     
-    const startDate = new Date(scale.data_inicio);
-    const cycleLength = scale.dias_trabalhados + scale.dias_n_trabalhados;
+    const startDate = new Date(scale.start_date);
+    const cycleLength = scale.work_day + scale.dias_n_trabalhados;
     
     // Calcular diferença em dias
     const diffTime = date - startDate;
@@ -51,7 +51,7 @@ function isWorkingDay(date, scale) {
     const positionInCycle = diffDays % cycleLength;
     
     // Se está dentro dos dias trabalhados do ciclo
-    return positionInCycle < scale.dias_trabalhados;
+    return positionInCycle < scale.work_day;
   }
 
   // Se não tem configuração, considera como dia de trabalho
@@ -74,11 +74,11 @@ export function formatHolidaysDisplay(scale, holidays) {
   }
 
   return workHolidays
-    .map(h => `${h.nome} (${h.dataFormatada})`)
+    .map(h => `${h.name} (${h.dataFormatada})`)
     .join(', ');
 }
 
 export function calculateCycleLength(scale) {
-  if (!scale.dias_trabalhados || !scale.dias_n_trabalhados) return 0;
-  return scale.dias_trabalhados + scale.dias_n_trabalhados;
+  if (!scale.work_day || !scale.dias_n_trabalhados) return 0;
+  return scale.work_day + scale.dias_n_trabalhados;
 }

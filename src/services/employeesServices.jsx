@@ -7,9 +7,9 @@ export const addEmployee = async (user, payload) => {
             ...payload
         })
         const sucess = 'Cadastro do funcionario realizado com sucesso'
-        return { result: data.funcionario, error: null, sucess: sucess }
+        return { result: data.employee, error: null, sucess: sucess }
     } catch (error) {
-        const erro = error?.response?.data?.mensagem || error?.message
+        const erro = error?.response?.data?.message || error?.message
         console.error('erro ao cadastrar :', erro)
         return { result: null, error: erro, sucess: null };
     }
@@ -19,9 +19,9 @@ export const findAllEmployees = async () => {
     try {
         const { data } = await api.get('/listarFuncionarios_master')
         const sucess = "TODOS funcionarios listados com sucesso"
-        return { result: data.funcionarios, error: null, sucess: sucess }
+        return { result: data.employees, error: null, sucess: sucess }
     } catch (error) {
-        const erro = error?.response?.data?.mensagem && error?.message
+        const erro = error?.response?.data?.message && error?.message
         console.error('Erro ao buscar TODOS funcionarios', erro)
         return { result: null, error: erro, sucess: null }
     }
@@ -33,7 +33,7 @@ export const findEmployees = async (user) => {
         const sucess = "funcionarios listados com sucesso"
         return { result: data, error: null, sucess: sucess }
     } catch (error) {
-        const erro = error.response?.data?.mensagem || error?.message
+        const erro = error.response?.data?.message || error?.message
         console.error('Erro ao listar funcionarios', erro)
         return { result: null, error: erro, sucess: null }
     }
@@ -41,13 +41,13 @@ export const findEmployees = async (user) => {
 
 export const findActives = async (user, date) => {
     try {
-        const { data } = await api.get(`funcionariosAtivosSetor/${user?.funcionario?.registration}`,{
+        const { data } = await api.get(`funcionariosAtivosSetor/${user?.employee?.registration}`,{
             params: {data: date}
         })
         const sucess = 'funcionarios do dia listados com sucesso'
         return { result: data, error: null, sucess: sucess }
     } catch (error) {
-        const erro = error?.response?.data?.mensagem || error?.message
+        const erro = error?.response?.data?.message || error?.message
         console.error('Erro ao listar funcionarios do dia', erro)
         return { result: null, error: erro, sucess: null }
     }
@@ -55,11 +55,11 @@ export const findActives = async (user, date) => {
 
 export const contEmployeesScale = async(user) => {
     try{
-        const{data} = await api.get(`/funcionariosEscala/${user?.funcionario?.registration}`)
+        const{data} = await api.get(`/funcionariosEscala/${user?.employee?.registration}`)
         const sucess = 'quantidades de funcionarios por escala listados com sucesso'
         return { result: data, error: null, sucess: sucess }
     } catch (error) {
-        const erro = error?.response?.data?.mensagem || error?.message
+        const erro = error?.response?.data?.message || error?.message
         console.error('Erro ao listar funcionarios por escala',erro)
         return { result: null, error: erro, sucess: null }
     }
@@ -67,13 +67,13 @@ export const contEmployeesScale = async(user) => {
 
 export const updateEmployee = async(user, payload) => {
     try{
-        const {data} = await api.put(`/editarFuncionario/${user?.funcionario?.registration}`, {
+        const {data} = await api.put(`/editarFuncionario/${user?.employee?.registration}`, {
             ...payload
         })
         const sucess = 'Funcionario atualizado com sucesso'
         return { result: data, error: null, sucess: sucess }
     } catch (error) {
-        const erro = error?.response?.data?.mensagem || error?.message
+        const erro = error?.response?.data?.message || error?.message
         console.error('Erro ao atualizar funcionario', erro)
         return { result: null, error: erro, sucess: null }
     }
@@ -85,7 +85,7 @@ export const contEmployeesSector = async() => {
         const sucess = 'Contabilização de funcionarios realizada com sucesso'
         return {result: data, error: null, sucess: sucess}
     }catch(error){
-        const erro = error?.response?.data?.mensagem || error?.message
+        const erro = error?.response?.data?.message || error?.message
         console.error('Erro ao contabilizar funcionarios:', erro)
         return {result: null, error: erro, sucess: null}
     }
@@ -93,11 +93,11 @@ export const contEmployeesSector = async() => {
 
 export const confirmEmployees = async(user) => {
     try{
-        const {data} = await api.get(`/confirmacoesSetor/${user?.funcionario?.registration}`)
+        const {data} = await api.get(`/confirmacoesSetor/${user?.employee?.registration}`)
         const sucess = 'Confirmações do setor listadas com sucesso'
         return {result: data, error: null, sucess: sucess}
     }catch(error){
-        const erro = error?.response?.data?.mensagem || error?.message
+        const erro = error?.response?.data?.message || error?.message
         console.error('Erro ao listar confirções do setor:', erro)
         return {result: null, error: erro, sucess: null}
     }
@@ -109,14 +109,14 @@ export const createReportEmployee = async (user, registration) => {
     const year = new Date().getFullYear();
 
     const response = await api.get(
-      `/relatorioPorFuncionario/${user?.funcionario?.registration}/${registration}?mes=${month}&ano=${year}`,
+      `/relatorioPorFuncionario/${user?.employee?.registration}/${registration}?mes=${month}&ano=${year}`,
       { responseType: "blob" }
     );
 
     return { result: response.data, error: null };
 
   } catch (error) {
-    const erro = error?.response?.data?.mensagem || error?.message;
+    const erro = error?.response?.data?.message || error?.message;
     return { result: null, error: erro };
   }
 };

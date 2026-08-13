@@ -13,7 +13,7 @@ export default function Confirmation({isOpen, setIsOpen, currentEmployee}) {
  async function handleDelete(e) {
   e.preventDefault()
 
-     const del = await deleteEmployee(currentEmployee?.matricula_funcionario)
+     const del = await deleteEmployee(currentEmployee?.registration)
      console.log(del)
      if (del?.result) {
        setResponse('Não')
