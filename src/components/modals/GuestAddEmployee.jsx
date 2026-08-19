@@ -1,13 +1,18 @@
 import '../../styles/AddEmployee.css'
-import { useAuth } from '../../hook/useAuth'
 import { useState, useEffect } from 'react'
-import Alert from './Alert'
+import DemoData from "../../api/demodata.json"
 
-function AddEmployeeCard({ isOpenEmployee, setIsOpenEmployee, setPage, employee }) {
-  const [currentPage, setCurrentPage] = useState(setPage || 1)
+function GuestAddEmployee({ isOpenEmployee, setIsOpenEmployee, page, employee }) {
+
+  const [currentPage, setCurrentPage] = useState(page? page:  1)
+
   const [createdEmployee, setCreatedEmployee] = useState(employee || null) // guarda funcionário criado
 
-
+useEffect(() => {
+  if(isOpenEmployee){
+    setCurrentPage(page || 1)
+  }
+}, [isOpenEmployee, page])
 
   const goNextPage = (employee) => {
     if (employee) setCreatedEmployee(employee)
@@ -39,14 +44,10 @@ function AddEmployeeCard({ isOpenEmployee, setIsOpenEmployee, setPage, employee 
       {pages[currentPage - 1]}
     </div>
   )
+  
 }
 
-function Page1({ isOpenEmployee, setIsOpenEmployee, goNextPage }) {
-  const { addEmployee, teams, findTeams, user } = useAuth()
-  const [erroMessage, setErroMessage] = useState()
-  const [response, setResponse] = useState('Erro')
-  const [save, setSave] = useState()
-
+function Page1({setIsOpenEmployee, goNextPage }) {
   const [form, setForm] = useState({
     registration: '',
     name: '',
@@ -63,43 +64,16 @@ function Page1({ isOpenEmployee, setIsOpenEmployee, goNextPage }) {
       [name]: value,
     }));
   };
-
-
-  useEffect(() => {
-    if (isOpenEmployee && teams?.result) {
-      findTeams(user);
-    }
-  }, [isOpenEmployee, findTeams, teams, user])
-
-  async function handleAddEmployee(e) {
+   function handleAddEmployee(e) {
     e.preventDefault()
-    const employee = await addEmployee(user, form)
+    goNextPage()
+   }
 
-    if (employee.result) {
-      setResponse('Sucesso')
-      setErroMessage(employee.sucess)
-      setSave(employee.result)
-    } else {
-      setResponse('Erro')
-      setErroMessage(employee.error)
-    }
-  }
   const isDisable = Object.values(form).some(values => values === '')
+  
   return (
     <div>
-      {erroMessage && (
-        <Alert
-          response={response}
-          text="ao Cadastrar Funcionario"
-          error={erroMessage}
-          onClose={() => {
-            setErroMessage("")
-            if (response === 'Sucesso' && save) {
-              goNextPage(save)
-            }
-          }}
-        />
-      )}
+        
 
       <div className="form-card-position">
         <form onSubmit={handleAddEmployee} className="forms">
@@ -109,28 +83,28 @@ function Page1({ isOpenEmployee, setIsOpenEmployee, goNextPage }) {
             <input name='registration' type="number" className="form-input" placeholder="Matricula"
               value={form.registration} onChange={handleChange} />
 
-            <input name='nome' type="text" className="form-input" placeholder="Nome Completo"
+            <input name='name' type="text" className="form-input" placeholder="Nome Completo"
               value={form.name} onChange={handleChange} />
 
-            <input name='phone' type="tel" className="form-input" placeholder="phone"
+            <input name='phone' type="tel" className="form-input" placeholder="Telefone"
               value={form.phone} onChange={handleChange} />
 
             <input name='email' type="email" className="form-input" placeholder="Email"
               value={form.email} onChange={handleChange} />
 
-            <input name='position' type="text" className="form-input" placeholder="position"
+            <input name='position' type="text" className="form-input" placeholder="Cargo"
               value={form.position} onChange={handleChange} />
 
-            <select name='name' id="equipe-input" list="equipes-list" className="form-input form-option"
-              placeholder="Equipe" value={form.name} onChange={handleChange}>
+            <select name='team' id="equipe-input" list="equipes-list" className="form-input form-option"
+              placeholder="Equipe" value={form.team} onChange={handleChange}>
               <option value={null}>Selecione uma equipe</option>
-              {teams?.result?.map((eq) => (
-                <option key={eq.id_equipe} value={eq.name}> {eq.name}</option>
+              {DemoData?.team.map((eq) => (
+                <option key={eq.id} value={eq.name}> {eq.name}</option>
               ))}
             </select>
 
-            <select name='name' id="regiao-input" list="regioes-list" className="form-input form-option"
-              placeholder="Regiao" value={form.name} onChange={handleChange}>
+            <select name='region' id="regiao-input" list="regioes-list" className="form-input form-option"
+              placeholder="Regiao" value={form.region} onChange={handleChange}>
               <option value={null}>Selecione uma região</option>
               <option value='Sul'>Sul</option>
               <option value='Norte'>Norte</option>
@@ -153,14 +127,10 @@ function Page1({ isOpenEmployee, setIsOpenEmployee, goNextPage }) {
   )
 }
 
-function Page2({ employee, setIsOpenEmployee, goNextPage }) {
-  const { addScale, scales, user } = useAuth()
-  const [erroMessage, setErroMessage] = useState()
-  const [response, setResponse] = useState('Erro')
-  const [save, setSave] = useState()
+function Page2({ setIsOpenEmployee, goNextPage }) {
 
   const [form, setForm] = useState({
-    registration: employee.registration,
+    registration: '',
     start_date: '',
     scale_type: '',
     use_occasion: 'FALSE',
@@ -186,15 +156,7 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
 
   async function handleAddScale(e) {
     e.preventDefault()
-    const scale = await addScale(user, form)
-    if (scale.result) {
-      setResponse('Sucesso')
-      setErroMessage(scale.sucess)
-      setSave(employee)
-    } else {
-      setResponse('Erro')
-      setErroMessage(scale.error)
-    }
+    goNextPage()
   }
 
   const camposObrigatorios = ['registration', 'start_date', 'scale_type']
@@ -203,19 +165,6 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
 
   return (
     <div>
-      {erroMessage && (
-        <Alert
-          response={response}
-          text="ao Cadastrar Escala"
-          error={erroMessage}
-          onClose={() => {
-            setErroMessage("")
-            if (response === 'Sucesso' && save) {
-              goNextPage(save)
-            }
-          }}
-        />
-      )}
 
       <div className="form-card-position">
         <form onSubmit={handleAddScale} className="forms">
@@ -227,8 +176,8 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
             <input name='scale_type' id="escala-input" list="escalas-list" className="form-input"
               placeholder="Escala" value={form.scale_type} onChange={handleChange} />
             <datalist id="escalas-list">
-              {scales?.result?.map(s =>
-                <option key={s.id_escala} value={s.scale_type} />)}
+              {DemoData?.scale?.map(s =>
+                <option key={s.id} value={s.scale_type} />)}
             </datalist>
 
             <div className="">
@@ -258,7 +207,7 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
           </div>
 
           <div className="buttons-form">
-            <button type="submit" className={`confirm-button ${isDisabled ? 'disable' : ''}`} disabled={isDisabled}>Concluir</button>
+            <button className={`confirm-button ${isDisabled ? 'disable' : ''}`} disabled={isDisabled}>Concluir</button>
             <button type="button" className="cancel-button" onClick={() => setIsOpenEmployee(false)}>Fechar</button>
           </div>
         </form>
@@ -267,14 +216,10 @@ function Page2({ employee, setIsOpenEmployee, goNextPage }) {
   )
 }
 
-function Page3({ employee, setIsOpenEmployee }) {
-  const { addTurn, user } = useAuth()
-  const [erroMessage, setErroMessage] = useState()
-  const [response, setResponse] = useState('Erro')
-  const [save, setSave] = useState()
+function Page3({ setIsOpenEmployee }) {
 
   const [form, setForm] = useState({
-    registration: employee.registration,
+    registration: '',
     shift_start: '',
     shift_end: '',
     total_shift: '',
@@ -287,35 +232,13 @@ function Page3({ employee, setIsOpenEmployee }) {
 
   async function handleAddTurn(e) {
     e.preventDefault()
-    const turn = await addTurn(user, form)
-    if (turn.result) {
-      setResponse('Sucesso')
-      setErroMessage(turn.sucess)
-      setSave(turn)
-    } else {
-      setResponse('Erro')
-      setErroMessage(turn.error)
-    }
+    window.location.reload()
   }
 
   const isDisable = Object.values(form).some(values => values === '')
   return (
     <div>
-      {erroMessage && (
-        <Alert
-          response={response}
-          text="ao Cadastrar Turno"
-          error={erroMessage}
-          onClose={() => {
-            setErroMessage("")
-            if (response === 'Sucesso' && save) {
-              setIsOpenEmployee(false)
-              window.location.reload()
-            }
-
-          }}
-        />
-      )}
+      
 
       <div className="form-card-position">
         <form onSubmit={handleAddTurn} className="forms">
@@ -356,4 +279,4 @@ function Page3({ employee, setIsOpenEmployee }) {
   )
 }
 
-export default AddEmployeeCard
+export default GuestAddEmployee;

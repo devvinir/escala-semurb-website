@@ -4,13 +4,14 @@ import { useNavigate } from 'react-router-dom'
 import { IoIosTrash } from "react-icons/io";
 import Confirmation from './modals/ConfirmDelSector'
 import { useState } from 'react';
-
+import DemoData from "../api/demodata.json"
 export default function SectorCard() {
 
   const { admin, user, teams, allSectors } = useAuth();
   const route = useNavigate();
   const [isOpen, setIsOpen] = useState(false)
   const [id, setId] = useState()
+
   if (user) return (
     <div className='container-setor'>
       <div className='setor'>
@@ -58,4 +59,23 @@ export default function SectorCard() {
         </div>
       </div>
     );
+     else return (
+    <div className='container-setor'>
+      <div className='setor'>
+        <p className='title-setor'>
+          Setor: Demo</p>
+      </div>
+      {!DemoData.team ? <p className="loading-text">Carregando equipes...</p> : null}
+      <div className='container-teams'>
+        {DemoData.team?.map((tm) => (
+          <div className='team' key={tm.id} onClick={() => route(`/guest-team/${tm.id}`)} >
+            <p>{tm.name}</p>
+          </div>
+        ))}
+
+
+      </div>
+    </div>
+  );
+
 }

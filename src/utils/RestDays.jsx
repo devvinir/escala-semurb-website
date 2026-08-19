@@ -81,19 +81,18 @@ export function getHolidaysForScale(scale, holidays, monthFilter = null) {
     .filter(holiday => {
       // Se monthFilter for passado, filtra pelo mês
       if (monthFilter !== null) {
-        const holidayDate = new Date(holiday.dia_feriado);
+        const holidayDate = new Date(holiday.date);
         return holidayDate.getMonth() === monthFilter;
       }
       return true;
     })
     .map(holiday => {
-      const holidayDate = new Date(holiday.dia_feriado);
+      const holidayDate = new Date(holiday.date);
       const isWorkDay = isWorkingDay(holidayDate, scale);
       
       return {
-        id: holiday.id_feriado,
-        nome: holiday.name_feriado,
-        data: holiday.dia_feriado,
+        nome: holiday.name,
+        data: holiday.date,
         dataFormatada: holidayDate.toLocaleDateString('pt-BR'),
         status: isWorkDay ? 'Trabalha' : 'Folga',
         isWorkDay

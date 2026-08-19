@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "../styles/Graph.css";
 import {useAuth} from '../hook/useAuth'
 import { BeatLoader } from "react-spinners";
-
+import DemoData from "../api/demodata.json"
 
 function MyChart() {
   const [data, setData] = useState([]);
@@ -23,6 +23,8 @@ function MyChart() {
     ];
     setData(dataChart)
   }}
+
+
   else if (admin){
     if(sectorsEmployees?.result){
       const dataChart = [
@@ -35,7 +37,29 @@ function MyChart() {
       ];
       setData(dataChart)
     }}
-}, [scalesEmployees, sectorsEmployees]); 
+
+
+     else {
+    const dataChart = [
+        ["Escala", "Funcionarios", { role: "style" }],
+        //...retira o array extra
+        ...DemoData.scale.map(scale =>{
+
+            const qntd = DemoData.employee.filter(
+                emp => emp.scale_id === scale.id
+            ).length
+            return[
+            scale?.scale_type, 
+            qntd, 
+            "#F4D03F"
+            ]
+        })
+    ]
+        
+        setData(dataChart)
+    }},[scalesEmployees, sectorsEmployees, user, admin]); 
+
+   
 
   const options = {
     backgroundColor: "transparent",

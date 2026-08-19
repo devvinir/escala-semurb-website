@@ -1,5 +1,6 @@
 import api from "../api/api";
 
+
 export const addScale = async (
   user, payload
 ) => {
@@ -84,17 +85,5 @@ export const updateScaleAdmin = async ( payload) => {
     const erro = error?.response?.data?.message || error.message
     console.error('Erro ao alterar escala ', erro)
     return { result: null, error: erro, sucess: null }
-  }
-}
-
-export const findHolidays = async() => {
-  try{
-    const {data} = await api.get('listarFeriados_master')
-    const sucess = 'Feriados listados com sucesso'
-    return {result: data.feriados, error: null, sucess: sucess}
-  }catch(error){
-    const erro = error?.response?.data?.message || error.message
-    console.error(erro, error.message)
-    return {result: null, error:erro, sucess: null}
   }
 }

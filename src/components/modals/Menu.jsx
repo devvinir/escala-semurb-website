@@ -27,6 +27,9 @@ function MenuHeader({isOpen, setIsOpen }) {
         alert('Erro ao gerar relatório. Tente novamente mais tarde.')
       }
     }
+    
+    if (!isOpen) return null;
+
 if(user && isOpen)
     return (
     <div className="menu-container">
@@ -34,7 +37,7 @@ if(user && isOpen)
             <button className="option" onClick={() => route('/profile')}>Perfil</button>
             <button className="option" onClick={()=> route('/config')}>Configurações</button>
             <button className="option" onClick={handleLogout}>Sair</button>
-            <button className="option" onClick={setIsOpen}>Fechar Menu</button>
+            <button className="option" onClick={()=>setIsOpen(false)}>Fechar Menu</button>
             <button className="option" onClick={handleReport}>Relatorio Geral</button>
               
         </div>
@@ -48,11 +51,28 @@ if(admin && isOpen)
     <div className="menu-container">
             <div className="options"> 
                 <button className="option" onClick={handleLogout}>Sair</button>
-                <button className="option" onClick={setIsOpen}>Fechar Menu</button>
+                <button className="option" onClick={()=>setIsOpen(false)}>Fechar Menu</button>
             </div>
         
     </div>
     );
+
+
+    else
+    return (
+    <div className="menu-container">
+        <div className="options"> 
+            <button className="option" onClick={() => route('/guest-profile')}>Perfil</button>
+            <button className="option" onClick={()=> route('/guest-config')}>Configurações</button>
+            <button className="option" onClick={handleLogout}>Sair</button>
+            <button className="option" onClick={handleReport}>Relatorio Geral</button>
+             <button className="option" onClick={()=>setIsOpen(false)}>Fechar Menu</button>
+              
+        </div>
+        
+    </div>
+   
+  );
  
 } 
 

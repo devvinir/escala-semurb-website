@@ -64,7 +64,7 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
     const currentYear = currentDate.getFullYear();
     holidaysList?.forEach(holiday => {
        // Pegar apenas mês e dia do feriado, ignorando o ano
-      const holidayDate = new Date(holiday.dia_feriado);
+      const holidayDate = new Date(holiday.date);
       const month = String(holidayDate.getMonth() + 1).padStart(2, '0');
       const day = String(holidayDate.getDate() + 1).padStart(2, '0');
 
@@ -72,8 +72,7 @@ export default function CalendarProfile({ value, onDateChange, escala, holidays,
       const dateKey = `${currentYear}-${month}-${day}`;
       
       holidayMap[dateKey] = {
-        name: holiday.name_feriado,
-        id: holiday.id_feriado
+        name: holiday.name,
       };
     });
 

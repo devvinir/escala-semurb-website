@@ -1,0 +1,141 @@
+{
+    "employee": [
+        {
+            "registration": 10001,
+            "name": "Carlos Henrique Silva",
+            "email": "carlos.silva@demo.com",
+            "phone": "(11) 99999-1111",
+            "position": "Agente de Trânsito",
+            "sector_id": 1,
+            "team_id": 1,
+            "region_id": 1,
+            "shift_id": 1,
+            "scale_id": 1,
+            "is_admin": false,
+            "confirm": false
+        },
+        {
+            "registration": 10002,
+            "name": "Mariana Oliveira Santos",
+            "email": "mariana.santos@demo.com",
+            "phone": "(11) 99999-2222",
+            "position": "Fiscal Municipal",
+            "sector_id": 1,
+            "team_id": 2,
+            "region_id": 2,
+            "shift_id": 2,
+            "scale_id": 2,
+            "is_admin": false,
+            "confirm": false
+        },
+        {
+            "registration": 10003,
+            "name": "João Pedro Almeida",
+            "email": "joao.almeida@demo.com",
+            "phone": "(11) 99999-3333",
+            "position": "Supervisor de Equipe",
+            "sector_id": 1,
+            "team_id": 3,
+            "region_id": 3,
+            "shift_id": 3,
+            "scale_id": 3,
+            "is_admin": false,
+            "confirm": true
+        }
+    ],
+    "sector": [
+        {
+            "id": 1,
+            "name": "Demo"
+        }
+    ],
+    "team": [
+        {
+            "id": 1,
+            "name": "Alpha"
+        },
+        {
+            "id": 2,
+            "name": "Beta"
+        },
+        {
+            "id": 3,
+            "name": "Delta"
+        }
+    ],
+    "shift": [
+        {
+            "id": 1,
+            "shift_start": "07:00",
+            "shift_end": "19:00",
+            "total_shift": "12:00"
+        },
+        {
+            "id": 2,
+            "shift_start": "08:00",
+            "shift_end": "20:00",
+            "total_shift": "12:00"
+        },
+        {
+            "id": 3,
+            "shift_start": "06:00",
+            "shift_end": "18:00",
+            "total_shift": "12:00"
+        }
+    ],
+    "scale": [
+        {
+            "id": 1,
+            "start_date": "2026-01-01",
+            "scale_type": "12x36",
+            "work_day": 1,
+            "unwork_day": 1,
+            "unwork_scale": [],
+            "use_occasion": false,
+            "created_at": "2026-01-01T08:00:00Z",
+            "updated_at": "2026-01-01T08:00:00Z"
+        },
+        {
+            "id": 2,
+            "start_date": "2026-01-01",
+            "scale_type": "4x3",
+            "work_day": 4,
+            "unwork_day": 3,
+            "unwork_scale": [
+                "Dom",
+                "Seg",
+                "Sex"
+            ],
+            "use_occasion": true,
+            "created_at": "2026-01-01T08:00:00Z",
+            "updated_at": "2026-01-01T08:00:00Z"
+        },
+        {
+            "id": 3,
+            "start_date": "2026-02-01",
+            "scale_type": "5x2",
+            "work_day": 5,
+            "unwork_day": 2,
+            "unwork_scale": [
+                "Dom", "Sab"
+            ],
+            "use_occasion": false,
+            "created_at": "2026-02-01T08:00:00Z",
+            "updated_at": "2026-02-01T08:00:00Z"
+        }
+    ],
+    "region": [
+        {
+            "id": 1,
+            "name": "Sul"
+        },
+        {
+            "id": 2,
+            "name": "Norte"
+        },
+        {
+            "id": 3,
+            "name": "Oeste"
+        }
+    ]
+}

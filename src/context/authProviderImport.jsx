@@ -3,7 +3,7 @@ import api from '../api/api';
 import AuthContext from "./authContextImport";
 
 import { addEmployee, findEmployees, findAllEmployees, findActives, contEmployeesScale, contEmployeesSector, updateEmployee, confirmEmployees, createReportEmployee } from "../services/employeesServices";
-import { addScale, findScales, updateScale, updateScaleAdmin, addScaleAdmin, findAllScales, findHolidays } from "../services/scalesServices";
+import { addScale, findScales, updateScale, updateScaleAdmin, addScaleAdmin, findAllScales } from "../services/scalesServices";
 import { findAllSectors, addSector, deleteSector, updateSector } from "../services/sectorsServices";
 import { addAdmin, deleteEmployee, updateAdmin, findEditdays, addEditdays, createReport } from "../services/adminsServices"
 import { findTeams, addTeam, findAllTeams, createReportTeam } from '../services/teamsServices'
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   const [actives, setActives] = useState([])
   const [scalesEmployees, setScalesEmployees] = useState([])
   const [sectorsEmployees, setSectorsEmployees] = useState([])
-  const [holidays, setHolidays] = useState([])
+
   const [editdays, setEditdays] = useState([])
   const [confirms, setConfirms] = useState([])
 
@@ -169,7 +169,6 @@ export const AuthProvider = ({ children }) => {
         setTurns(await findTurns(user));
         setEmployees(await findEmployees(user));
         setScales(await findScales(user));
-        setHolidays(await findHolidays());
         setScalesEmployees(await contEmployeesScale(user));
         setEditdays(await findEditdays());
         setConfirms(await confirmEmployees(user));
@@ -186,7 +185,6 @@ export const AuthProvider = ({ children }) => {
         setAllScales(await findAllScales());
         setAllTurns(await findAllTurns());
         setAllRegions(await findAllRegions());
-        setHolidays(await findHolidays());
         setSectorsEmployees(await contEmployeesSector());
         setEditdays(await findEditdays());
       })();
@@ -297,7 +295,6 @@ export const AuthProvider = ({ children }) => {
       allTurns,
       findAllRegions,
       allRegions,
-      holidays
     }}>
       {children}
     </AuthContext.Provider>

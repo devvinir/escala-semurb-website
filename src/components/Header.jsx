@@ -56,5 +56,28 @@ function Header() {
          
         </header>
         )
+
+        else return (
+    <header className='header'>
+        <div className='header-part-left'> 
+            <IoMdArrowBack cursor='pointer' size={30} color='#F4D03F' onClick={()=>route(-1)}/>  
+            <IoIosHome cursor='pointer' size={30} color='#F4D03F' onClick={()=> route('/guest-home')}/>
+            <p className='painel'>Secretaria Da Mobilidade Urbana</p>  
+        </div>
+
+        <div className='header-part-right'>
+                <img className='img' alt='SEMURB' src={logo}></img>
+                <IoIosNotifications cursor='pointer' size={30} color="#F4D03F"
+                onClick={setIsNotificationModal}/>
+                <button className='menu' onClick={setIsOpenModal} >
+                    <IoMdMenu cursor='pointer' size={30} color="#F4D03F" />
+                </button>
+                 
+        </div>
+        <Notification isNotification={isNotificationModal} 
+        setIsNotification={() => setIsNotificationModal(!isNotificationModal)}/>
+         <MenuHeader isOpen={isOpenModal} setIsOpen={() => setIsOpenModal(!isOpenModal)}/>
+        </header>
+    ); 
 }
 export default Header;

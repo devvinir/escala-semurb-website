@@ -5,12 +5,12 @@ export function getHolidaysForScale(scale, holidays) {
   }
 
   const holidaysWithStatus = holidays.map(holiday => {
-    const holidayDate = new Date(holiday.dia_feriado);
+    const holidayDate = new Date(holiday.date);
     const isWorkDay = isWorkingDay(holidayDate, scale);
     
     return {
-      nome: holiday.name_feriado,
-      data: holiday.dia_feriado,
+      nome: holiday.name,
+      data: holiday.date,
       dataFormatada: holidayDate.toLocaleDateString('pt-BR'),
       status: isWorkDay ? 'Trabalha' : 'Folga',
       isWorkDay

@@ -71,7 +71,12 @@ function Login() {
                 </button>
                
               <a className='forgot-password' href="/forgot-password">Esqueceu a senha?</a>
-              <a className='forgot-password' href="/login/admin">Admin</a>
+              
+              <div> 
+                <a className='forgot-password' href="/login/admin">Admin</a>
+                
+                <a className="forgot-password" href="/guest-home">Entrar como visitante</a>
+                </div>
             </div>
           </form>
         </div>
