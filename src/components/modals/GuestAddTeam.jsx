@@ -1,15 +1,29 @@
 import { useState } from 'react';
-
+import Alert from '../modals/Alert'
 export default function GuestAddTeam({isOpen, setIsOpen}) {
 
   const [name, setName] = useState()
+  const [click, setClick] = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    window.location.reload()
+    setClick(true)
   }
   if (isOpen) return (
+
     <div className="form-container">
+
+        {click && (
+        <Alert
+          response='Sucesso'
+          text='no Cadastro!'
+          error='O cadastro foi realizado com sucesso'
+          onClose={() => {
+            setClick(false)
+            setIsOpen(false)
+          }}
+        />
+      )}
      
     <div className="form-card-position admin-card">
       <form onSubmit={handleSubmit} className="forms admin-form">

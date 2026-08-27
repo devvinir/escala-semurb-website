@@ -3,7 +3,7 @@ export default {
     "--on-bg": "#111827",
     "--text": "#111827",
     "--on-text": "#ffffff",
-    "--fix-titles": "#F4D03F",
+    "--fix-titles": "#ffcc00",
     "--fix-yellow": "#F4D03F",
     "--fix-dark": "#111827",
     "--contents": "#ffffff",

@@ -26,6 +26,9 @@ import GuestEmployeeProfile from './pages/GuestEmployeeProfile';
 import GuestProfile from './pages/GuestProfile';
 import GuestConfig from './pages/GuestConfig';
 
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import About from './pages/About';
+
 function AuthApp (){
   const {inUser} = useAuth()
 
@@ -96,6 +99,8 @@ function App() {
             <Route path='/forgot-password' element={ <ForgotPassword /> } />
             <Route path='/code-verify/:id' element={ <CodeVerify /> } />
             <Route path='/reset-password/:id' element={ <ResetPassword /> } />
+            <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
+            <Route path='/about' element={<About/>}/>
             
             
             <Route  element={<AuthApp />}>

@@ -1,12 +1,13 @@
 .alert-container{
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0,0,0,0.5);
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    justify-content: end;
+    align-items: end;
 }
 .alert-content{
+    margin:30px;
     z-index: 1000;
     background-color: var(--contents);
     width: 400px;
